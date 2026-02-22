@@ -1,0 +1,206 @@
+/**
+ * Flavor Theme — Customizer: Sidebar Widget Manager styles
+ *
+ * Dopasowane do panelu bocznego Customizera (~300px szerokości).
+ */
+
+/* ── Add row ── */
+.fc-cust-add-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.fc-cust-add-select {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+.fc-cust-add-btn {
+  flex-shrink: 0;
+  padding: 0 8px !important;
+  min-height: 30px;
+  line-height: 28px;
+}
+.fc-cust-add-btn .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  line-height: 16px;
+}
+
+/* ── Widget list ── */
+.fc-cust-widgets-list {
+  min-height: 40px;
+}
+.fc-cust-empty-msg {
+  text-align: center;
+  color: #888;
+  padding: 12px 0;
+}
+
+/* ── Widget card ── */
+.fc-cust-widget-card {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  transition: box-shadow 0.15s;
+}
+.fc-cust-widget-card:last-child {
+  margin-bottom: 0;
+}
+.fc-cust-widget-card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Card header ── */
+.fc-cust-card-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.fc-cust-drag {
+  cursor: grab;
+  color: #c3c4c7;
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+.fc-cust-drag:active {
+  cursor: grabbing;
+}
+.fc-cust-card-icon {
+  color: #2271b1;
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+.fc-cust-card-label {
+  flex: 1;
+  font-weight: 500;
+  font-size: 12px;
+  color: #1d2327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fc-cust-card-toggle,
+.fc-cust-card-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #787c82;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.fc-cust-card-toggle:hover {
+  color: #2271b1;
+  background: #f0f6fc;
+}
+.fc-cust-card-toggle.open {
+  transform: rotate(180deg);
+}
+.fc-cust-card-remove:hover {
+  color: #d63638;
+  background: #fcf0f1;
+}
+
+/* ── Card body ── */
+.fc-cust-card-body {
+  padding: 0 10px 10px;
+  border-top: 1px solid #f0f0f1;
+}
+.fc-cust-card-body p {
+  margin: 8px 0 0;
+}
+.fc-cust-card-body .description {
+  font-style: italic;
+  color: #757575;
+  font-size: 11px;
+}
+.fc-cust-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1d2327;
+  margin-bottom: 3px;
+}
+.fc-cust-card-body label {
+  font-size: 12px;
+}
+.fc-cust-input {
+  width: 100%;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+.fc-cust-input.small-text {
+  width: 56px;
+}
+.fc-cust-input[type="color"] {
+  width: 48px;
+  height: 28px;
+  padding: 0 2px;
+}
+.fc-cust-select {
+  width: 100%;
+  font-size: 12px;
+}
+.fc-cust-textarea {
+  width: 100%;
+  min-height: 60px;
+  font-size: 12px;
+  font-family: monospace;
+  resize: vertical;
+}
+
+/* ── Sortable placeholder ── */
+.fc-cust-sortable-placeholder {
+  background: #f0f6fc;
+  border: 2px dashed #2271b1;
+  border-radius: 4px;
+  min-height: 36px;
+  margin-bottom: 6px;
+}
+
+/* ── Tile size presets ── */
+.fc-tile-size-presets {
+  display: inline-flex;
+  gap: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  margin-bottom: 4px;
+}
+.fc-tile-size-presets .button {
+  min-width: 28px;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 5px;
+  font-size: 11px;
+  text-align: center;
+}
+.fc-tile-size-input {
+  width: 52px !important;
+  vertical-align: middle;
+}
+
+/* ── Menu sortable placeholder ── */
+.fc-menu-sortable-placeholder,
+.fc-sp-sortable-placeholder {
+  background: #fef9e7;
+  border: 2px dashed #dab24a;
+  border-radius: 3px;
+  min-height: 32px;
+  margin-bottom: 4px;
+}
