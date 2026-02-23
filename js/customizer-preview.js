@@ -79,10 +79,14 @@
         $(".site-logo-dark").toggle(mode === "dark");
       }
 
-      /* Auto-sync dark map when user hasn't explicitly overridden it */
-      var mapDarkSetting = wp.customize("flavor_contact_map_dark");
-      if (mapDarkSetting) {
-        mapDarkSetting.set(mode === "dark");
+      /* Auto-sync dark map with color mode */
+      var $mapIframe = $(".flavor-contact-map iframe");
+      if ($mapIframe.length) {
+        var dark = mode === "dark";
+        $mapIframe.css(
+          "filter",
+          dark ? "invert(90%) hue-rotate(180deg)" : "none"
+        );
       }
     });
   });
