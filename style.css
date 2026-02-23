@@ -1189,6 +1189,7 @@ article.flavor-contact-page:hover {
   border: 1px solid var(--color-border);
 }
 .flavor-contact-map--inline {
+  margin-top: 0;
   margin-bottom: 1.5rem;
 }
 .flavor-contact-map--above {
