@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<div class="content-area">
+
 <?php while ( have_posts() ) : the_post(); ?>
 
     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -53,5 +55,9 @@
     ?>
 
 <?php endwhile; ?>
+
+</div><!-- .content-area -->
+
+<?php get_sidebar(); ?>
 
 <?php get_footer(); ?>

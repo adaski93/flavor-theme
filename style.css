@@ -449,6 +449,16 @@ article.post:hover {
 }
 
 /* ===== Sidebar ===== */
+
+/* Layout: content + sidebar grid */
+.site-content .container.has-sidebar {
+  grid-template-columns: 1fr 300px;
+}
+.site-content .container.has-sidebar > .content-area {
+  min-width: 0; /* prevent grid overflow */
+}
+
+/* Widget base */
 .widget-area .widget {
   background-color: var(--color-surface);
   padding: 1.5rem;
@@ -487,6 +497,236 @@ article.post:hover {
 
 .widget a:hover {
   color: var(--color-accent);
+}
+
+/* ── Nested lists (subcategories) ── */
+.widget ul ul {
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+}
+.widget li li:last-child {
+  border-bottom: none;
+}
+
+/* ── Item count badges ── */
+.widget li .count,
+.widget li .post-count {
+  float: right;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  background: var(--color-accent-light);
+  padding: 0.1em 0.55em;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+/* ── Widget select/dropdown ── */
+.widget select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-input-radius, var(--radius));
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: border-color var(--transition);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7c93' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+.widget select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+/* ── Calendar widget ── */
+.widget_calendar table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.88rem;
+}
+.widget_calendar caption {
+  font-weight: 700;
+  padding: 0.5rem 0;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+.widget_calendar thead th {
+  font-weight: 600;
+  color: var(--color-text-light);
+  padding: 0.5rem 0.25rem;
+  border-bottom: 2px solid var(--color-accent-light);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.widget_calendar tbody td {
+  padding: 0.4rem 0.25rem;
+  border: 1px solid var(--color-border);
+}
+.widget_calendar tbody td a {
+  display: block;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.widget_calendar tbody td a:hover {
+  color: #fff;
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+.widget_calendar tbody td#today {
+  background-color: var(--color-accent-light);
+  font-weight: 700;
+}
+.widget_calendar tfoot td {
+  padding: 0.5rem 0;
+  border: none;
+}
+.widget_calendar tfoot a {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ── Tag Cloud ── */
+.widget_tag_cloud .tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.widget_tag_cloud .tagcloud a {
+  display: inline-block;
+  font-size: 0.82rem !important; /* override inline font-size */
+  padding: 0.3em 0.7em;
+  background: var(--color-accent-light);
+  color: var(--color-accent) !important;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  line-height: 1.4;
+  text-decoration: none;
+}
+.widget_tag_cloud .tagcloud a:hover {
+  background: var(--color-accent);
+  color: #fff !important;
+  border-color: var(--color-accent);
+}
+
+/* ── RSS Widget ── */
+.widget_rss ul {
+  list-style: none;
+}
+.widget_rss li {
+  padding: 0.75rem 0;
+}
+.widget_rss .rsswidget {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.widget_rss .rss-date {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.25rem;
+}
+.widget_rss .rssSummary {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  line-height: 1.5;
+}
+.widget_rss cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  margin-top: 0.25rem;
+}
+.widget_rss .rss-widget-icon {
+  display: none; /* hide default RSS icon */
+}
+
+/* ── Recent Comments ── */
+.widget_recent_comments li {
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.widget_recent_comments li .comment-author-link {
+  font-weight: 600;
+}
+
+/* ── Text / Custom HTML ── */
+.widget_text .textwidget,
+.widget_custom_html .textwidget {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.widget_text .textwidget p:last-child,
+.widget_custom_html .textwidget p:last-child {
+  margin-bottom: 0;
+}
+.widget_text .textwidget img,
+.widget_custom_html .textwidget img {
+  border-radius: var(--radius);
+}
+
+/* ── Media widgets (Image / Video / Audio / Gallery) ── */
+.widget_media_image img {
+  border-radius: var(--radius);
+  width: 100%;
+  height: auto;
+}
+.widget_media_video .wp-video,
+.widget_media_audio .wp-audio-shortcode {
+  width: 100% !important;
+}
+.widget_media_gallery .gallery {
+  gap: 0.5rem;
+}
+.widget_media_gallery .gallery-item {
+  margin: 0 !important;
+}
+.widget_media_gallery .gallery-item img {
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border) !important;
+}
+
+/* ── Nav Menu Widget ── */
+.widget_nav_menu .menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.widget_nav_menu .sub-menu {
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+}
+
+/* ── Block-based widgets (WP 5.8+) ── */
+.widget_block {
+  font-size: 0.95rem;
+}
+.widget_block > *:first-child {
+  margin-top: 0;
+}
+.widget_block > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Responsive sidebar ── */
+@media (max-width: 768px) {
+  .site-content .container.has-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .widget-area {
+    margin-top: 1rem;
+  }
 }
 
 /* ===== Footer ===== */

@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<div class="content-area">
+
 <?php if ( have_posts() ) : ?>
 
     <?php while ( have_posts() ) : the_post(); ?>
@@ -96,5 +98,9 @@
     </article>
 
 <?php endif; ?>
+
+</div><!-- .content-area -->
+
+<?php get_sidebar(); ?>
 
 <?php get_footer(); ?>

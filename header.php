@@ -59,4 +59,4 @@
 </header>
 
 <main class="site-content" role="main">
-    <div class="container">
+    <div class="container<?php if ( is_active_sidebar( 'sidebar-1' ) && ( is_home() || is_front_page() || is_archive() || is_search() || is_singular( 'post' ) ) ) echo ' has-sidebar'; ?>">

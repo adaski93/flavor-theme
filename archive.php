@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<div class="content-area">
+
 <header class="archive-header entry-header">
     <?php
     the_archive_title( '<h1 class="entry-title">', '</h1>' );
@@ -50,5 +52,9 @@
     </article>
 
 <?php endif; ?>
+
+</div><!-- .content-area -->
+
+<?php get_sidebar(); ?>
 
 <?php get_footer(); ?>

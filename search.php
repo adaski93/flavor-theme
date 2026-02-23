@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<div class="content-area">
+
 <header class="search-header entry-header">
     <h1 class="entry-title">
         <?php printf( esc_html( fc__( 'theme_search_results' ) ), '<span>' . get_search_query() . '</span>' ); ?>
@@ -49,5 +51,9 @@
     </article>
 
 <?php endif; ?>
+
+</div><!-- .content-area -->
+
+<?php get_sidebar(); ?>
 
 <?php get_footer(); ?>
