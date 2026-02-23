@@ -1239,6 +1239,13 @@ article.flavor-about-page:hover {
   padding: 0;
 }
 
+/* Make container full-width for about page so breakout works cleanly */
+.site-content:has(.flavor-about-page) > .container {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
 /* Prevent horizontal overflow from full-width breakout */
 body:has(.flavor-about-page) {
   overflow-x: hidden;
@@ -1686,14 +1693,6 @@ body:has(.flavor-about-page) {
 
 /* ── About page responsive ── */
 @media (max-width: 768px) {
-  /* Full-width sections: use 100% instead of 100vw to avoid overflow */
-  .flavor-about-full {
-    width: 100%;
-    left: 0;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
   .flavor-about-hero {
     min-height: 40vh;
   }
@@ -1753,12 +1752,12 @@ body:has(.flavor-about-page) {
   .flavor-about-team[data-team-count="4"] .flavor-about-team-card,
   .flavor-about-team[data-team-count="5"] .flavor-about-team-card,
   .flavor-about-team-slider--active .flavor-about-team-card {
-    flex: 0 0 80%;
+    flex: 0 0 75vw;
     max-width: 280px;
   }
   .flavor-about-team-track {
     justify-content: flex-start !important;
-    padding: 0 10%;
+    padding: 0 calc((100vw - 75vw) / 2);
   }
   .flavor-about-team-card {
     scroll-snap-align: center;
