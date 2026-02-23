@@ -1239,18 +1239,6 @@ article.flavor-about-page:hover {
   padding: 0;
 }
 
-/* Make container full-width for about page so breakout works cleanly */
-.site-content:has(.flavor-about-page) > .container {
-  width: 100%;
-  max-width: 100%;
-  display: block;
-}
-
-/* Prevent horizontal overflow from full-width breakout */
-body:has(.flavor-about-page) {
-  overflow-x: hidden;
-}
-
 /* Full-width breakout from .container */
 .flavor-about-full {
   width: 100vw;
@@ -1259,7 +1247,6 @@ body:has(.flavor-about-page) {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  overflow: hidden;
 }
 
 /* ── Hero Banner ── */
@@ -1421,57 +1408,38 @@ body:has(.flavor-about-page) {
   font-family: var(--font-main);
 }
 
-/* ── Team Slider ── */
+/* ── Team (slider) ── */
 .flavor-about-team {
-  padding: 3.5rem 0;
+  padding: 3.5rem 1.5rem;
   max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
-.flavor-about-team .flavor-about-section-title {
-  padding: 0 1.5rem;
+.flavor-about-team-slider-wrap {
+  position: relative;
 }
 .flavor-about-team-slider {
-  position: relative;
-  overflow: visible;
-  padding: 0 1.5rem;
-}
-.flavor-about-team-slider--active {
-  overflow: hidden;
-}
-.flavor-about-team-track {
   display: flex;
   gap: 1.5rem;
-  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.5rem 0;
 }
-
-/* ≤5 items: fill available space, no scroll */
-.flavor-about-team:not([data-team-count]),
-.flavor-about-team[data-team-count="1"] .flavor-about-team-track,
-.flavor-about-team[data-team-count="2"] .flavor-about-team-track,
-.flavor-about-team[data-team-count="3"] .flavor-about-team-track,
-.flavor-about-team[data-team-count="4"] .flavor-about-team-track,
-.flavor-about-team[data-team-count="5"] .flavor-about-team-track {
-  justify-content: center;
+.flavor-about-team-slider::-webkit-scrollbar {
+  display: none;
 }
-.flavor-about-team[data-team-count="1"] .flavor-about-team-card { flex: 0 0 60%; max-width: 340px; }
-.flavor-about-team[data-team-count="2"] .flavor-about-team-card { flex: 0 0 calc(50% - 0.75rem); max-width: 320px; }
-.flavor-about-team[data-team-count="3"] .flavor-about-team-card { flex: 0 0 calc(33.333% - 1rem); }
-.flavor-about-team[data-team-count="4"] .flavor-about-team-card { flex: 0 0 calc(25% - 1.125rem); }
-.flavor-about-team[data-team-count="5"] .flavor-about-team-card { flex: 0 0 calc(20% - 1.2rem); }
-
-/* >5 items: fixed card width for slider */
-.flavor-about-team-slider--active .flavor-about-team-card {
-  flex: 0 0 calc(20% - 1.2rem);
-}
-
 .flavor-about-team-card {
+  flex: 0 0 calc(25% - 1.125rem);
+  min-width: 0;
+  scroll-snap-align: start;
   text-align: center;
   background: var(--color-surface, #fff);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 2rem 1.5rem 1.5rem;
   box-shadow: var(--shadow-sm);
-  min-width: 0;
   transition:
     box-shadow var(--transition),
     transform var(--transition);
@@ -1480,38 +1448,38 @@ body:has(.flavor-about-page) {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
-
-/* Arrows */
-.flavor-about-team-arrow {
+/* Nav buttons */
+.flavor-about-team-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
   width: 40px;
   height: 40px;
-  border: 1px solid var(--color-border);
   border-radius: 50%;
+  border: 1px solid var(--color-border);
   background: var(--color-surface, #fff);
+  box-shadow: var(--shadow-sm);
   color: var(--color-text);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition), background var(--transition), opacity var(--transition);
-  opacity: 0;
-  pointer-events: none;
+  transition: box-shadow var(--transition), opacity var(--transition);
 }
-.flavor-about-team-slider--active .flavor-about-team-arrow {
-  opacity: 1;
-  pointer-events: auto;
-}
-.flavor-about-team-arrow:hover {
+.flavor-about-team-nav:hover {
   box-shadow: var(--shadow-md);
-  background: var(--color-accent-light);
 }
-.flavor-about-team-arrow--prev { left: 0; }
-.flavor-about-team-arrow--next { right: 0; }
+.flavor-about-team-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.flavor-about-team-prev {
+  left: -20px;
+}
+.flavor-about-team-next {
+  right: -20px;
+}
 .flavor-about-team-photo {
   width: 120px;
   height: 120px;
@@ -1699,75 +1667,22 @@ body:has(.flavor-about-page) {
   .flavor-about-hero {
     min-height: 40vh;
   }
-
-  .flavor-about-section-title {
-    font-size: 1.3rem;
-    padding: 0 1rem;
-  }
-
-  .flavor-about-values,
-  .flavor-about-team,
-  .flavor-about-testimonials,
-  .flavor-about-timeline {
-    padding: 2.5rem 1rem;
-  }
-
-  .flavor-about-content {
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-
   .flavor-about-values-grid,
   .flavor-about-testimonials-grid {
     grid-template-columns: 1fr;
   }
-
-  .flavor-about-stats {
-    padding: 2rem 1rem;
+  .flavor-about-team-card {
+    flex: 0 0 85%;
+  }
+  .flavor-about-team-prev {
+    left: 4px;
+  }
+  .flavor-about-team-next {
+    right: 4px;
   }
   .flavor-about-stats-grid {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    gap: 1.5rem 2rem;
   }
-  .flavor-about-stat-number {
-    font-size: 2rem;
-  }
-  .flavor-about-stat-suffix {
-    font-size: 1.3rem;
-  }
-
-  /* Team slider: 1 card on mobile, swipe */
-  .flavor-about-team .flavor-about-section-title {
-    padding: 0;
-  }
-  .flavor-about-team-slider,
-  .flavor-about-team-slider.flavor-about-team-slider--active {
-    overflow: visible !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 0 0 0.5rem;
-  }
-  .flavor-about-team-slider::-webkit-scrollbar { display: none; }
-  .flavor-about-team[data-team-count="1"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="2"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="3"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="4"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="5"] .flavor-about-team-card,
-  .flavor-about-team-slider--active .flavor-about-team-card {
-    flex: 0 0 75vw;
-    max-width: 280px;
-  }
-  .flavor-about-team-track {
-    justify-content: flex-start !important;
-    padding: 0 calc((100vw - 75vw) / 2);
-  }
-  .flavor-about-team-card {
-    scroll-snap-align: center;
-  }
-  .flavor-about-team-arrow { display: none !important; }
 
   /* Timeline → single column */
   .flavor-about-timeline-track::before {
