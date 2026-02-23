@@ -103,6 +103,616 @@ class Flavor_Heading_Control extends WP_Customize_Control {
 }
 
 /**
+ * Kontrolka Customizer: sortowalna lista kart z opcjami wewnątrz (drag & drop + expand)
+ */
+class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
+    public $type = 'fc_sortable_cards';
+    public $cards = array();
+
+    public function enqueue() {
+        wp_enqueue_script( 'jquery-ui-sortable' );
+    }
+
+    public function render_content() {
+        $order = $this->value();
+        $order_keys = array_filter( array_map( 'trim', explode( ',', $order ) ) );
+
+        // Upewnij się, że wszystkie karty są w liście
+        $all_keys = array_keys( $this->cards );
+        foreach ( $all_keys as $k ) {
+            if ( ! in_array( $k, $order_keys, true ) ) {
+                $order_keys[] = $k;
+            }
+        }
+
+        // CSS — render only once
+        static $css_rendered = false;
+        if ( ! $css_rendered ) {
+            $css_rendered = true;
+            ?>
+            <style>
+            .fc-sortable-cards {
+                list-style: none;
+                margin: 8px 0 0;
+                padding: 0;
+            }
+            .fc-sortable-card {
+                margin: 0 0 4px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                user-select: none;
+                transition: box-shadow .15s, border-color .15s;
+            }
+            .fc-sortable-card:hover {
+                border-color: #0073aa;
+                box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            }
+            .fc-sortable-card-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 12px;
+                cursor: pointer;
+            }
+            .fc-sortable-handle {
+                color: #999;
+                font-size: 16px;
+                line-height: 1;
+                flex-shrink: 0;
+                cursor: grab;
+            }
+            .fc-sortable-card:active .fc-sortable-handle {
+                cursor: grabbing;
+            }
+            .fc-sortable-icon {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                color: #555;
+            }
+            .fc-sortable-icon svg {
+                display: block;
+            }
+            .fc-sortable-label {
+                font-size: 13px;
+                font-weight: 500;
+                color: #333;
+                flex: 1;
+            }
+            .fc-sortable-arrow {
+                font-size: 10px;
+                color: #999;
+                transition: transform .2s;
+                flex-shrink: 0;
+            }
+            .fc-sortable-card.fc-card-open .fc-sortable-arrow {
+                transform: rotate(90deg);
+            }
+            .fc-sortable-card-body {
+                display: none;
+                padding: 0 12px 12px;
+                border-top: 1px solid #eee;
+            }
+            .fc-sortable-card.fc-card-open .fc-sortable-card-body {
+                display: block;
+            }
+            .fc-sortable-card-body .fc-card-field {
+                margin: 8px 0 0;
+            }
+            .fc-sortable-card-body .fc-card-field label {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: #444;
+                cursor: pointer;
+            }
+            .fc-sortable-card-body .fc-card-field label input[type="checkbox"] {
+                margin: 0;
+            }
+            .fc-sortable-placeholder {
+                height: 42px;
+                margin: 0 0 4px;
+                border: 2px dashed #0073aa;
+                border-radius: 4px;
+                background: #f0f6fc;
+            }
+            .ui-sortable-helper {
+                box-shadow: 0 3px 8px rgba(0,0,0,.15);
+                border-color: #0073aa;
+            }
+            </style>
+            <?php
+        }
+        ?>
+        <?php if ( $this->label ) : ?>
+            <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+        <?php endif; ?>
+        <?php if ( $this->description ) : ?>
+            <span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
+        <?php endif; ?>
+
+        <ul class="fc-sortable-cards" data-setting="<?php echo esc_attr( $this->id ); ?>">
+            <?php foreach ( $order_keys as $key ) :
+                if ( ! isset( $this->cards[ $key ] ) ) continue;
+                $card = $this->cards[ $key ];
+            ?>
+            <li class="fc-sortable-card" data-key="<?php echo esc_attr( $key ); ?>">
+                <div class="fc-sortable-card-header">
+                    <span class="fc-sortable-handle">&#9776;</span>
+                    <?php if ( ! empty( $card['icon'] ) ) : ?>
+                        <span class="fc-sortable-icon"><?php echo $card['icon']; ?></span>
+                    <?php endif; ?>
+                    <span class="fc-sortable-label"><?php echo esc_html( $card['label'] ); ?></span>
+                    <span class="fc-sortable-arrow">&#9654;</span>
+                </div>
+                <div class="fc-sortable-card-body">
+                    <?php
+                    if ( ! empty( $card['fields'] ) && is_callable( $card['fields'] ) ) {
+                        call_user_func( $card['fields'] );
+                    }
+                    ?>
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( $order ); ?>" />
+        <script>
+        (function($){
+            var $cards = $('.fc-sortable-cards');
+            $cards.on('click', '.fc-sortable-card-header', function(e) {
+                if ($(e.target).closest('.fc-sortable-handle').length) return;
+                $(this).closest('.fc-sortable-card').toggleClass('fc-card-open');
+            });
+        })(jQuery);
+        </script>
+        <?php
+    }
+}
+
+/**
+ * Kontrolka Customizer: godziny otwarcia (repeater z dniami + od/do)
+ *
+ * Wartość: JSON — [{"day_from":"1","day_to":"5","from":"08:00","to":"16:00"}, ...]
+ * Dni: 1=Pon, 2=Wt, 3=Śr, 4=Czw, 5=Pt, 6=Sob, 7=Ndz
+ */
+class Flavor_Hours_Control extends WP_Customize_Control {
+    public $type = 'fc_hours';
+
+    private static function get_day_options() {
+        return array(
+            '1' => fc__( 'day_mon', 'admin' ),
+            '2' => fc__( 'day_tue', 'admin' ),
+            '3' => fc__( 'day_wed', 'admin' ),
+            '4' => fc__( 'day_thu', 'admin' ),
+            '5' => fc__( 'day_fri', 'admin' ),
+            '6' => fc__( 'day_sat', 'admin' ),
+            '7' => fc__( 'day_sun', 'admin' ),
+        );
+    }
+
+    private static function render_day_select( $class, $selected ) {
+        $days = self::get_day_options();
+        echo '<select class="' . esc_attr( $class ) . '">';
+        foreach ( $days as $val => $label ) {
+            echo '<option value="' . esc_attr( $val ) . '"' . selected( $selected, $val, false ) . '>' . esc_html( $label ) . '</option>';
+        }
+        echo '</select>';
+    }
+
+    public function render_content() {
+        $value = $this->value();
+        $rows  = json_decode( $value, true );
+        if ( ! is_array( $rows ) ) {
+            $rows = array();
+        }
+
+        $days_opts = self::get_day_options();
+
+        // CSS
+        static $hours_css = false;
+        if ( ! $hours_css ) {
+            $hours_css = true;
+            ?>
+            <style>
+            .fc-hours-rows { margin: 6px 0 0; }
+            .fc-hours-row {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto;
+                gap: 4px;
+                align-items: center;
+                margin: 0 0 6px;
+                padding: 8px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            .fc-hours-row-top {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                margin-bottom: 4px;
+            }
+            .fc-hours-row-top select {
+                flex: 1;
+                padding: 3px 4px;
+                font-size: 12px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+            .fc-hours-row-bottom {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .fc-hours-row-bottom input[type="time"] {
+                flex: 1;
+                padding: 3px 4px;
+                font-size: 12px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+            .fc-hours-sep {
+                font-size: 12px;
+                color: #888;
+                flex-shrink: 0;
+            }
+            .fc-hours-remove {
+                background: none;
+                border: none;
+                color: #a00;
+                cursor: pointer;
+                font-size: 18px;
+                line-height: 1;
+                padding: 0 4px;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            .fc-hours-remove:hover { color: #dc3232; }
+            .fc-hours-add {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 6px 12px;
+                font-size: 12px;
+                background: #f0f0f1;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                cursor: pointer;
+                color: #2271b1;
+            }
+            .fc-hours-add:hover {
+                background: #e5e5e6;
+                border-color: #999;
+            }
+            </style>
+            <?php
+        }
+
+        $ctrl_id = esc_attr( $this->id );
+
+        // Build JS days map
+        $js_days = array();
+        foreach ( $days_opts as $v => $l ) {
+            $js_days[] = '{v:"' . esc_js( $v ) . '",l:"' . esc_js( $l ) . '"}';
+        }
+        $js_days_str = '[' . implode( ',', $js_days ) . ']';
+        ?>
+        <?php if ( $this->label ) : ?>
+            <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+        <?php endif; ?>
+        <?php if ( $this->description ) : ?>
+            <span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
+        <?php endif; ?>
+
+        <div class="fc-hours-wrap" id="fc-hours-<?php echo $ctrl_id; ?>">
+            <div class="fc-hours-rows">
+                <?php foreach ( $rows as $row ) : ?>
+                <div class="fc-hours-row">
+                    <div class="fc-hours-row-top">
+                        <?php self::render_day_select( 'fc-hours-day-from', $row['day_from'] ?? '1' ); ?>
+                        <span class="fc-hours-sep">&ndash;</span>
+                        <?php self::render_day_select( 'fc-hours-day-to', $row['day_to'] ?? '5' ); ?>
+                        <button type="button" class="fc-hours-remove" title="<?php echo esc_attr( fc__( 'cust_hours_remove', 'admin' ) ); ?>">&times;</button>
+                    </div>
+                    <div class="fc-hours-row-bottom">
+                        <input type="time" class="fc-hours-from" value="<?php echo esc_attr( $row['from'] ?? '' ); ?>">
+                        <span class="fc-hours-sep">&ndash;</span>
+                        <input type="time" class="fc-hours-to" value="<?php echo esc_attr( $row['to'] ?? '' ); ?>">
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <button type="button" class="fc-hours-add">+ <?php fc_e( 'cust_hours_add', 'admin' ); ?></button>
+        </div>
+
+        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( $value ); ?>" />
+
+        <script>
+        (function(){
+            var wrap = document.getElementById('fc-hours-<?php echo $ctrl_id; ?>');
+            if (!wrap) return;
+            var container = wrap.querySelector('.fc-hours-rows');
+            var hidden    = wrap.parentElement.querySelector('input[type="hidden"][data-customize-setting-link]')
+                         || wrap.nextElementSibling;
+            var DAYS = <?php echo $js_days_str; ?>;
+
+            function serialize() {
+                var rows = [];
+                container.querySelectorAll('.fc-hours-row').forEach(function(row) {
+                    var dayFrom = row.querySelector('.fc-hours-day-from').value;
+                    var dayTo   = row.querySelector('.fc-hours-day-to').value;
+                    var from    = row.querySelector('.fc-hours-from').value;
+                    var to      = row.querySelector('.fc-hours-to').value;
+                    rows.push({ day_from: dayFrom, day_to: dayTo, from: from, to: to });
+                });
+                var json = JSON.stringify(rows);
+                hidden.value = json;
+                hidden.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            function buildSelect(cls, selected) {
+                var html = '<select class="' + cls + '">';
+                DAYS.forEach(function(d) {
+                    html += '<option value="' + d.v + '"' + (d.v === selected ? ' selected' : '') + '>' + d.l + '</option>';
+                });
+                html += '</select>';
+                return html;
+            }
+
+            function createRow(dayFrom, dayTo, from, to) {
+                var row = document.createElement('div');
+                row.className = 'fc-hours-row';
+                row.innerHTML =
+                    '<div class="fc-hours-row-top">' +
+                        buildSelect('fc-hours-day-from', dayFrom || '1') +
+                        '<span class="fc-hours-sep">&ndash;</span>' +
+                        buildSelect('fc-hours-day-to', dayTo || '5') +
+                        '<button type="button" class="fc-hours-remove" title="<?php echo esc_js( fc__( 'cust_hours_remove', 'admin' ) ); ?>">&times;</button>' +
+                    '</div>' +
+                    '<div class="fc-hours-row-bottom">' +
+                        '<input type="time" class="fc-hours-from" value="' + (from||'') + '">' +
+                        '<span class="fc-hours-sep">&ndash;</span>' +
+                        '<input type="time" class="fc-hours-to" value="' + (to||'') + '">' +
+                    '</div>';
+
+                bindRow(row);
+                return row;
+            }
+
+            function bindRow(row) {
+                row.querySelectorAll('select, input').forEach(function(el) {
+                    el.addEventListener('change', serialize);
+                    el.addEventListener('input', serialize);
+                });
+                row.querySelector('.fc-hours-remove').addEventListener('click', function() {
+                    row.remove();
+                    serialize();
+                });
+            }
+
+            // Bind existing rows
+            container.querySelectorAll('.fc-hours-row').forEach(bindRow);
+
+            // Add button
+            wrap.querySelector('.fc-hours-add').addEventListener('click', function() {
+                container.appendChild(createRow('1', '5', '', ''));
+                serialize();
+            });
+        })();
+        </script>
+        <?php
+    }
+
+    /**
+     * Render the hours repeater inline (no WP_Customize_Control instance needed).
+     *
+     * Used to embed the repeater inside Flavor_Sortable_Cards_Control cards.
+     *
+     * @param string $setting_id  The Customizer setting ID (e.g. 'flavor_contact_hours').
+     */
+    public static function render_inline( $setting_id ) {
+        $value = get_theme_mod( $setting_id, '' );
+        $rows  = json_decode( $value, true );
+        if ( ! is_array( $rows ) ) {
+            $rows = array();
+        }
+
+        $days_opts = self::get_day_options();
+
+        // CSS — reuse the same styles as render_content()
+        static $hours_css_inline = false;
+        if ( ! $hours_css_inline ) {
+            $hours_css_inline = true;
+            ?>
+            <style>
+            .fc-hours-rows { margin: 6px 0 0; }
+            .fc-hours-row {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto;
+                gap: 4px;
+                align-items: center;
+                margin: 0 0 6px;
+                padding: 8px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            .fc-hours-row-top {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                margin-bottom: 4px;
+            }
+            .fc-hours-row-top select {
+                flex: 1;
+                padding: 3px 4px;
+                font-size: 12px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+            .fc-hours-row-bottom {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .fc-hours-row-bottom input[type="time"] {
+                flex: 1;
+                padding: 3px 4px;
+                font-size: 12px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+            .fc-hours-sep {
+                font-size: 12px;
+                color: #888;
+                flex-shrink: 0;
+            }
+            .fc-hours-remove {
+                background: none;
+                border: none;
+                color: #a00;
+                cursor: pointer;
+                font-size: 18px;
+                line-height: 1;
+                padding: 0 4px;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            .fc-hours-remove:hover { color: #dc3232; }
+            .fc-hours-add {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 6px 12px;
+                font-size: 12px;
+                background: #f0f0f1;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                cursor: pointer;
+                color: #2271b1;
+            }
+            .fc-hours-add:hover {
+                background: #e5e5e6;
+                border-color: #999;
+            }
+            </style>
+            <?php
+        }
+
+        $ctrl_id = esc_attr( $setting_id );
+
+        // Build JS days map
+        $js_days = array();
+        foreach ( $days_opts as $v => $l ) {
+            $js_days[] = '{v:"' . esc_js( $v ) . '",l:"' . esc_js( $l ) . '"}';
+        }
+        $js_days_str = '[' . implode( ',', $js_days ) . ']';
+        ?>
+        <div class="fc-hours-wrap" id="fc-hours-<?php echo $ctrl_id; ?>">
+            <div class="fc-hours-rows">
+                <?php foreach ( $rows as $row ) : ?>
+                <div class="fc-hours-row">
+                    <div class="fc-hours-row-top">
+                        <?php self::render_day_select( 'fc-hours-day-from', $row['day_from'] ?? '1' ); ?>
+                        <span class="fc-hours-sep">&ndash;</span>
+                        <?php self::render_day_select( 'fc-hours-day-to', $row['day_to'] ?? '5' ); ?>
+                        <button type="button" class="fc-hours-remove" title="<?php echo esc_attr( fc__( 'cust_hours_remove', 'admin' ) ); ?>">&times;</button>
+                    </div>
+                    <div class="fc-hours-row-bottom">
+                        <input type="time" class="fc-hours-from" value="<?php echo esc_attr( $row['from'] ?? '' ); ?>">
+                        <span class="fc-hours-sep">&ndash;</span>
+                        <input type="time" class="fc-hours-to" value="<?php echo esc_attr( $row['to'] ?? '' ); ?>">
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <button type="button" class="fc-hours-add">+ <?php fc_e( 'cust_hours_add', 'admin' ); ?></button>
+            <input type="hidden" data-customize-setting-link="<?php echo esc_attr( $setting_id ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+        </div>
+
+        <script>
+        (function(){
+            var wrap = document.getElementById('fc-hours-<?php echo $ctrl_id; ?>');
+            if (!wrap) return;
+            var container = wrap.querySelector('.fc-hours-rows');
+            var hidden    = wrap.querySelector('input[type="hidden"][data-customize-setting-link]');
+            var DAYS = <?php echo $js_days_str; ?>;
+
+            function serialize() {
+                var rows = [];
+                container.querySelectorAll('.fc-hours-row').forEach(function(row) {
+                    var dayFrom = row.querySelector('.fc-hours-day-from').value;
+                    var dayTo   = row.querySelector('.fc-hours-day-to').value;
+                    var from    = row.querySelector('.fc-hours-from').value;
+                    var to      = row.querySelector('.fc-hours-to').value;
+                    rows.push({ day_from: dayFrom, day_to: dayTo, from: from, to: to });
+                });
+                var json = JSON.stringify(rows);
+                hidden.value = json;
+                hidden.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            function buildSelect(cls, selected) {
+                var html = '<select class="' + cls + '">';
+                DAYS.forEach(function(d) {
+                    html += '<option value="' + d.v + '"' + (d.v === selected ? ' selected' : '') + '>' + d.l + '</option>';
+                });
+                html += '</select>';
+                return html;
+            }
+
+            function createRow(dayFrom, dayTo, from, to) {
+                var row = document.createElement('div');
+                row.className = 'fc-hours-row';
+                row.innerHTML =
+                    '<div class="fc-hours-row-top">' +
+                        buildSelect('fc-hours-day-from', dayFrom || '1') +
+                        '<span class="fc-hours-sep">&ndash;</span>' +
+                        buildSelect('fc-hours-day-to', dayTo || '5') +
+                        '<button type="button" class="fc-hours-remove" title="<?php echo esc_js( fc__( 'cust_hours_remove', 'admin' ) ); ?>">&times;</button>' +
+                    '</div>' +
+                    '<div class="fc-hours-row-bottom">' +
+                        '<input type="time" class="fc-hours-from" value="' + (from||'') + '">' +
+                        '<span class="fc-hours-sep">&ndash;</span>' +
+                        '<input type="time" class="fc-hours-to" value="' + (to||'') + '">' +
+                    '</div>';
+
+                bindRow(row);
+                return row;
+            }
+
+            function bindRow(row) {
+                row.querySelectorAll('select, input').forEach(function(el) {
+                    el.addEventListener('change', serialize);
+                    el.addEventListener('input', serialize);
+                });
+                row.querySelector('.fc-hours-remove').addEventListener('click', function() {
+                    row.remove();
+                    serialize();
+                });
+            }
+
+            // Bind existing rows
+            container.querySelectorAll('.fc-hours-row').forEach(bindRow);
+
+            // Add button
+            wrap.querySelector('.fc-hours-add').addEventListener('click', function() {
+                container.appendChild(createRow('1', '5', '', ''));
+                serialize();
+            });
+        })();
+        </script>
+        <?php
+    }
+}
+
+/**
  * Menu control — shows WP pages as checkboxes + custom links with drag & drop ordering.
  */
 class Flavor_Menu_Control extends WP_Customize_Control {
@@ -117,7 +727,7 @@ class Flavor_Menu_Control extends WP_Customize_Control {
         $pages = get_pages( array( 'sort_column' => 'menu_order,post_title', 'post_status' => 'publish' ) );
         // Exclude FC plugin pages (they have dedicated special types or don't belong in nav)
         $fc_page_ids = array();
-        foreach ( array( 'fc_page_sklep', 'fc_page_koszyk', 'fc_page_moje-konto', 'fc_page_zamowienie', 'fc_page_podziekowanie', 'fc_page_porownanie', 'fc_page_wishlist', 'fc_page_platnosc_nieudana' ) as $opt ) {
+        foreach ( array( 'fc_page_sklep', 'fc_page_koszyk', 'fc_page_moje-konto', 'fc_page_zamowienie', 'fc_page_podziekowanie', 'fc_page_porownanie', 'fc_page_wishlist', 'fc_page_platnosc_nieudana', 'fc_page_o-nas', 'fc_page_kontakt' ) as $opt ) {
             $pid = get_option( $opt );
             if ( $pid ) $fc_page_ids[] = (int) $pid;
         }
@@ -184,9 +794,17 @@ class Flavor_Menu_Control extends WP_Customize_Control {
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                         <?php echo esc_html( fc__( 'cust_wishlist', 'admin' ) ); ?>
                     </button>
-                    <button type="button" class="button fc-menu-add-special" data-special="fc_compare" style="width:100%;text-align:left;">
+                    <button type="button" class="button fc-menu-add-special" data-special="fc_compare" style="width:100%;margin-bottom:4px;text-align:left;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
                         <?php echo esc_html( fc__( 'cust_compare', 'admin' ) ); ?>
+                    </button>
+                    <button type="button" class="button fc-menu-add-special" data-special="fc_about" style="width:100%;margin-bottom:4px;text-align:left;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <?php echo esc_html( fc__( 'cust_about', 'admin' ) ); ?>
+                    </button>
+                    <button type="button" class="button fc-menu-add-special" data-special="fc_contact" style="width:100%;text-align:left;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <?php echo esc_html( fc__( 'cust_contact', 'admin' ) ); ?>
                     </button>
                 </div>
             </details>
@@ -684,7 +1302,7 @@ function flavor_sanitize_menu_items( $input ) {
     foreach ( $input as $item ) {
         if ( ! is_array( $item ) ) continue;
         $type = sanitize_key( $item['type'] ?? 'custom' );
-        if ( ! in_array( $type, array( 'page', 'custom', 'fc_shop', 'fc_cart', 'fc_account', 'fc_wishlist', 'fc_compare' ), true ) ) continue;
+        if ( ! in_array( $type, array( 'page', 'custom', 'fc_shop', 'fc_cart', 'fc_account', 'fc_wishlist', 'fc_compare', 'fc_about', 'fc_contact' ), true ) ) continue;
 
         $clean[] = array(
             'type'  => $type,
@@ -732,7 +1350,7 @@ function flavor_appearance_customizer_scripts() {
         'color_size', 'text_style', 'image_style', 'image_size',
         'style', 'inputs', 'slider', 'step', 'html_content',
         'products_count', 'image_url', 'text', 'button_text', 'button_url', 'bg_color',
-        'type_cart', 'type_account', 'type_wishlist', 'type_compare', 'type_shop',
+        'type_cart', 'type_account', 'type_wishlist', 'type_compare', 'type_shop', 'type_about', 'type_contact',
         'remove', 'shop_display', 'shop_text', 'shop_icon',
         'cart_action', 'open_minicart', 'go_to_cart', 'show_total',
         'all_pages_added',
@@ -747,6 +1365,8 @@ function flavor_appearance_customizer_scripts() {
     $i18n['wishlist']   = fc__( 'cust_wishlist', 'admin' );
     $i18n['compare']    = fc__( 'cust_compare', 'admin' );
     $i18n['shop']       = fc__( 'cust_shop', 'admin' );
+    $i18n['about']      = fc__( 'cust_about', 'admin' );
+    $i18n['contact']    = fc__( 'cust_contact', 'admin' );
 
     wp_localize_script( 'flavor-appearance-customizer', 'flavorAppI18n', $i18n );
 }
