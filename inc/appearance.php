@@ -222,6 +222,105 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                 box-shadow: 0 3px 8px rgba(0,0,0,.15);
                 border-color: #0073aa;
             }
+            /* ── Social sortable items ── */
+            .fc-social-sortable {
+                list-style: none;
+                margin: 8px 0 0;
+                padding: 0;
+            }
+            .fc-social-item {
+                margin: 0 0 3px;
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 3px;
+                transition: border-color .15s, opacity .15s;
+            }
+            .fc-social-item:hover {
+                border-color: #0073aa;
+            }
+            .fc-social-item.fc-social-disabled {
+                opacity: .5;
+            }
+            .fc-social-item.fc-social-disabled .fc-social-item-url {
+                display: none;
+            }
+            .fc-social-item-header {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 8px;
+            }
+            .fc-social-handle {
+                color: #bbb;
+                font-size: 13px;
+                cursor: grab;
+                flex-shrink: 0;
+            }
+            .fc-social-item:active .fc-social-handle {
+                cursor: grabbing;
+            }
+            .fc-social-item-icon {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                color: #555;
+            }
+            .fc-social-item-label {
+                font-size: 12px;
+                font-weight: 500;
+                color: #333;
+                flex: 1;
+            }
+            /* Toggle switch */
+            .fc-social-toggle {
+                position: relative;
+                display: inline-block;
+                width: 30px;
+                height: 16px;
+                flex-shrink: 0;
+            }
+            .fc-social-toggle input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                position: absolute;
+            }
+            .fc-social-toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                inset: 0;
+                background: #ccc;
+                border-radius: 16px;
+                transition: background .2s;
+            }
+            .fc-social-toggle-slider::before {
+                content: '';
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                left: 2px;
+                bottom: 2px;
+                background: #fff;
+                border-radius: 50%;
+                transition: transform .2s;
+            }
+            .fc-social-toggle input:checked + .fc-social-toggle-slider {
+                background: #0073aa;
+            }
+            .fc-social-toggle input:checked + .fc-social-toggle-slider::before {
+                transform: translateX(14px);
+            }
+            .fc-social-item-url {
+                padding: 0 8px 6px;
+            }
+            .fc-social-sortable .ui-sortable-placeholder {
+                height: 32px;
+                margin: 0 0 3px;
+                border: 2px dashed #0073aa;
+                border-radius: 3px;
+                background: #f0f6fc;
+                visibility: visible !important;
+            }
             </style>
             <?php
         }

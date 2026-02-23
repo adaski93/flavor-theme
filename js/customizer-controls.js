@@ -257,5 +257,55 @@
         setTimeout(initSortable, 500);
       }
     });
+
+    /* ── Sortowalne ikonki social media (drag & drop + toggle) ── */
+    function initSocialSortable() {
+      var $list = $(".fc-social-sortable");
+      if (!$list.length) return;
+
+      function updateSocialOrder() {
+        var order = $list
+          .find(".fc-social-item")
+          .map(function () {
+            var key = $(this).data("key");
+            var enabled = $(this).find(".fc-social-enabled").is(":checked")
+              ? "1"
+              : "0";
+            return key + ":" + enabled;
+          })
+          .get()
+          .join(",");
+
+        wp.customize("flavor_social_order").set(order);
+      }
+
+      $list.sortable({
+        handle: ".fc-social-handle",
+        axis: "y",
+        containment: "parent",
+        placeholder: "ui-sortable-placeholder",
+        tolerance: "pointer",
+        update: function () {
+          updateSocialOrder();
+        },
+      });
+
+      $list.on("change", ".fc-social-enabled", function () {
+        var $item = $(this).closest(".fc-social-item");
+        if ($(this).is(":checked")) {
+          $item.removeClass("fc-social-disabled");
+        } else {
+          $item.addClass("fc-social-disabled");
+        }
+        updateSocialOrder();
+      });
+    }
+
+    // Init when the social card is opened (may be deferred)
+    $(document).on("click", ".fc-sortable-card-header", function () {
+      setTimeout(initSocialSortable, 100);
+    });
+    // Also try on load
+    setTimeout(initSocialSortable, 800);
   });
 })(jQuery);

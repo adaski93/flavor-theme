@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'FLAVOR_VERSION', '1.5.1' );
+define( 'FLAVOR_VERSION', '1.5.2' );
 
 /**
  * Fallback i18n helpers — used when Flavor Commerce plugin is not active.
