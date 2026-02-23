@@ -30,7 +30,7 @@ $page_title     = get_the_title();
 
     // ── Hero Banner ──
     if ( $section === 'hero' && $hero['image'] ) : ?>
-    <section class="flavor-about-hero flavor-about-full" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>')">
+    <section class="flavor-about-hero flavor-about-full" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>');background-position:<?php echo esc_attr( $hero['position'] ?? 'center center' ); ?>">
         <div class="flavor-about-hero-overlay">
             <div class="flavor-about-hero-inner">
                 <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>

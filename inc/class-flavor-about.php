@@ -78,6 +78,10 @@ class Flavor_About {
             'default'           => '',
             'sanitize_callback' => 'esc_url_raw',
         ) );
+        $wp_customize->add_setting( 'flavor_about_hero_image_position', array(
+            'default'           => 'center center',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
         $wp_customize->add_setting( 'flavor_about_hero_subtitle', array(
             'default'           => '',
             'sanitize_callback' => 'sanitize_text_field',
@@ -240,6 +244,7 @@ class Flavor_About {
 
     private static function render_hero_fields() {
         $image    = get_theme_mod( 'flavor_about_hero_image', '' );
+        $position = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
         $subtitle = get_theme_mod( 'flavor_about_hero_subtitle', '' );
         $uid      = 'fc-about-hero-' . wp_rand();
         ?>
@@ -257,6 +262,29 @@ class Flavor_About {
             <button type="button" class="fc-about-hero-remove" style="font-size:12px;padding:4px 10px;cursor:pointer;background:none;border:1px solid #c3c4c7;border-radius:3px;color:#a00;<?php echo $image ? '' : 'display:none'; ?>">
                 <?php echo esc_html( fc__( 'cust_about_hero_image_remove', 'admin' ) ); ?>
             </button>
+        </div>
+        <div class="fc-card-field" style="margin-top:8px">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_image_position', 'admin' ) ); ?>
+            </label>
+            <select data-customize-setting-link="flavor_about_hero_image_position" style="width:100%;box-sizing:border-box;font-size:12px">
+                <?php
+                $positions = array(
+                    'center top'    => fc__( 'cust_about_hero_pos_top', 'admin' ),
+                    'center center' => fc__( 'cust_about_hero_pos_center', 'admin' ),
+                    'center bottom' => fc__( 'cust_about_hero_pos_bottom', 'admin' ),
+                    'left top'      => fc__( 'cust_about_hero_pos_left_top', 'admin' ),
+                    'left center'   => fc__( 'cust_about_hero_pos_left_center', 'admin' ),
+                    'left bottom'   => fc__( 'cust_about_hero_pos_left_bottom', 'admin' ),
+                    'right top'     => fc__( 'cust_about_hero_pos_right_top', 'admin' ),
+                    'right center'  => fc__( 'cust_about_hero_pos_right_center', 'admin' ),
+                    'right bottom'  => fc__( 'cust_about_hero_pos_right_bottom', 'admin' ),
+                );
+                foreach ( $positions as $val => $label ) :
+                ?>
+                    <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $position, $val ); ?>><?php echo esc_html( $label ); ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="fc-card-field" style="margin-top:8px">
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
@@ -530,6 +558,7 @@ class Flavor_About {
     public static function get_hero() {
         return array(
             'image'    => get_theme_mod( 'flavor_about_hero_image', '' ),
+            'position' => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
             'subtitle' => get_theme_mod( 'flavor_about_hero_subtitle', '' ),
         );
     }
