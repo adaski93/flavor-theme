@@ -4,7 +4,7 @@ Theme URI: https://flavor-theme.dev
 Author: Developer
 Author URI: https://flavor-theme.dev
 Description: Prosty, elegancki motyw WordPress z delikatnymi kolorami i akcentami niebieskiego.
-Version: 1.4.2
+Version: 1.5.0
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -880,5 +880,330 @@ article.post:hover {
 @media (min-width: 769px) and (max-width: 1024px) {
   .container {
     width: 92%;
+  }
+}
+
+/* ===== Contact Page Template ===== */
+article.page.flavor-contact-page,
+article.flavor-contact-page {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+article.flavor-contact-page:hover {
+  box-shadow: none;
+}
+
+.flavor-contact-layout {
+  display: grid;
+  gap: 2rem;
+}
+.flavor-contact-layout.has-sidebar {
+  grid-template-columns: 1fr 360px;
+  align-items: start;
+}
+.flavor-contact-layout.no-sidebar {
+  grid-template-columns: 1fr;
+  max-width: 700px;
+}
+
+.flavor-contact-heading {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.flavor-contact-heading svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* ── Form ── */
+.flavor-contact-form-wrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-card-radius, var(--radius));
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.flavor-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.flavor-form-group {
+  margin-bottom: 1.25rem;
+}
+.flavor-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 0.4rem;
+}
+.flavor-form-group label .required {
+  color: var(--fc-danger, #e74c3c);
+}
+
+.flavor-contact-form input[type="text"],
+.flavor-contact-form input[type="email"],
+.flavor-contact-form textarea {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-input-radius, var(--radius));
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+  outline: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.flavor-contact-form input[type="text"]:focus,
+.flavor-contact-form input[type="email"]:focus,
+.flavor-contact-form textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+.flavor-contact-form textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.flavor-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.flavor-contact-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--fc-btn-radius, var(--radius));
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    transform 0.15s,
+    box-shadow var(--transition);
+  font-family: inherit;
+  min-height: 46px;
+  min-width: 160px;
+  justify-content: center;
+  letter-spacing: 0.01em;
+}
+.flavor-contact-submit:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.flavor-contact-submit:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.flavor-contact-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.flavor-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: flavor-spin 0.6s linear infinite;
+}
+@keyframes flavor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.flavor-contact-status {
+  margin-top: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--fc-input-radius, var(--radius));
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.flavor-contact-status.success {
+  background: #eafaf1;
+  color: var(--fc-success, #27ae60);
+  border: 1px solid #a3d9a5;
+}
+.flavor-contact-status.error {
+  background: #fdecea;
+  color: var(--fc-danger, #e74c3c);
+  border: 1px solid #f5c6cb;
+}
+
+/* ── Sidebar / Cards ── */
+.flavor-contact-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flavor-contact-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-card-radius, var(--radius));
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.flavor-contact-card-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-accent-light);
+}
+.flavor-contact-card-title svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.flavor-contact-company {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+.flavor-contact-address {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.35rem;
+}
+.flavor-contact-nip,
+.flavor-contact-crn {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.flavor-contact-crn {
+  margin-top: 0.15rem;
+}
+
+.flavor-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.flavor-contact-link:hover {
+  color: var(--color-accent);
+}
+.flavor-contact-link svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.flavor-contact-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.flavor-contact-hours-table tr + tr {
+  border-top: 1px solid var(--color-border, #eee);
+}
+.flavor-contact-hours-table td {
+  padding: 6px 0;
+  color: var(--color-text-light);
+  line-height: 1.5;
+}
+.flavor-hours-days {
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  padding-right: 12px !important;
+}
+.flavor-hours-time {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Social icons ── */
+.flavor-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.flavor-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--fc-btn-radius, var(--radius));
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  transition: all var(--transition);
+}
+.flavor-social-link:hover {
+  background: var(--color-accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Map ── */
+.flavor-contact-map {
+  margin-top: 2rem;
+  border-radius: var(--fc-card-radius, var(--radius));
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+.flavor-contact-map--inline {
+  margin-bottom: 1.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .flavor-contact-layout.has-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .flavor-form-row {
+    grid-template-columns: 1fr;
+  }
+  .flavor-contact-form-wrap {
+    padding: 1.25rem;
+  }
+  .flavor-contact-card {
+    padding: 1.25rem;
   }
 }

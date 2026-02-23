@@ -79,6 +79,11 @@ if ( $map_enabled ) {
 $socials = Flavor_Pages::get_social_links();
 
 $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( $show_phone && $phone ) || ( $show_email && $email ) || ( $show_hours && $hours ) || ( $show_tax_no && $nip ) || ( $show_crn && $crn );
+
+// Mapa — pozycja i ciemny motyw
+$map_position = get_theme_mod( 'flavor_contact_map_position', 'below_all' );
+$map_dark     = get_theme_mod( 'flavor_contact_map_dark', get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' );
+$map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
@@ -91,10 +96,22 @@ $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( 
     </div>
     <?php endif; ?>
 
+    <?php if ( $map_url && $map_position === 'above_all' ) : ?>
+    <div class="flavor-contact-map">
+        <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="350" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <?php endif; ?>
+
     <div class="flavor-contact-layout <?php echo $has_info ? 'has-sidebar' : 'no-sidebar'; ?>">
 
         <!-- ── Formularz kontaktowy ── -->
         <div class="flavor-contact-form-wrap">
+
+            <?php if ( $map_url && $map_position === 'above_form' ) : ?>
+            <div class="flavor-contact-map flavor-contact-map--inline">
+                <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="300" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <?php endif; ?>
             <h2 class="flavor-contact-heading">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <?php fc_e( 'contact_form_title' ); ?>
@@ -143,6 +160,12 @@ $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( 
 
                 <div id="flavor-contact-status" class="flavor-contact-status" style="display:none"></div>
             </form>
+
+            <?php if ( $map_url && $map_position === 'below_form' ) : ?>
+            <div class="flavor-contact-map flavor-contact-map--inline">
+                <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="300" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <?php endif; ?>
         </div>
 
         <?php if ( $has_info ) : ?>
@@ -255,19 +278,9 @@ $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( 
 
     </div><!-- .flavor-contact-layout -->
 
-    <?php if ( $map_url ) :
-        $map_dark = get_theme_mod( 'flavor_contact_map_dark', get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' );
-    ?>
+    <?php if ( $map_url && $map_position === 'below_all' ) : ?>
     <div class="flavor-contact-map">
-        <iframe
-            src="<?php echo esc_url( $map_url ); ?>"
-            width="100%"
-            height="350"
-            style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : ''; ?>"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+        <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="350" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <?php endif; ?>
 

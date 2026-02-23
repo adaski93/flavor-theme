@@ -71,7 +71,6 @@
        setting to update via the bindings above. */
   wp.customize("flavor_color_mode", function (setting) {
     setting.bind(function (mode) {
-      console.log("[flavor-preview] color mode changed to:", mode);
       /* palette colors will fire individually */
       /* Switch logos */
       var hasDark = $(".site-logo-dark").length > 0;
@@ -82,14 +81,12 @@
 
       /* Auto-sync dark map with color mode */
       var $mapIframe = $(".flavor-contact-map iframe");
-      console.log("[flavor-preview] map iframe found:", $mapIframe.length);
       if ($mapIframe.length) {
         var dark = mode === "dark";
         $mapIframe.css(
           "filter",
           dark ? "invert(90%) hue-rotate(180deg)" : "none"
         );
-        console.log("[flavor-preview] map filter set to:", dark ? "dark" : "none");
       }
     });
   });

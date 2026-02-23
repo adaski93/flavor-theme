@@ -246,6 +246,25 @@ class Flavor_Pages {
             'type'    => 'text',
         ) );
 
+        // Google Maps — pozycja mapy
+        $wp_customize->add_setting( 'flavor_contact_map_position', array(
+            'default'           => 'below_all',
+            'sanitize_callback' => function( $val ) {
+                return in_array( $val, array( 'below_all', 'above_all', 'above_form', 'below_form' ), true ) ? $val : 'below_all';
+            },
+        ) );
+        $wp_customize->add_control( 'flavor_contact_map_position', array(
+            'label'   => fc__( 'cust_contact_map_position', 'admin' ),
+            'section' => 'flavor_contact_info',
+            'type'    => 'select',
+            'choices' => array(
+                'below_all'  => fc__( 'cust_contact_map_pos_below_all', 'admin' ),
+                'above_all'  => fc__( 'cust_contact_map_pos_above_all', 'admin' ),
+                'above_form' => fc__( 'cust_contact_map_pos_above_form', 'admin' ),
+                'below_form' => fc__( 'cust_contact_map_pos_below_form', 'admin' ),
+            ),
+        ) );
+
         // Google Maps — ciemny motyw (domyślnie włączony gdy tryb dark)
         $wp_customize->add_setting( 'flavor_contact_map_dark', array(
             'default'           => ( get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' ),
