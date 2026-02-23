@@ -449,16 +449,6 @@ article.post:hover {
 }
 
 /* ===== Sidebar ===== */
-
-/* Layout: content + sidebar grid */
-.site-content .container.has-sidebar {
-  grid-template-columns: 1fr 300px;
-}
-.site-content .container.has-sidebar > .content-area {
-  min-width: 0; /* prevent grid overflow */
-}
-
-/* Widget base */
 .widget-area .widget {
   background-color: var(--color-surface);
   padding: 1.5rem;
@@ -497,236 +487,6 @@ article.post:hover {
 
 .widget a:hover {
   color: var(--color-accent);
-}
-
-/* ── Nested lists (subcategories) ── */
-.widget ul ul {
-  margin-left: 1rem;
-  margin-top: 0.25rem;
-}
-.widget li li:last-child {
-  border-bottom: none;
-}
-
-/* ── Item count badges ── */
-.widget li .count,
-.widget li .post-count {
-  float: right;
-  font-size: 0.8rem;
-  color: var(--color-text-light);
-  background: var(--color-accent-light);
-  padding: 0.1em 0.55em;
-  border-radius: 10px;
-  line-height: 1.6;
-}
-
-/* ── Widget select/dropdown ── */
-.widget select {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--fc-input-radius, var(--radius));
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-main);
-  font-size: 0.92rem;
-  cursor: pointer;
-  transition: border-color var(--transition);
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7c93' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  padding-right: 2rem;
-}
-.widget select:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-light);
-}
-
-/* ── Calendar widget ── */
-.widget_calendar table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  font-size: 0.88rem;
-}
-.widget_calendar caption {
-  font-weight: 700;
-  padding: 0.5rem 0;
-  color: var(--color-text);
-  font-size: 0.95rem;
-}
-.widget_calendar thead th {
-  font-weight: 600;
-  color: var(--color-text-light);
-  padding: 0.5rem 0.25rem;
-  border-bottom: 2px solid var(--color-accent-light);
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.widget_calendar tbody td {
-  padding: 0.4rem 0.25rem;
-  border: 1px solid var(--color-border);
-}
-.widget_calendar tbody td a {
-  display: block;
-  font-weight: 700;
-  color: var(--color-accent);
-  text-decoration: none;
-}
-.widget_calendar tbody td a:hover {
-  color: #fff;
-  background: var(--color-accent);
-  border-radius: 3px;
-}
-.widget_calendar tbody td#today {
-  background-color: var(--color-accent-light);
-  font-weight: 700;
-}
-.widget_calendar tfoot td {
-  padding: 0.5rem 0;
-  border: none;
-}
-.widget_calendar tfoot a {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-/* ── Tag Cloud ── */
-.widget_tag_cloud .tagcloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-.widget_tag_cloud .tagcloud a {
-  display: inline-block;
-  font-size: 0.82rem !important; /* override inline font-size */
-  padding: 0.3em 0.7em;
-  background: var(--color-accent-light);
-  color: var(--color-accent) !important;
-  border-radius: 20px;
-  border: 1px solid transparent;
-  transition: all var(--transition);
-  line-height: 1.4;
-  text-decoration: none;
-}
-.widget_tag_cloud .tagcloud a:hover {
-  background: var(--color-accent);
-  color: #fff !important;
-  border-color: var(--color-accent);
-}
-
-/* ── RSS Widget ── */
-.widget_rss ul {
-  list-style: none;
-}
-.widget_rss li {
-  padding: 0.75rem 0;
-}
-.widget_rss .rsswidget {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-.widget_rss .rss-date {
-  display: block;
-  font-size: 0.82rem;
-  color: var(--color-text-light);
-  margin-bottom: 0.25rem;
-}
-.widget_rss .rssSummary {
-  font-size: 0.9rem;
-  color: var(--color-text-light);
-  line-height: 1.5;
-}
-.widget_rss cite {
-  display: block;
-  font-style: normal;
-  font-size: 0.82rem;
-  color: var(--color-text-light);
-  margin-top: 0.25rem;
-}
-.widget_rss .rss-widget-icon {
-  display: none; /* hide default RSS icon */
-}
-
-/* ── Recent Comments ── */
-.widget_recent_comments li {
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-.widget_recent_comments li .comment-author-link {
-  font-weight: 600;
-}
-
-/* ── Text / Custom HTML ── */
-.widget_text .textwidget,
-.widget_custom_html .textwidget {
-  font-size: 0.95rem;
-  line-height: 1.7;
-}
-.widget_text .textwidget p:last-child,
-.widget_custom_html .textwidget p:last-child {
-  margin-bottom: 0;
-}
-.widget_text .textwidget img,
-.widget_custom_html .textwidget img {
-  border-radius: var(--radius);
-}
-
-/* ── Media widgets (Image / Video / Audio / Gallery) ── */
-.widget_media_image img {
-  border-radius: var(--radius);
-  width: 100%;
-  height: auto;
-}
-.widget_media_video .wp-video,
-.widget_media_audio .wp-audio-shortcode {
-  width: 100% !important;
-}
-.widget_media_gallery .gallery {
-  gap: 0.5rem;
-}
-.widget_media_gallery .gallery-item {
-  margin: 0 !important;
-}
-.widget_media_gallery .gallery-item img {
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border) !important;
-}
-
-/* ── Nav Menu Widget ── */
-.widget_nav_menu .menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.widget_nav_menu .sub-menu {
-  margin-left: 1rem;
-  margin-top: 0.25rem;
-}
-
-/* ── Block-based widgets (WP 5.8+) ── */
-.widget_block {
-  font-size: 0.95rem;
-}
-.widget_block > *:first-child {
-  margin-top: 0;
-}
-.widget_block > *:last-child {
-  margin-bottom: 0;
-}
-
-/* ── Responsive sidebar ── */
-@media (max-width: 768px) {
-  .site-content .container.has-sidebar {
-    grid-template-columns: 1fr;
-  }
-  .widget-area {
-    margin-top: 1rem;
-  }
 }
 
 /* ===== Footer ===== */
@@ -1461,8 +1221,32 @@ article.flavor-contact-page:hover {
    ABOUT PAGE TEMPLATE
    =================================================================== */
 
-.flavor-about-page {
-  overflow: hidden;
+/* Reset article card styling for about page */
+article.page.flavor-about-page,
+article.flavor-about-page {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+article.flavor-about-page:hover {
+  box-shadow: none;
+}
+
+/* Remove site-content padding when about page is present */
+.site-content:has(.flavor-about-page) {
+  padding: 0;
+}
+
+/* Full-width breakout from .container */
+.flavor-about-full {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 /* ── Hero Banner ── */
@@ -1480,7 +1264,11 @@ article.flavor-contact-page:hover {
 .flavor-about-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1492,21 +1280,24 @@ article.flavor-contact-page:hover {
   max-width: 720px;
 }
 .flavor-about-hero-title {
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 800;
   margin: 0 0 0.5rem;
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .flavor-about-hero-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.35rem);
   opacity: 0.9;
   margin: 0;
+  font-family: var(--font-main);
 }
 
 /* ── Section Title (shared) ── */
 .flavor-about-section-title {
   text-align: center;
+  font-family: var(--font-heading);
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 700;
   margin: 0 0 2rem;
@@ -1520,6 +1311,8 @@ article.flavor-contact-page:hover {
   padding: 0 1.5rem;
   font-size: 1.05rem;
   line-height: 1.8;
+  font-family: var(--font-main);
+  color: var(--color-text);
 }
 .flavor-about-content .entry-content > *:first-child {
   margin-top: 0;
@@ -1528,7 +1321,7 @@ article.flavor-contact-page:hover {
 /* ── Values / Mission ── */
 .flavor-about-values {
   padding: 3.5rem 1.5rem;
-  max-width: 1100px;
+  max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
 .flavor-about-values-grid {
@@ -1537,12 +1330,15 @@ article.flavor-contact-page:hover {
   gap: 1.5rem;
 }
 .flavor-about-value-card {
-  background: var(--color-bg-alt, #fff);
+  background: var(--color-surface, #fff);
   border: 1px solid var(--color-border);
-  border-radius: var(--fc-card-radius, var(--radius));
+  border-radius: var(--radius);
   padding: 2rem 1.5rem;
   text-align: center;
-  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
 }
 .flavor-about-value-card:hover {
   box-shadow: var(--shadow-md);
@@ -1552,27 +1348,29 @@ article.flavor-contact-page:hover {
   width: 48px;
   height: 48px;
   margin: 0 auto 1rem;
-  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+  color: var(--color-accent);
 }
 .flavor-about-value-icon svg {
   width: 100%;
   height: 100%;
 }
 .flavor-about-value-title {
+  font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.5rem;
+  color: var(--color-text);
 }
 .flavor-about-value-desc {
   font-size: 0.92rem;
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-light);
   margin: 0;
   line-height: 1.6;
 }
 
 /* ── Stats / Numbers ── */
 .flavor-about-stats {
-  background: var(--fc-primary, var(--flavor-primary, #2563eb));
+  background: var(--color-accent);
   color: #fff;
   padding: 3rem 1.5rem;
 }
@@ -1581,7 +1379,7 @@ article.flavor-contact-page:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 2.5rem 3.5rem;
-  max-width: 1000px;
+  max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
 .flavor-about-stat {
@@ -1590,27 +1388,30 @@ article.flavor-contact-page:hover {
 }
 .flavor-about-stat-number {
   display: block;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 800;
   line-height: 1.1;
 }
 .flavor-about-stat-suffix {
+  font-family: var(--font-heading);
   font-size: clamp(1.4rem, 3.5vw, 2rem);
   font-weight: 700;
 }
 .flavor-about-stat-label {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   opacity: 0.85;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  font-family: var(--font-main);
 }
 
 /* ── Team ── */
 .flavor-about-team {
   padding: 3.5rem 1.5rem;
-  max-width: 1100px;
+  max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
 .flavor-about-team-grid {
@@ -1620,21 +1421,33 @@ article.flavor-contact-page:hover {
 }
 .flavor-about-team-card {
   text-align: center;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+.flavor-about-team-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .flavor-about-team-photo {
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto 1rem;
-  background: var(--color-bg-alt, #f3f4f6);
+  background: var(--color-accent-light);
   display: flex;
   align-items: center;
   justify-content: center;
   border: 3px solid var(--color-border);
 }
 .flavor-about-team-no-photo {
-  color: var(--color-text-muted, #999);
+  color: var(--color-text-light);
 }
 .flavor-about-team-photo img {
   width: 100%;
@@ -1642,20 +1455,22 @@ article.flavor-contact-page:hover {
   object-fit: cover;
 }
 .flavor-about-team-name {
+  font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 600;
   margin: 0 0 0.25rem;
+  color: var(--color-text);
 }
 .flavor-about-team-role {
   font-size: 0.88rem;
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-light);
   margin: 0;
 }
 
 /* ── Testimonials ── */
 .flavor-about-testimonials {
   padding: 3.5rem 1.5rem;
-  max-width: 1100px;
+  max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
 .flavor-about-testimonials-grid {
@@ -1664,15 +1479,19 @@ article.flavor-contact-page:hover {
   gap: 1.5rem;
 }
 .flavor-about-testimonial {
-  background: var(--color-bg-alt, #fff);
+  background: var(--color-surface, #fff);
   border: 1px solid var(--color-border);
-  border-radius: var(--fc-card-radius, var(--radius));
+  border-radius: var(--radius);
   padding: 1.75rem;
   margin: 0;
-  transition: box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
 }
 .flavor-about-testimonial:hover {
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .flavor-about-testimonial-quote {
   position: relative;
@@ -1683,7 +1502,7 @@ article.flavor-contact-page:hover {
   left: -4px;
   width: 36px;
   height: 36px;
-  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+  color: var(--color-accent);
 }
 .flavor-about-testimonial-quote p {
   margin: 0;
@@ -1691,6 +1510,7 @@ article.flavor-contact-page:hover {
   line-height: 1.7;
   padding-left: 2rem;
   font-style: italic;
+  color: var(--color-text);
 }
 .flavor-about-testimonial-footer {
   margin-top: 1rem;
@@ -1704,10 +1524,11 @@ article.flavor-contact-page:hover {
   font-style: normal;
   font-weight: 600;
   font-size: 0.92rem;
+  color: var(--color-text);
 }
 .flavor-about-testimonial-role {
   font-size: 0.82rem;
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-light);
 }
 
 /* ── Timeline ── */
@@ -1721,7 +1542,7 @@ article.flavor-contact-page:hover {
   padding: 1rem 0;
 }
 .flavor-about-timeline-track::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 0;
@@ -1754,7 +1575,7 @@ article.flavor-contact-page:hover {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--fc-primary, var(--flavor-primary, #2563eb));
+  background: var(--color-accent);
   border: 3px solid var(--color-bg, #fff);
   box-shadow: 0 0 0 3px var(--color-border);
 }
@@ -1765,29 +1586,32 @@ article.flavor-contact-page:hover {
   left: -7px;
 }
 .flavor-about-timeline-card {
-  background: var(--color-bg-alt, #fff);
+  background: var(--color-surface, #fff);
   border: 1px solid var(--color-border);
-  border-radius: var(--fc-card-radius, var(--radius));
+  border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
   box-shadow: var(--shadow-sm);
 }
 .flavor-about-timeline-year {
   display: inline-block;
+  font-family: var(--font-heading);
   font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+  color: var(--color-accent);
   margin-bottom: 0.35rem;
 }
 .flavor-about-timeline-title {
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
   margin: 0 0 0.35rem;
+  color: var(--color-text);
 }
 .flavor-about-timeline-desc {
   font-size: 0.9rem;
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-light);
   margin: 0;
   line-height: 1.6;
 }

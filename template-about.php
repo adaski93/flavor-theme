@@ -30,7 +30,7 @@ $page_title     = get_the_title();
 
     // ── Hero Banner ──
     if ( $section === 'hero' && $hero['image'] ) : ?>
-    <section class="flavor-about-hero" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>')">
+    <section class="flavor-about-hero flavor-about-full" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>')">
         <div class="flavor-about-hero-overlay">
             <div class="flavor-about-hero-inner">
                 <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>
@@ -74,7 +74,7 @@ $page_title     = get_the_title();
 
     <?php // ── Stats / Numbers ──
     elseif ( $section === 'stats' && ! empty( $stats ) ) : ?>
-    <section class="flavor-about-stats">
+    <section class="flavor-about-stats flavor-about-full">
         <div class="flavor-about-stats-grid">
             <?php foreach ( $stats as $stat ) : ?>
             <div class="flavor-about-stat">

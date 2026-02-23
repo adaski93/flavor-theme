@@ -210,10 +210,7 @@
     }
 
     /* ── Sekcja O nas → podgląd strony o nas ── */
-    if (
-      typeof flavorCustomizer !== "undefined" &&
-      flavorCustomizer.aboutUrl
-    ) {
+    if (typeof flavorCustomizer !== "undefined" && flavorCustomizer.aboutUrl) {
       wp.customize.section("flavor_about_info", function (section) {
         section.expanded.bind(function (isExpanded) {
           if (isExpanded) {
