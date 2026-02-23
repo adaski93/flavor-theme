@@ -1239,6 +1239,11 @@ article.flavor-about-page:hover {
   padding: 0;
 }
 
+/* Prevent horizontal overflow from full-width breakout */
+body:has(.flavor-about-page) {
+  overflow-x: hidden;
+}
+
 /* Full-width breakout from .container */
 .flavor-about-full {
   width: 100vw;
@@ -1247,6 +1252,7 @@ article.flavor-about-page:hover {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  overflow: hidden;
 }
 
 /* ── Hero Banner ── */
@@ -1680,37 +1686,80 @@ article.flavor-about-page:hover {
 
 /* ── About page responsive ── */
 @media (max-width: 768px) {
+  /* Full-width sections: use 100% instead of 100vw to avoid overflow */
+  .flavor-about-full {
+    width: 100%;
+    left: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .flavor-about-hero {
     min-height: 40vh;
   }
+
+  .flavor-about-section-title {
+    font-size: 1.3rem;
+    padding: 0 1rem;
+  }
+
+  .flavor-about-values,
+  .flavor-about-team,
+  .flavor-about-testimonials,
+  .flavor-about-timeline {
+    padding: 2.5rem 1rem;
+  }
+
+  .flavor-about-content {
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
   .flavor-about-values-grid,
   .flavor-about-testimonials-grid {
     grid-template-columns: 1fr;
   }
+
+  .flavor-about-stats {
+    padding: 2rem 1rem;
+  }
   .flavor-about-stats-grid {
-    gap: 1.5rem 2rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .flavor-about-stat-number {
+    font-size: 2rem;
+  }
+  .flavor-about-stat-suffix {
+    font-size: 1.3rem;
   }
 
-  /* Team slider: 1 card on mobile */
-  .flavor-about-team[data-team-count="1"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="2"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="3"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="4"] .flavor-about-team-card,
-  .flavor-about-team[data-team-count="5"] .flavor-about-team-card,
-  .flavor-about-team-slider--active .flavor-about-team-card {
-    flex: 0 0 calc(100% - 3rem);
-  }
-  .flavor-about-team-track {
-    justify-content: flex-start !important;
+  /* Team slider: 1 card on mobile, swipe */
+  .flavor-about-team .flavor-about-section-title {
+    padding: 0;
   }
   .flavor-about-team-slider {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 0.5rem;
+    padding: 0 0 0.5rem;
   }
   .flavor-about-team-slider::-webkit-scrollbar { display: none; }
+  .flavor-about-team[data-team-count="1"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="2"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="3"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="4"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="5"] .flavor-about-team-card,
+  .flavor-about-team-slider--active .flavor-about-team-card {
+    flex: 0 0 80%;
+    max-width: 280px;
+  }
+  .flavor-about-team-track {
+    justify-content: flex-start !important;
+    padding: 0 10%;
+  }
   .flavor-about-team-card {
     scroll-snap-align: center;
   }
