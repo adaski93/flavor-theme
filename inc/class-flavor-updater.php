@@ -27,6 +27,9 @@ class Flavor_Theme_Updater {
     /** @var object|null  Cached release data for this request. */
     private $release = null;
 
+    /** @var string  Transient key for caching. */
+    private $transient_key = 'flavor_theme_github_release';
+
     /**
      * @param string $github_repo  "owner/repo" on GitHub.
      */
@@ -37,23 +40,33 @@ class Flavor_Theme_Updater {
         $this->slug    = 'flavor';
 
         add_filter( 'pre_set_site_transient_update_themes', array( $this, 'check_update' ) );
+        add_filter( 'site_transient_update_themes',         array( $this, 'check_update' ) );
         add_filter( 'upgrader_post_install',                array( $this, 'post_install' ), 10, 3 );
     }
 
     /**
-     * Fetch the latest release from GitHub API (cached per request).
+     * Fetch the latest release from GitHub API (cached in transient for 6 hours).
      *
+     * @param bool $force  Skip cache.
      * @return object|false
      */
-    private function get_latest_release() {
-        if ( $this->release !== null ) {
+    private function get_latest_release( $force = false ) {
+        if ( ! $force && $this->release !== null ) {
             return $this->release;
+        }
+
+        if ( ! $force ) {
+            $cached = get_transient( $this->transient_key );
+            if ( $cached !== false ) {
+                $this->release = $cached;
+                return $this->release;
+            }
         }
 
         $url = 'https://api.github.com/repos/' . $this->repo . '/releases/latest';
 
         $response = wp_remote_get( $url, array(
-            'timeout' => 10,
+            'timeout' => 15,
             'headers' => array(
                 'Accept'     => 'application/vnd.github.v3+json',
                 'User-Agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url(),
@@ -73,6 +86,8 @@ class Flavor_Theme_Updater {
         }
 
         $this->release = $body;
+        set_transient( $this->transient_key, $body, 6 * HOUR_IN_SECONDS );
+
         return $this->release;
     }
 
@@ -106,8 +121,8 @@ class Flavor_Theme_Updater {
      * @return object
      */
     public function check_update( $transient ) {
-        if ( empty( $transient->checked ) ) {
-            return $transient;
+        if ( ! is_object( $transient ) ) {
+            $transient = new stdClass();
         }
 
         $release = $this->get_latest_release();
@@ -118,6 +133,9 @@ class Flavor_Theme_Updater {
         $remote_version = $this->tag_to_version( $release->tag_name );
 
         if ( version_compare( $remote_version, $this->version, '>' ) ) {
+            if ( ! isset( $transient->response ) || ! is_array( $transient->response ) ) {
+                $transient->response = array();
+            }
             $transient->response[ $this->slug ] = array(
                 'theme'       => $this->slug,
                 'new_version' => $remote_version,
@@ -131,6 +149,7 @@ class Flavor_Theme_Updater {
 
     /**
      * After upgrade, rename the extracted directory to match the theme slug.
+     * Handles nested folders (e.g. flavor/flavor/) from GitHub ZIP structure.
      *
      * @param bool  $response
      * @param array $hook_extra
@@ -144,9 +163,33 @@ class Flavor_Theme_Updater {
 
         global $wp_filesystem;
 
-        $proper_dir = get_theme_root() . '/' . $this->slug;
-        $wp_filesystem->move( $result['destination'], $proper_dir );
-        $result['destination'] = $proper_dir;
+        $dest       = untrailingslashit( $result['destination'] );
+        $theme_root = get_theme_root();
+        $proper_dir = $theme_root . '/' . $this->slug;
+
+        // Check for nested folder: dest/flavor/style.css
+        $nested = $dest . '/' . $this->slug;
+        if ( $wp_filesystem->is_dir( $nested ) && $wp_filesystem->exists( $nested . '/style.css' ) ) {
+            // Move nested contents up: nested → temp → proper
+            $tmp = $theme_root . '/' . $this->slug . '-tmp-' . time();
+            $wp_filesystem->move( $nested, $tmp );
+            $wp_filesystem->delete( $dest, true );
+            if ( $wp_filesystem->is_dir( $proper_dir ) ) {
+                $wp_filesystem->delete( $proper_dir, true );
+            }
+            $wp_filesystem->move( $tmp, $proper_dir );
+            $result['destination'] = $proper_dir;
+        } elseif ( $dest !== $proper_dir ) {
+            // Standard case: just rename
+            if ( $wp_filesystem->is_dir( $proper_dir ) ) {
+                $wp_filesystem->delete( $proper_dir, true );
+            }
+            $wp_filesystem->move( $dest, $proper_dir );
+            $result['destination'] = $proper_dir;
+        }
+
+        // Clear cache.
+        delete_transient( $this->transient_key );
 
         // Re-activate.
         if ( wp_get_theme()->get_stylesheet() === $this->slug ) {
