@@ -231,43 +231,45 @@
       });
     });
 
-    /* ── Sortowalne karty kontaktowe (drag & drop) ── */
-    wp.customize.control("flavor_contact_cards_order", function (control) {
-      // Wait until the control's container is in the DOM
-      var initSortable = function () {
-        var $list = control.container.find(".fc-sortable-cards");
-        if (!$list.length) {
-          return;
+    /* ── Sortowalne karty (drag & drop) — generyczny dla każdej kontrolki ── */
+    function initSortableCards(controlId) {
+      wp.customize.control(controlId, function (control) {
+        var initSortable = function () {
+          var $list = control.container.find(".fc-sortable-cards");
+          if (!$list.length) {
+            return;
+          }
+
+          $list.sortable({
+            handle: ".fc-sortable-handle",
+            axis: "y",
+            containment: "parent",
+            placeholder: "fc-sortable-placeholder",
+            tolerance: "pointer",
+            update: function () {
+              var order = $list
+                .find(".fc-sortable-card")
+                .map(function () {
+                  return $(this).data("key");
+                })
+                .get()
+                .join(",");
+
+              control.setting.set(order);
+            },
+          });
+        };
+
+        if (control.container.find(".fc-sortable-cards").length) {
+          initSortable();
+        } else {
+          setTimeout(initSortable, 500);
         }
+      });
+    }
 
-        $list.sortable({
-          handle: ".fc-sortable-handle",
-          axis: "y",
-          containment: "parent",
-          placeholder: "fc-sortable-placeholder",
-          tolerance: "pointer",
-          update: function () {
-            var order = $list
-              .find(".fc-sortable-card")
-              .map(function () {
-                return $(this).data("key");
-              })
-              .get()
-              .join(",");
-
-            control.setting.set(order);
-          },
-        });
-      };
-
-      // The control may already be rendered or not yet
-      if (control.container.find(".fc-sortable-cards").length) {
-        initSortable();
-      } else {
-        // Fallback: wait for DOM insertion
-        setTimeout(initSortable, 500);
-      }
-    });
+    initSortableCards("flavor_contact_cards_order");
+    initSortableCards("flavor_about_sections_order");
 
     /* ── Sortowalne ikonki social media (drag & drop + toggle) ── */
     function initSocialSortable() {
