@@ -246,9 +246,9 @@ class Flavor_Pages {
             'type'    => 'text',
         ) );
 
-        // Google Maps — ciemny motyw
+        // Google Maps — ciemny motyw (domyślnie włączony gdy tryb dark)
         $wp_customize->add_setting( 'flavor_contact_map_dark', array(
-            'default'           => false,
+            'default'           => ( get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' ),
             'sanitize_callback' => 'wp_validate_boolean',
         ) );
         $wp_customize->add_control( 'flavor_contact_map_dark', array(

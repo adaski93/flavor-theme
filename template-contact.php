@@ -256,7 +256,7 @@ $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( 
     </div><!-- .flavor-contact-layout -->
 
     <?php if ( $map_url ) :
-        $map_dark = get_theme_mod( 'flavor_contact_map_dark', false );
+        $map_dark = get_theme_mod( 'flavor_contact_map_dark', get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' );
     ?>
     <div class="flavor-contact-map">
         <iframe
