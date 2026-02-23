@@ -97,7 +97,7 @@ $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
     <?php endif; ?>
 
     <?php if ( $map_url && $map_position === 'above_all' ) : ?>
-    <div class="flavor-contact-map">
+    <div class="flavor-contact-map flavor-contact-map--above">
         <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="350" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <?php endif; ?>

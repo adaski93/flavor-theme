@@ -1191,6 +1191,10 @@ article.flavor-contact-page:hover {
 .flavor-contact-map--inline {
   margin-bottom: 1.5rem;
 }
+.flavor-contact-map--above {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
