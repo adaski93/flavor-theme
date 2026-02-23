@@ -1216,3 +1216,372 @@ article.flavor-contact-page:hover {
     padding: 1.25rem;
   }
 }
+
+/* ===================================================================
+   ABOUT PAGE TEMPLATE
+   =================================================================== */
+
+.flavor-about-page {
+  overflow: hidden;
+}
+
+/* ── Hero Banner ── */
+.flavor-about-hero {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+.flavor-about-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flavor-about-hero-inner {
+  position: relative;
+  text-align: center;
+  padding: 2rem;
+  max-width: 720px;
+}
+.flavor-about-hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.flavor-about-hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* ── Section Title (shared) ── */
+.flavor-about-section-title {
+  text-align: center;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  margin: 0 0 2rem;
+  color: var(--color-text);
+}
+
+/* ── Page Content ── */
+.flavor-about-content {
+  max-width: 820px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+.flavor-about-content .entry-content > *:first-child {
+  margin-top: 0;
+}
+
+/* ── Values / Mission ── */
+.flavor-about-values {
+  padding: 3.5rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.flavor-about-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.flavor-about-value-card {
+  background: var(--color-bg-alt, #fff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-card-radius, var(--radius));
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.flavor-about-value-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.flavor-about-value-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1rem;
+  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+}
+.flavor-about-value-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.flavor-about-value-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.flavor-about-value-desc {
+  font-size: 0.92rem;
+  color: var(--color-text-muted, #666);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Stats / Numbers ── */
+.flavor-about-stats {
+  background: var(--fc-primary, var(--flavor-primary, #2563eb));
+  color: #fff;
+  padding: 3rem 1.5rem;
+}
+.flavor-about-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem 3.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.flavor-about-stat {
+  text-align: center;
+  min-width: 120px;
+}
+.flavor-about-stat-number {
+  display: block;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+.flavor-about-stat-suffix {
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700;
+}
+.flavor-about-stat-label {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Team ── */
+.flavor-about-team {
+  padding: 3.5rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.flavor-about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+}
+.flavor-about-team-card {
+  text-align: center;
+}
+.flavor-about-team-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  background: var(--color-bg-alt, #f3f4f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--color-border);
+}
+.flavor-about-team-no-photo {
+  color: var(--color-text-muted, #999);
+}
+.flavor-about-team-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flavor-about-team-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+.flavor-about-team-role {
+  font-size: 0.88rem;
+  color: var(--color-text-muted, #666);
+  margin: 0;
+}
+
+/* ── Testimonials ── */
+.flavor-about-testimonials {
+  padding: 3.5rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.flavor-about-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.flavor-about-testimonial {
+  background: var(--color-bg-alt, #fff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-card-radius, var(--radius));
+  padding: 1.75rem;
+  margin: 0;
+  transition: box-shadow 0.2s;
+}
+.flavor-about-testimonial:hover {
+  box-shadow: var(--shadow-md);
+}
+.flavor-about-testimonial-quote {
+  position: relative;
+}
+.flavor-about-testimonial-quote svg {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 36px;
+  height: 36px;
+  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+}
+.flavor-about-testimonial-quote p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding-left: 2rem;
+  font-style: italic;
+}
+.flavor-about-testimonial-footer {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.flavor-about-testimonial-author {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.flavor-about-testimonial-role {
+  font-size: 0.82rem;
+  color: var(--color-text-muted, #666);
+}
+
+/* ── Timeline ── */
+.flavor-about-timeline {
+  padding: 3.5rem 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.flavor-about-timeline-track {
+  position: relative;
+  padding: 1rem 0;
+}
+.flavor-about-timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-border);
+  transform: translateX(-50%);
+}
+.flavor-about-timeline-entry {
+  position: relative;
+  width: 50%;
+  padding: 0 2.5rem 2.5rem;
+  box-sizing: border-box;
+}
+.flavor-about-timeline-entry.left {
+  left: 0;
+  text-align: right;
+  padding-right: 2.5rem;
+  padding-left: 0;
+}
+.flavor-about-timeline-entry.right {
+  left: 50%;
+  text-align: left;
+  padding-left: 2.5rem;
+  padding-right: 0;
+}
+.flavor-about-timeline-dot {
+  position: absolute;
+  top: 0.25rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--fc-primary, var(--flavor-primary, #2563eb));
+  border: 3px solid var(--color-bg, #fff);
+  box-shadow: 0 0 0 3px var(--color-border);
+}
+.flavor-about-timeline-entry.left .flavor-about-timeline-dot {
+  right: -7px;
+}
+.flavor-about-timeline-entry.right .flavor-about-timeline-dot {
+  left: -7px;
+}
+.flavor-about-timeline-card {
+  background: var(--color-bg-alt, #fff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--fc-card-radius, var(--radius));
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+.flavor-about-timeline-year {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fc-primary, var(--flavor-primary, #2563eb));
+  margin-bottom: 0.35rem;
+}
+.flavor-about-timeline-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+.flavor-about-timeline-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #666);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── About page responsive ── */
+@media (max-width: 768px) {
+  .flavor-about-hero {
+    min-height: 40vh;
+  }
+  .flavor-about-values-grid,
+  .flavor-about-team-grid,
+  .flavor-about-testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  .flavor-about-stats-grid {
+    gap: 1.5rem 2rem;
+  }
+
+  /* Timeline → single column */
+  .flavor-about-timeline-track::before {
+    left: 7px;
+  }
+  .flavor-about-timeline-entry,
+  .flavor-about-timeline-entry.left,
+  .flavor-about-timeline-entry.right {
+    width: 100%;
+    left: 0;
+    text-align: left;
+    padding-left: 2.5rem;
+    padding-right: 0;
+  }
+  .flavor-about-timeline-entry.left .flavor-about-timeline-dot,
+  .flavor-about-timeline-entry.right .flavor-about-timeline-dot {
+    left: 0;
+    right: auto;
+  }
+}

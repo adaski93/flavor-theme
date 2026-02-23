@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'FLAVOR_VERSION', '1.5.2' );
+define( 'FLAVOR_VERSION', '1.5.3' );
 
 /**
  * Fallback i18n helpers — used when Flavor Commerce plugin is not active.
@@ -38,6 +38,11 @@ require get_template_directory() . '/inc/appearance.php';
  * Auto-tworzenie stron (O nas, Kontakt) + Customizer page selectors
  */
 require get_template_directory() . '/inc/class-flavor-pages.php';
+
+/**
+ * Strona "O nas" – Customizer + wymuszanie szablonu
+ */
+require get_template_directory() . '/inc/class-flavor-about.php';
 
 /**
  * GitHub auto-updater for the theme.

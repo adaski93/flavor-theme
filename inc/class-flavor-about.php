@@ -1,0 +1,607 @@
+<?php
+/**
+ * Flavor Theme — Strona „O nas"
+ *
+ * - Customizer: hero banner, zespół, wartości, statystyki, opinie, oś czasu
+ * - Wymuszanie szablonu template-about.php dla strony „O nas"
+ * - Sortowalna kolejność sekcji (drag & drop)
+ *
+ * @package Flavor
+ * @since 1.5.3
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class Flavor_About {
+
+    /**
+     * Available value icons (key => SVG)
+     */
+    private static $value_icons = array(
+        'star'      => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+        'heart'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+        'shield'    => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>',
+        'leaf'      => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+        'lightbulb' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
+        'handshake' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14h2"/><path d="m8 7-1.25-1.25a1 1 0 0 0-1.5 0L3 8"/></svg>',
+        'truck'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>',
+        'award'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>',
+        'globe'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+        'clock'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+        'users'     => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>',
+        'gem'       => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+    );
+
+    /**
+     * Inicjalizacja
+     */
+    public static function init() {
+        add_filter( 'page_template', array( __CLASS__, 'maybe_force_about_template' ) );
+    }
+
+    /**
+     * Wymuszaj szablon „O nas" dla przypisanej strony
+     */
+    public static function maybe_force_about_template( $template ) {
+        $about_id = absint( get_option( 'fc_page_o-nas', 0 ) );
+        if ( $about_id && is_page( $about_id ) ) {
+            $about_tpl = get_template_directory() . '/template-about.php';
+            if ( file_exists( $about_tpl ) ) {
+                return $about_tpl;
+            }
+        }
+        return $template;
+    }
+
+    /* =================================================================
+     *  Customizer — rejestracja sekcji i kontrolek
+     * ================================================================= */
+
+    public static function customize_register( $wp_customize ) {
+
+        // =============================================================
+        //  Sekcja: Strona o nas
+        // =============================================================
+        $wp_customize->add_section( 'flavor_about_info', array(
+            'title'       => fc__( 'cust_about_info', 'admin' ),
+            'description' => fc__( 'cust_about_info_desc', 'admin' ),
+            'panel'       => 'flavor_panel',
+            'priority'    => 65,
+        ) );
+
+        // =============================================================
+        //  Settings — JSON data for each section
+        // =============================================================
+        $wp_customize->add_setting( 'flavor_about_hero_image', array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_hero_subtitle', array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_team_title', array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_team', array(
+            'default'           => '[]',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
+        $wp_customize->add_setting( 'flavor_about_values_title', array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_values', array(
+            'default'           => '[]',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
+        $wp_customize->add_setting( 'flavor_about_stats', array(
+            'default'           => '[]',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
+        $wp_customize->add_setting( 'flavor_about_testimonials_title', array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_testimonials', array(
+            'default'           => '[]',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
+        $wp_customize->add_setting( 'flavor_about_timeline_title', array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_timeline', array(
+            'default'           => '[]',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
+
+        // =============================================================
+        //  Kolejność sekcji (drag & drop) + inline pola
+        // =============================================================
+        $wp_customize->add_setting( 'flavor_about_sections_order', array(
+            'default'           => 'hero,content,values,stats,team,testimonials,timeline',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ) );
+
+        $wp_customize->add_control( new Flavor_Sortable_Cards_Control( $wp_customize, 'flavor_about_sections_order', array(
+            'label'       => fc__( 'cust_about_sections_order', 'admin' ),
+            'description' => fc__( 'cust_about_sections_order_desc', 'admin' ),
+            'section'     => 'flavor_about_info',
+            'cards'       => array(
+                'hero' => array(
+                    'label'  => fc__( 'cust_about_hero', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+                    'fields' => function() {
+                        self::render_hero_fields();
+                    },
+                ),
+                'content' => array(
+                    'label'  => fc__( 'cust_about_content', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>',
+                    'fields' => function() {
+                        ?>
+                        <p class="fc-card-field" style="font-size:12px;color:#888;margin:0">
+                            <?php echo esc_html( fc__( 'cust_about_content_hint', 'admin' ) ); ?>
+                        </p>
+                        <?php
+                    },
+                ),
+                'team' => array(
+                    'label'  => fc__( 'cust_about_team', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>',
+                    'fields' => function() {
+                        self::render_title_field( 'flavor_about_team_title', 'cust_about_team_title' );
+                        self::render_repeater_inline( 'flavor_about_team', array(
+                            array( 'key' => 'name',      'type' => 'text',  'label' => fc__( 'cust_about_team_name', 'admin' ) ),
+                            array( 'key' => 'role',      'type' => 'text',  'label' => fc__( 'cust_about_team_role', 'admin' ) ),
+                            array( 'key' => 'image_url', 'type' => 'image', 'label' => fc__( 'cust_about_team_photo', 'admin' ), 'btn' => fc__( 'cust_about_team_photo_btn', 'admin' ) ),
+                        ), fc__( 'cust_about_team_add', 'admin' ) );
+                    },
+                ),
+                'values' => array(
+                    'label'  => fc__( 'cust_about_values', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+                    'fields' => function() {
+                        self::render_title_field( 'flavor_about_values_title', 'cust_about_values_title' );
+                        self::render_repeater_inline( 'flavor_about_values', array(
+                            array( 'key' => 'icon',  'type' => 'icon_select', 'label' => fc__( 'cust_about_values_icon', 'admin' ) ),
+                            array( 'key' => 'title', 'type' => 'text',        'label' => fc__( 'cust_about_values_name', 'admin' ) ),
+                            array( 'key' => 'desc',  'type' => 'textarea',    'label' => fc__( 'cust_about_values_desc', 'admin' ) ),
+                        ), fc__( 'cust_about_values_add', 'admin' ) );
+                    },
+                ),
+                'stats' => array(
+                    'label'  => fc__( 'cust_about_stats', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+                    'fields' => function() {
+                        self::render_repeater_inline( 'flavor_about_stats', array(
+                            array( 'key' => 'number', 'type' => 'text', 'label' => fc__( 'cust_about_stats_number', 'admin' ), 'width' => '60px' ),
+                            array( 'key' => 'suffix', 'type' => 'text', 'label' => fc__( 'cust_about_stats_suffix', 'admin' ), 'width' => '50px' ),
+                            array( 'key' => 'label',  'type' => 'text', 'label' => fc__( 'cust_about_stats_label', 'admin' ) ),
+                        ), fc__( 'cust_about_stats_add', 'admin' ) );
+                    },
+                ),
+                'testimonials' => array(
+                    'label'  => fc__( 'cust_about_testimonials', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+                    'fields' => function() {
+                        self::render_title_field( 'flavor_about_testimonials_title', 'cust_about_testimonials_title' );
+                        self::render_repeater_inline( 'flavor_about_testimonials', array(
+                            array( 'key' => 'quote',  'type' => 'textarea', 'label' => fc__( 'cust_about_testimonials_quote', 'admin' ) ),
+                            array( 'key' => 'author', 'type' => 'text',     'label' => fc__( 'cust_about_testimonials_author', 'admin' ) ),
+                            array( 'key' => 'role',   'type' => 'text',     'label' => fc__( 'cust_about_testimonials_role', 'admin' ) ),
+                        ), fc__( 'cust_about_testimonials_add', 'admin' ) );
+                    },
+                ),
+                'timeline' => array(
+                    'label'  => fc__( 'cust_about_timeline', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+                    'fields' => function() {
+                        self::render_title_field( 'flavor_about_timeline_title', 'cust_about_timeline_title' );
+                        self::render_repeater_inline( 'flavor_about_timeline', array(
+                            array( 'key' => 'year',  'type' => 'text',     'label' => fc__( 'cust_about_timeline_year', 'admin' ), 'width' => '70px' ),
+                            array( 'key' => 'title', 'type' => 'text',     'label' => fc__( 'cust_about_timeline_name', 'admin' ) ),
+                            array( 'key' => 'desc',  'type' => 'textarea', 'label' => fc__( 'cust_about_timeline_desc', 'admin' ) ),
+                        ), fc__( 'cust_about_timeline_add', 'admin' ) );
+                    },
+                ),
+            ),
+        ) ) );
+    }
+
+    /* =================================================================
+     *  Helper: render section title field
+     * ================================================================= */
+
+    private static function render_title_field( $setting_id, $label_key ) {
+        $val = get_theme_mod( $setting_id, '' );
+        ?>
+        <div class="fc-card-field">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( $label_key, 'admin' ) ); ?>
+            </label>
+            <input type="text"
+                   data-customize-setting-link="<?php echo esc_attr( $setting_id ); ?>"
+                   value="<?php echo esc_attr( $val ); ?>"
+                   style="width:100%;box-sizing:border-box;font-size:12px"
+                   placeholder="<?php echo esc_attr( fc__( $label_key, 'admin' ) ); ?>">
+        </div>
+        <?php
+    }
+
+    /* =================================================================
+     *  Helper: render hero banner fields (image + subtitle)
+     * ================================================================= */
+
+    private static function render_hero_fields() {
+        $image    = get_theme_mod( 'flavor_about_hero_image', '' );
+        $subtitle = get_theme_mod( 'flavor_about_hero_subtitle', '' );
+        $uid      = 'fc-about-hero-' . wp_rand();
+        ?>
+        <div class="fc-card-field fc-about-hero-field" id="<?php echo esc_attr( $uid ); ?>">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_image', 'admin' ) ); ?>
+            </label>
+            <div class="fc-about-hero-preview" style="margin-bottom:6px;<?php echo $image ? '' : 'display:none'; ?>">
+                <img src="<?php echo esc_url( $image ); ?>" style="max-width:100%;height:auto;border-radius:4px;display:block">
+            </div>
+            <input type="hidden" data-customize-setting-link="flavor_about_hero_image" value="<?php echo esc_attr( $image ); ?>">
+            <button type="button" class="fc-about-hero-choose" style="font-size:12px;padding:4px 10px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1">
+                <?php echo esc_html( fc__( 'cust_about_hero_image_btn', 'admin' ) ); ?>
+            </button>
+            <button type="button" class="fc-about-hero-remove" style="font-size:12px;padding:4px 10px;cursor:pointer;background:none;border:1px solid #c3c4c7;border-radius:3px;color:#a00;<?php echo $image ? '' : 'display:none'; ?>">
+                <?php echo esc_html( fc__( 'cust_about_hero_image_remove', 'admin' ) ); ?>
+            </button>
+        </div>
+        <div class="fc-card-field" style="margin-top:8px">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_subtitle', 'admin' ) ); ?>
+            </label>
+            <input type="text"
+                   data-customize-setting-link="flavor_about_hero_subtitle"
+                   value="<?php echo esc_attr( $subtitle ); ?>"
+                   style="width:100%;box-sizing:border-box;font-size:12px">
+        </div>
+        <script>
+        (function(){
+            var wrap = document.getElementById('<?php echo esc_js( $uid ); ?>');
+            if (!wrap) return;
+            var hidden  = wrap.querySelector('input[type="hidden"]');
+            var preview = wrap.querySelector('.fc-about-hero-preview');
+            var img     = preview.querySelector('img');
+            var removeBtn = wrap.querySelector('.fc-about-hero-remove');
+
+            wrap.querySelector('.fc-about-hero-choose').addEventListener('click', function(e) {
+                e.preventDefault();
+                var frame = wp.media({ title: '<?php echo esc_js( fc__( 'cust_about_hero_image', 'admin' ) ); ?>', multiple: false, library: { type: 'image' } });
+                frame.on('select', function() {
+                    var url = frame.state().get('selection').first().toJSON().url;
+                    hidden.value = url;
+                    img.src = url;
+                    preview.style.display = '';
+                    removeBtn.style.display = '';
+                    hidden.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+                frame.open();
+            });
+
+            removeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                hidden.value = '';
+                preview.style.display = 'none';
+                removeBtn.style.display = 'none';
+                hidden.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        })();
+        </script>
+        <?php
+    }
+
+    /* =================================================================
+     *  Generic repeater renderer (inline in sortable card body)
+     * ================================================================= */
+
+    /**
+     * Render a generic repeater control inside a sortable card.
+     *
+     * @param string $setting_id   Customizer setting ID (JSON string).
+     * @param array  $fields       Field definitions: [ ['key'=>..., 'type'=>'text|textarea|image|icon_select', 'label'=>..., 'width'=>''] ]
+     * @param string $add_label    Label for the "Add" button.
+     */
+    private static function render_repeater_inline( $setting_id, $fields, $add_label ) {
+        $value = get_theme_mod( $setting_id, '[]' );
+        $items = json_decode( $value, true );
+        if ( ! is_array( $items ) ) {
+            $items = array();
+        }
+
+        $uid         = 'fc-rep-' . sanitize_key( $setting_id ) . '-' . wp_rand();
+        $remove_label = fc__( 'cust_about_remove_item', 'admin' );
+
+        // Build JS fields config
+        $js_fields = array();
+        foreach ( $fields as $f ) {
+            $js_fields[] = array(
+                'key'   => $f['key'],
+                'type'  => $f['type'],
+                'label' => $f['label'],
+                'width' => $f['width'] ?? '',
+                'btn'   => $f['btn'] ?? '',
+            );
+        }
+
+        // Icon options for icon_select type
+        $icon_keys = array_keys( self::$value_icons );
+        ?>
+        <div class="fc-about-repeater" id="<?php echo esc_attr( $uid ); ?>">
+            <div class="fc-about-repeater-items">
+                <?php foreach ( $items as $item ) : ?>
+                <div class="fc-about-repeater-item">
+                    <?php foreach ( $fields as $f ) : ?>
+                    <div class="fc-about-repeater-field" style="<?php echo ! empty( $f['width'] ) ? 'max-width:' . esc_attr( $f['width'] ) : ''; ?>">
+                        <label style="font-size:10px;color:#888;display:block"><?php echo esc_html( $f['label'] ); ?></label>
+                        <?php if ( $f['type'] === 'text' ) : ?>
+                            <input type="text" class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>"
+                                   value="<?php echo esc_attr( $item[ $f['key'] ] ?? '' ); ?>"
+                                   style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px">
+                        <?php elseif ( $f['type'] === 'textarea' ) : ?>
+                            <textarea class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>"
+                                      rows="2" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px;resize:vertical"><?php echo esc_textarea( $item[ $f['key'] ] ?? '' ); ?></textarea>
+                        <?php elseif ( $f['type'] === 'image' ) : ?>
+                            <div class="fc-rep-image-wrap">
+                                <?php $img_url = $item[ $f['key'] ] ?? ''; ?>
+                                <img src="<?php echo esc_url( $img_url ); ?>" class="fc-rep-img-preview" style="max-width:60px;height:60px;object-fit:cover;border-radius:50%;display:<?php echo $img_url ? 'block' : 'none'; ?>;margin-bottom:4px">
+                                <input type="hidden" class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" value="<?php echo esc_attr( $img_url ); ?>">
+                                <button type="button" class="fc-rep-img-btn" style="font-size:11px;padding:2px 8px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1"><?php echo esc_html( $f['btn'] ?? fc__( 'cust_about_hero_image_btn', 'admin' ) ); ?></button>
+                            </div>
+                        <?php elseif ( $f['type'] === 'icon_select' ) : ?>
+                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" style="font-size:12px;padding:3px;width:100%">
+                                <?php foreach ( $icon_keys as $ik ) : ?>
+                                    <option value="<?php echo esc_attr( $ik ); ?>" <?php selected( $item[ $f['key'] ] ?? 'star', $ik ); ?>><?php echo esc_html( $ik ); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php endif; ?>
+                    </div>
+                    <?php endforeach; ?>
+                    <button type="button" class="fc-about-repeater-remove" title="<?php echo esc_attr( $remove_label ); ?>">&times;</button>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <button type="button" class="fc-about-repeater-add">+ <?php echo esc_html( $add_label ); ?></button>
+            <input type="hidden" data-customize-setting-link="<?php echo esc_attr( $setting_id ); ?>" value="<?php echo esc_attr( $value ); ?>">
+        </div>
+
+        <script>
+        (function(){
+            var wrap      = document.getElementById('<?php echo esc_js( $uid ); ?>');
+            if (!wrap) return;
+            var container = wrap.querySelector('.fc-about-repeater-items');
+            var hidden    = wrap.querySelector('input[type="hidden"][data-customize-setting-link]');
+            var FIELDS    = <?php echo wp_json_encode( $js_fields ); ?>;
+            var ICONS     = <?php echo wp_json_encode( $icon_keys ); ?>;
+            var REMOVE    = <?php echo wp_json_encode( $remove_label ); ?>;
+
+            function serialize() {
+                var items = [];
+                container.querySelectorAll('.fc-about-repeater-item').forEach(function(row) {
+                    var obj = {};
+                    row.querySelectorAll('.fc-rep-input').forEach(function(inp) {
+                        obj[inp.getAttribute('data-key')] = inp.value;
+                    });
+                    items.push(obj);
+                });
+                hidden.value = JSON.stringify(items);
+                hidden.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            function buildItem(data) {
+                data = data || {};
+                var item = document.createElement('div');
+                item.className = 'fc-about-repeater-item';
+                var html = '';
+                FIELDS.forEach(function(f) {
+                    var val = data[f.key] || '';
+                    var style = f.width ? 'max-width:' + f.width : '';
+                    html += '<div class="fc-about-repeater-field" style="' + style + '">';
+                    html += '<label style="font-size:10px;color:#888;display:block">' + f.label + '</label>';
+                    if (f.type === 'text') {
+                        html += '<input type="text" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(val) + '" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px">';
+                    } else if (f.type === 'textarea') {
+                        html += '<textarea class="fc-rep-input" data-key="' + f.key + '" rows="2" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px;resize:vertical">' + escHtml(val) + '</textarea>';
+                    } else if (f.type === 'image') {
+                        html += '<div class="fc-rep-image-wrap">';
+                        html += '<img src="' + escAttr(val) + '" class="fc-rep-img-preview" style="max-width:60px;height:60px;object-fit:cover;border-radius:50%;display:' + (val ? 'block' : 'none') + ';margin-bottom:4px">';
+                        html += '<input type="hidden" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(val) + '">';
+                        html += '<button type="button" class="fc-rep-img-btn" style="font-size:11px;padding:2px 8px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1">' + (f.btn || '📷') + '</button>';
+                        html += '</div>';
+                    } else if (f.type === 'icon_select') {
+                        html += '<select class="fc-rep-input" data-key="' + f.key + '" style="font-size:12px;padding:3px;width:100%">';
+                        ICONS.forEach(function(ik) {
+                            html += '<option value="' + ik + '"' + (val === ik ? ' selected' : '') + '>' + ik + '</option>';
+                        });
+                        html += '</select>';
+                    }
+                    html += '</div>';
+                });
+                html += '<button type="button" class="fc-about-repeater-remove" title="' + REMOVE + '">&times;</button>';
+                item.innerHTML = html;
+                bindItem(item);
+                return item;
+            }
+
+            function bindItem(item) {
+                item.querySelectorAll('.fc-rep-input').forEach(function(inp) {
+                    inp.addEventListener('change', serialize);
+                    inp.addEventListener('input', serialize);
+                });
+                item.querySelector('.fc-about-repeater-remove').addEventListener('click', function() {
+                    item.remove();
+                    serialize();
+                });
+                // Image picker buttons
+                item.querySelectorAll('.fc-rep-img-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var imgWrap = btn.closest('.fc-rep-image-wrap');
+                        var inp     = imgWrap.querySelector('.fc-rep-input');
+                        var prev    = imgWrap.querySelector('.fc-rep-img-preview');
+                        var frame   = wp.media({ multiple: false, library: { type: 'image' } });
+                        frame.on('select', function() {
+                            var url = frame.state().get('selection').first().toJSON().url;
+                            inp.value = url;
+                            prev.src = url;
+                            prev.style.display = 'block';
+                            serialize();
+                        });
+                        frame.open();
+                    });
+                });
+            }
+
+            // Bind existing items
+            container.querySelectorAll('.fc-about-repeater-item').forEach(bindItem);
+
+            // Add button
+            wrap.querySelector('.fc-about-repeater-add').addEventListener('click', function() {
+                var defaults = {};
+                FIELDS.forEach(function(f) {
+                    defaults[f.key] = f.type === 'icon_select' ? (ICONS[0] || 'star') : '';
+                });
+                container.appendChild(buildItem(defaults));
+                serialize();
+            });
+
+            function escAttr(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML.replace(/"/g, '&quot;'); }
+            function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        })();
+        </script>
+        <?php
+    }
+
+    /* =================================================================
+     *  Sanitize callback for JSON arrays
+     * ================================================================= */
+
+    public static function sanitize_json_array( $val ) {
+        $decoded = json_decode( $val, true );
+        if ( ! is_array( $decoded ) ) {
+            return '[]';
+        }
+        $clean = array();
+        foreach ( $decoded as $item ) {
+            if ( ! is_array( $item ) ) continue;
+            $row = array();
+            foreach ( $item as $k => $v ) {
+                $row[ sanitize_key( $k ) ] = sanitize_text_field( $v );
+            }
+            $clean[] = $row;
+        }
+        return wp_json_encode( $clean );
+    }
+
+    /* =================================================================
+     *  Getters — pobieranie danych sekcji z Customizera
+     * ================================================================= */
+
+    /**
+     * Get section order as array
+     */
+    public static function get_sections_order() {
+        $default = 'hero,content,values,stats,team,testimonials,timeline';
+        $order   = get_theme_mod( 'flavor_about_sections_order', $default );
+        $parts   = array_filter( array_map( 'trim', explode( ',', $order ) ) );
+        $all     = array( 'hero', 'content', 'values', 'stats', 'team', 'testimonials', 'timeline' );
+        foreach ( $all as $s ) {
+            if ( ! in_array( $s, $parts, true ) ) {
+                $parts[] = $s;
+            }
+        }
+        return $parts;
+    }
+
+    /**
+     * Get hero data
+     */
+    public static function get_hero() {
+        return array(
+            'image'    => get_theme_mod( 'flavor_about_hero_image', '' ),
+            'subtitle' => get_theme_mod( 'flavor_about_hero_subtitle', '' ),
+        );
+    }
+
+    /**
+     * Get team members
+     */
+    public static function get_team() {
+        $title = get_theme_mod( 'flavor_about_team_title', '' );
+        $json  = get_theme_mod( 'flavor_about_team', '[]' );
+        $items = json_decode( $json, true );
+        return array(
+            'title' => $title ? $title : fc__( 'about_team_title' ),
+            'items' => is_array( $items ) ? $items : array(),
+        );
+    }
+
+    /**
+     * Get values
+     */
+    public static function get_values() {
+        $title = get_theme_mod( 'flavor_about_values_title', '' );
+        $json  = get_theme_mod( 'flavor_about_values', '[]' );
+        $items = json_decode( $json, true );
+        return array(
+            'title' => $title ? $title : fc__( 'about_values_title' ),
+            'items' => is_array( $items ) ? $items : array(),
+        );
+    }
+
+    /**
+     * Get stats
+     */
+    public static function get_stats() {
+        $json  = get_theme_mod( 'flavor_about_stats', '[]' );
+        $items = json_decode( $json, true );
+        return is_array( $items ) ? $items : array();
+    }
+
+    /**
+     * Get testimonials
+     */
+    public static function get_testimonials() {
+        $title = get_theme_mod( 'flavor_about_testimonials_title', '' );
+        $json  = get_theme_mod( 'flavor_about_testimonials', '[]' );
+        $items = json_decode( $json, true );
+        return array(
+            'title' => $title ? $title : fc__( 'about_testimonials_title' ),
+            'items' => is_array( $items ) ? $items : array(),
+        );
+    }
+
+    /**
+     * Get timeline
+     */
+    public static function get_timeline() {
+        $title = get_theme_mod( 'flavor_about_timeline_title', '' );
+        $json  = get_theme_mod( 'flavor_about_timeline', '[]' );
+        $items = json_decode( $json, true );
+        return array(
+            'title' => $title ? $title : fc__( 'about_timeline_title' ),
+            'items' => is_array( $items ) ? $items : array(),
+        );
+    }
+
+    /**
+     * Get value icon SVG by key
+     */
+    public static function get_value_icon( $key ) {
+        return self::$value_icons[ $key ] ?? self::$value_icons['star'];
+    }
+}
+
+Flavor_About::init();
+add_action( 'customize_register', array( 'Flavor_About', 'customize_register' ), 1002 );

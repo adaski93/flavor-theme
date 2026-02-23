@@ -629,9 +629,11 @@ function flavor_customize_controls_js() {
 
     $checkout_id = defined( 'FC_VERSION' ) ? get_option( 'fc_page_zamowienie' ) : 0;
     $contact_id  = get_option( 'fc_page_kontakt', 0 );
+    $about_id    = get_option( 'fc_page_o-nas', 0 );
     wp_localize_script( 'flavor-customizer-controls', 'flavorCustomizer', array(
         'checkoutUrl' => $checkout_id ? get_permalink( $checkout_id ) : '',
         'contactUrl'  => $contact_id ? get_permalink( $contact_id ) : '',
+        'aboutUrl'    => $about_id    ? get_permalink( $about_id )    : '',
     ) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'flavor_customize_controls_js' );

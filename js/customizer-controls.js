@@ -209,6 +209,20 @@
       });
     }
 
+    /* ── Sekcja O nas → podgląd strony o nas ── */
+    if (
+      typeof flavorCustomizer !== "undefined" &&
+      flavorCustomizer.aboutUrl
+    ) {
+      wp.customize.section("flavor_about_info", function (section) {
+        section.expanded.bind(function (isExpanded) {
+          if (isExpanded) {
+            wp.customize.previewer.previewUrl.set(flavorCustomizer.aboutUrl);
+          }
+        });
+      });
+    }
+
     /* ── Mapa: pokaż pole adresu tylko gdy „Własny adres" ── */
     wp.customize("flavor_contact_map_source", function (setting) {
       wp.customize.control("flavor_contact_map_custom", function (control) {
