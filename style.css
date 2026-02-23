@@ -1465,7 +1465,9 @@ article.flavor-about-page:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow var(--transition), opacity var(--transition);
+  transition:
+    box-shadow var(--transition),
+    opacity var(--transition);
 }
 .flavor-about-team-nav:hover {
   box-shadow: var(--shadow-md);
@@ -1664,15 +1666,107 @@ article.flavor-about-page:hover {
 
 /* ── About page responsive ── */
 @media (max-width: 768px) {
+  /* Hero — mniejszy na mobile */
   .flavor-about-hero {
-    min-height: 40vh;
+    min-height: 35vh;
   }
-  .flavor-about-values-grid,
-  .flavor-about-testimonials-grid {
+  .flavor-about-hero-inner {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Section titles — mniejszy margines */
+  .flavor-about-section-title {
+    margin-bottom: 1.25rem;
+  }
+
+  /* Content */
+  .flavor-about-content {
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+
+  /* Values — kolumna, mniejsze paddingi */
+  .flavor-about-values {
+    padding: 2rem 1rem;
+  }
+  .flavor-about-values-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .flavor-about-value-card {
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1rem;
+  }
+  .flavor-about-value-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    margin: 0;
+    margin-top: 0.15rem;
+  }
+  .flavor-about-value-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .flavor-about-value-body .flavor-about-value-title,
+  .flavor-about-value-body .flavor-about-value-desc {
+    text-align: left;
+  }
+  .flavor-about-value-body .flavor-about-value-title {
+    margin-bottom: 0.25rem;
+  }
+
+  /* Stats — kolumna na mobile */
+  .flavor-about-stats {
+    padding: 2rem 1rem;
+  }
+  .flavor-about-stats-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .flavor-about-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .flavor-about-stat-number {
+    font-size: 2rem;
+    display: inline;
+  }
+  .flavor-about-stat-suffix {
+    font-size: 1.4rem;
+  }
+  .flavor-about-stat-label {
+    display: inline;
+    margin-top: 0;
+    margin-left: 0.35rem;
+    text-transform: none;
+    font-size: 0.9rem;
+    letter-spacing: 0;
+  }
+
+  /* Team slider — 1 karta */
+  .flavor-about-team {
+    padding: 2rem 1rem;
   }
   .flavor-about-team-card {
     flex: 0 0 85%;
+    padding: 1.5rem 1rem 1.25rem;
+  }
+  .flavor-about-team-photo {
+    width: 100px;
+    height: 100px;
+  }
+  .flavor-about-team-nav {
+    width: 34px;
+    height: 34px;
   }
   .flavor-about-team-prev {
     left: 4px;
@@ -1680,11 +1774,31 @@ article.flavor-about-page:hover {
   .flavor-about-team-next {
     right: 4px;
   }
-  .flavor-about-stats-grid {
-    gap: 1.5rem 2rem;
+
+  /* Testimonials — kolumna, mniejsze */
+  .flavor-about-testimonials {
+    padding: 2rem 1rem;
+  }
+  .flavor-about-testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .flavor-about-testimonial {
+    padding: 1.25rem;
+  }
+  .flavor-about-testimonial-quote svg {
+    width: 28px;
+    height: 28px;
+  }
+  .flavor-about-testimonial-quote p {
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
   }
 
-  /* Timeline → single column */
+  /* Timeline — single column, kompaktowy */
+  .flavor-about-timeline {
+    padding: 2rem 1rem;
+  }
   .flavor-about-timeline-track::before {
     left: 7px;
   }
@@ -1694,12 +1808,21 @@ article.flavor-about-page:hover {
     width: 100%;
     left: 0;
     text-align: left;
-    padding-left: 2.5rem;
+    padding-left: 2rem;
     padding-right: 0;
+    padding-bottom: 1.5rem;
   }
   .flavor-about-timeline-entry.left .flavor-about-timeline-dot,
   .flavor-about-timeline-entry.right .flavor-about-timeline-dot {
     left: 0;
     right: auto;
+  }
+  .flavor-about-timeline-card {
+    padding: 1rem 1.25rem;
+  }
+
+  /* Fix full-width breakout overflow on mobile */
+  .flavor-about-page {
+    overflow-x: hidden;
   }
 }

@@ -61,12 +61,14 @@ $page_title     = get_the_title();
                 <div class="flavor-about-value-icon">
                     <?php echo Flavor_About::get_value_icon( $val['icon'] ?? 'star' ); ?>
                 </div>
-                <?php if ( ! empty( $val['title'] ) ) : ?>
-                    <h3 class="flavor-about-value-title"><?php echo esc_html( $val['title'] ); ?></h3>
-                <?php endif; ?>
-                <?php if ( ! empty( $val['desc'] ) ) : ?>
-                    <p class="flavor-about-value-desc"><?php echo esc_html( $val['desc'] ); ?></p>
-                <?php endif; ?>
+                <div class="flavor-about-value-body">
+                    <?php if ( ! empty( $val['title'] ) ) : ?>
+                        <h3 class="flavor-about-value-title"><?php echo esc_html( $val['title'] ); ?></h3>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $val['desc'] ) ) : ?>
+                        <p class="flavor-about-value-desc"><?php echo esc_html( $val['desc'] ); ?></p>
+                    <?php endif; ?>
+                </div>
             </div>
             <?php endforeach; ?>
         </div>
