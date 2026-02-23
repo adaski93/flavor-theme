@@ -10,7 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'FLAVOR_VERSION', '1.4.0' );
+define( 'FLAVOR_VERSION', '1.4.1' );
+
+/**
+ * Fallback i18n helpers — used when Flavor Commerce plugin is not active.
+ * When the plugin IS active it defines fc__() / fc_e() itself and these
+ * wrappers are simply skipped thanks to function_exists().
+ */
+if ( ! function_exists( 'fc__' ) ) {
+    function fc__( $key, $context = null ) { return $key; }
+}
+if ( ! function_exists( 'fc_e' ) ) {
+    function fc_e( $key, $context = null ) { echo $key; }
+}
 
 /**
  * Customizer – sterowanie wyglądem motywu i wtyczki Flavor Commerce
