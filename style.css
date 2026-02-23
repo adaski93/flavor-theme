@@ -1408,17 +1408,46 @@ article.flavor-about-page:hover {
   font-family: var(--font-main);
 }
 
-/* ── Team ── */
+/* ── Team Slider ── */
 .flavor-about-team {
-  padding: 3.5rem 1.5rem;
+  padding: 3.5rem 0;
   max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
-.flavor-about-team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 2rem;
+.flavor-about-team .flavor-about-section-title {
+  padding: 0 1.5rem;
 }
+.flavor-about-team-slider {
+  position: relative;
+  overflow: hidden;
+  padding: 0 1.5rem;
+}
+.flavor-about-team-track {
+  display: flex;
+  gap: 1.5rem;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ≤5 items: fill available space, no scroll */
+.flavor-about-team:not([data-team-count]),
+.flavor-about-team[data-team-count="1"] .flavor-about-team-track,
+.flavor-about-team[data-team-count="2"] .flavor-about-team-track,
+.flavor-about-team[data-team-count="3"] .flavor-about-team-track,
+.flavor-about-team[data-team-count="4"] .flavor-about-team-track,
+.flavor-about-team[data-team-count="5"] .flavor-about-team-track {
+  justify-content: center;
+}
+.flavor-about-team[data-team-count="1"] .flavor-about-team-card { flex: 0 0 60%; max-width: 340px; }
+.flavor-about-team[data-team-count="2"] .flavor-about-team-card { flex: 0 0 calc(50% - 0.75rem); max-width: 320px; }
+.flavor-about-team[data-team-count="3"] .flavor-about-team-card { flex: 0 0 calc(33.333% - 1rem); }
+.flavor-about-team[data-team-count="4"] .flavor-about-team-card { flex: 0 0 calc(25% - 1.125rem); }
+.flavor-about-team[data-team-count="5"] .flavor-about-team-card { flex: 0 0 calc(20% - 1.2rem); }
+
+/* >5 items: fixed card width for slider */
+.flavor-about-team-slider--active .flavor-about-team-card {
+  flex: 0 0 calc(20% - 1.2rem);
+}
+
 .flavor-about-team-card {
   text-align: center;
   background: var(--color-surface, #fff);
@@ -1426,6 +1455,7 @@ article.flavor-about-page:hover {
   border-radius: var(--radius);
   padding: 2rem 1.5rem 1.5rem;
   box-shadow: var(--shadow-sm);
+  min-width: 0;
   transition:
     box-shadow var(--transition),
     transform var(--transition);
@@ -1434,6 +1464,38 @@ article.flavor-about-page:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
+
+/* Arrows */
+.flavor-about-team-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface, #fff);
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), background var(--transition), opacity var(--transition);
+  opacity: 0;
+  pointer-events: none;
+}
+.flavor-about-team-slider--active .flavor-about-team-arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+.flavor-about-team-arrow:hover {
+  box-shadow: var(--shadow-md);
+  background: var(--color-accent-light);
+}
+.flavor-about-team-arrow--prev { left: 0; }
+.flavor-about-team-arrow--next { right: 0; }
 .flavor-about-team-photo {
   width: 120px;
   height: 120px;
@@ -1622,13 +1684,37 @@ article.flavor-about-page:hover {
     min-height: 40vh;
   }
   .flavor-about-values-grid,
-  .flavor-about-team-grid,
   .flavor-about-testimonials-grid {
     grid-template-columns: 1fr;
   }
   .flavor-about-stats-grid {
     gap: 1.5rem 2rem;
   }
+
+  /* Team slider: 1 card on mobile */
+  .flavor-about-team[data-team-count="1"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="2"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="3"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="4"] .flavor-about-team-card,
+  .flavor-about-team[data-team-count="5"] .flavor-about-team-card,
+  .flavor-about-team-slider--active .flavor-about-team-card {
+    flex: 0 0 calc(100% - 3rem);
+  }
+  .flavor-about-team-track {
+    justify-content: flex-start !important;
+  }
+  .flavor-about-team-slider {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+  }
+  .flavor-about-team-slider::-webkit-scrollbar { display: none; }
+  .flavor-about-team-card {
+    scroll-snap-align: center;
+  }
+  .flavor-about-team-arrow { display: none !important; }
 
   /* Timeline → single column */
   .flavor-about-timeline-track::before {

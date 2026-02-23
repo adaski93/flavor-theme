@@ -89,31 +89,43 @@ $page_title     = get_the_title();
     </section>
 
     <?php // ── Team ──
-    elseif ( $section === 'team' && ! empty( $team['items'] ) ) : ?>
-    <section class="flavor-about-team">
+    elseif ( $section === 'team' && ! empty( $team['items'] ) ) :
+        $team_count = count( $team['items'] );
+    ?>
+    <section class="flavor-about-team" data-team-count="<?php echo $team_count; ?>">
         <?php if ( $team['title'] ) : ?>
             <h2 class="flavor-about-section-title"><?php echo esc_html( $team['title'] ); ?></h2>
         <?php endif; ?>
-        <div class="flavor-about-team-grid">
-            <?php foreach ( $team['items'] as $member ) : ?>
-            <div class="flavor-about-team-card">
-                <?php if ( ! empty( $member['image_url'] ) ) : ?>
-                <div class="flavor-about-team-photo">
-                    <img src="<?php echo esc_url( $member['image_url'] ); ?>" alt="<?php echo esc_attr( $member['name'] ?? '' ); ?>" loading="lazy">
+        <div class="flavor-about-team-slider">
+            <div class="flavor-about-team-track">
+                <?php foreach ( $team['items'] as $member ) : ?>
+                <div class="flavor-about-team-card">
+                    <?php if ( ! empty( $member['image_url'] ) ) : ?>
+                    <div class="flavor-about-team-photo">
+                        <img src="<?php echo esc_url( $member['image_url'] ); ?>" alt="<?php echo esc_attr( $member['name'] ?? '' ); ?>" loading="lazy">
+                    </div>
+                    <?php else : ?>
+                    <div class="flavor-about-team-photo flavor-about-team-no-photo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/></svg>
+                    </div>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $member['name'] ) ) : ?>
+                        <h3 class="flavor-about-team-name"><?php echo esc_html( $member['name'] ); ?></h3>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $member['role'] ) ) : ?>
+                        <p class="flavor-about-team-role"><?php echo esc_html( $member['role'] ); ?></p>
+                    <?php endif; ?>
                 </div>
-                <?php else : ?>
-                <div class="flavor-about-team-photo flavor-about-team-no-photo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/></svg>
-                </div>
-                <?php endif; ?>
-                <?php if ( ! empty( $member['name'] ) ) : ?>
-                    <h3 class="flavor-about-team-name"><?php echo esc_html( $member['name'] ); ?></h3>
-                <?php endif; ?>
-                <?php if ( ! empty( $member['role'] ) ) : ?>
-                    <p class="flavor-about-team-role"><?php echo esc_html( $member['role'] ); ?></p>
-                <?php endif; ?>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
+            <?php if ( $team_count > 5 ) : ?>
+            <button class="flavor-about-team-arrow flavor-about-team-arrow--prev" aria-label="<?php esc_attr_e( 'Poprzedni', 'flavor' ); ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="flavor-about-team-arrow flavor-about-team-arrow--next" aria-label="<?php esc_attr_e( 'Następny', 'flavor' ); ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -201,6 +213,94 @@ $page_title     = get_the_title();
     }, { threshold: 0.3 });
 
     counters.forEach(function(c) { observer.observe(c); });
+})();
+</script>
+
+<!-- Team slider: auto-scroll, hover pause, arrows -->
+<script>
+(function(){
+    var section = document.querySelector('.flavor-about-team[data-team-count]');
+    if (!section) return;
+
+    var count   = parseInt(section.getAttribute('data-team-count'), 10) || 0;
+    var slider  = section.querySelector('.flavor-about-team-slider');
+    var track   = section.querySelector('.flavor-about-team-track');
+    if (!slider || !track) return;
+
+    var cards   = track.querySelectorAll('.flavor-about-team-card');
+    if (!cards.length) return;
+
+    /* ── On mobile (≤768px) use native scroll-snap, no JS slider ── */
+    function isMobile() { return window.innerWidth <= 768; }
+
+    /* ── Only activate slider if > 5 items on desktop ── */
+    if (count <= 5) return;
+
+    slider.classList.add('flavor-about-team-slider--active');
+
+    var prevBtn = section.querySelector('.flavor-about-team-arrow--prev');
+    var nextBtn = section.querySelector('.flavor-about-team-arrow--next');
+
+    var pos      = 0;       // current scroll offset (px)
+    var autoId   = null;
+    var paused   = false;
+    var speed    = 3000;    // ms between auto-scrolls
+
+    function getCardWidth() {
+        var card = cards[0];
+        var style = getComputedStyle(track);
+        var gap   = parseFloat(style.gap) || 24;
+        return card.offsetWidth + gap;
+    }
+
+    function getMaxPos() {
+        var cardW = getCardWidth();
+        var visible = Math.floor(slider.offsetWidth / cardW) || 1;
+        var maxCards = cards.length - visible;
+        return Math.max(0, maxCards * cardW);
+    }
+
+    function slideTo(newPos) {
+        if (isMobile()) return;
+        var max = getMaxPos();
+        if (newPos > max) newPos = 0;    // loop
+        if (newPos < 0) newPos = max;    // loop back
+        pos = newPos;
+        track.style.transform = 'translateX(-' + pos + 'px)';
+    }
+
+    function slideNext() { slideTo(pos + getCardWidth()); }
+    function slidePrev() { slideTo(pos - getCardWidth()); }
+
+    function startAuto() {
+        stopAuto();
+        autoId = setInterval(function() {
+            if (!paused && !isMobile()) slideNext();
+        }, speed);
+    }
+
+    function stopAuto() {
+        if (autoId) { clearInterval(autoId); autoId = null; }
+    }
+
+    /* Arrows */
+    if (prevBtn) prevBtn.addEventListener('click', function() { slidePrev(); startAuto(); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { slideNext(); startAuto(); });
+
+    /* Hover pause */
+    slider.addEventListener('mouseenter', function() { paused = true; });
+    slider.addEventListener('mouseleave', function() { paused = false; });
+
+    /* Start auto-scroll */
+    startAuto();
+
+    /* Reset on resize */
+    window.addEventListener('resize', function() {
+        if (isMobile()) {
+            track.style.transform = '';
+            pos = 0;
+        }
+    });
 })();
 </script>
 
