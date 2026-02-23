@@ -162,7 +162,7 @@ $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
             </form>
 
             <?php if ( $map_url && $map_position === 'below_form' ) : ?>
-            <div class="flavor-contact-map flavor-contact-map--inline">
+            <div class="flavor-contact-map flavor-contact-map--inline flavor-contact-map--below">
                 <iframe src="<?php echo esc_url( $map_url ); ?>" width="100%" height="300" style="border:0; border-radius: var(--fc-card-radius, var(--radius));<?php echo $map_filter; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <?php endif; ?>
