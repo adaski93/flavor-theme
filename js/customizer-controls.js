@@ -194,5 +194,68 @@
         });
       });
     }
+
+    /* ── Sekcja Strona kontaktowa → podgląd strony kontakt ── */
+    if (
+      typeof flavorCustomizer !== "undefined" &&
+      flavorCustomizer.contactUrl
+    ) {
+      wp.customize.section("flavor_contact_info", function (section) {
+        section.expanded.bind(function (isExpanded) {
+          if (isExpanded) {
+            wp.customize.previewer.previewUrl.set(flavorCustomizer.contactUrl);
+          }
+        });
+      });
+    }
+
+    /* ── Mapa: pokaż pole adresu tylko gdy „Własny adres" ── */
+    wp.customize("flavor_contact_map_source", function (setting) {
+      wp.customize.control("flavor_contact_map_custom", function (control) {
+        function toggle() {
+          control.container.toggle(setting.get() === "custom");
+        }
+        toggle();
+        setting.bind(toggle);
+      });
+    });
+
+    /* ── Sortowalne karty kontaktowe (drag & drop) ── */
+    wp.customize.control("flavor_contact_cards_order", function (control) {
+      // Wait until the control's container is in the DOM
+      var initSortable = function () {
+        var $list = control.container.find(".fc-sortable-cards");
+        if (!$list.length) {
+          return;
+        }
+
+        $list.sortable({
+          handle: ".fc-sortable-handle",
+          axis: "y",
+          containment: "parent",
+          placeholder: "fc-sortable-placeholder",
+          tolerance: "pointer",
+          update: function () {
+            var order = $list
+              .find(".fc-sortable-card")
+              .map(function () {
+                return $(this).data("key");
+              })
+              .get()
+              .join(",");
+
+            control.setting.set(order);
+          },
+        });
+      };
+
+      // The control may already be rendered or not yet
+      if (control.container.find(".fc-sortable-cards").length) {
+        initSortable();
+      } else {
+        // Fallback: wait for DOM insertion
+        setTimeout(initSortable, 500);
+      }
+    });
   });
 })(jQuery);

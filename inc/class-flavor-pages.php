@@ -128,7 +128,7 @@ class Flavor_Pages {
         //  Kolejność kart w sidebarze (drag & drop) + inline pola
         // =============================================================
         $wp_customize->add_setting( 'flavor_contact_cards_order', array(
-            'default'           => 'company,reach,hours',
+            'default'           => 'company,reach,hours,social',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'refresh',
         ) );
@@ -191,6 +191,31 @@ class Flavor_Pages {
                         </div>
                         <?php
                         Flavor_Hours_Control::render_inline( 'flavor_contact_hours' );
+                    },
+                ),
+                'social'  => array(
+                    'label'  => fc__( 'contact_social_title' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+                    'fields' => function() {
+                        ?>
+                        <p class="fc-card-field" style="font-size:12px;color:#999;margin:0">
+                            <?php echo esc_html( fc__( 'cust_contact_social_hint', 'admin' ) ); ?>
+                        </p>
+                        <?php
+                        foreach ( self::$socials as $key => $social ) {
+                            $sid = 'flavor_social_' . $key;
+                            $val = get_theme_mod( $sid, '' );
+                            ?>
+                            <div class="fc-card-field">
+                                <label style="display:block;font-size:12px;margin-bottom:2px"><?php echo esc_html( $social['label'] ); ?></label>
+                                <input type="url"
+                                       data-customize-setting-link="<?php echo esc_attr( $sid ); ?>"
+                                       value="<?php echo esc_attr( $val ); ?>"
+                                       placeholder="https://"
+                                       style="width:100%;box-sizing:border-box">
+                            </div>
+                            <?php
+                        }
                     },
                 ),
             ),
@@ -278,24 +303,12 @@ class Flavor_Pages {
         ) );
 
         // =============================================================
-        //  Sekcja: Social Media
+        //  Social Media — ustawienia (renderowane wewnątrz kart)
         // =============================================================
-        $wp_customize->add_section( 'flavor_social', array(
-            'title'       => fc__( 'cust_social', 'admin' ),
-            'description' => fc__( 'cust_social_desc', 'admin' ),
-            'panel'       => 'flavor_panel',
-            'priority'    => 75,
-        ) );
-
         foreach ( self::$socials as $key => $social ) {
             $wp_customize->add_setting( 'flavor_social_' . $key, array(
                 'default'           => '',
                 'sanitize_callback' => 'esc_url_raw',
-            ) );
-            $wp_customize->add_control( 'flavor_social_' . $key, array(
-                'label'   => $social['label'],
-                'section' => 'flavor_social',
-                'type'    => 'url',
             ) );
         }
     }

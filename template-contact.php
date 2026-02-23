@@ -78,7 +78,7 @@ if ( $map_enabled ) {
 }
 $socials = Flavor_Pages::get_social_links();
 
-$has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( $show_phone && $phone ) || ( $show_email && $email ) || ( $show_hours && $hours ) || ( $show_tax_no && $nip ) || ( $show_crn && $crn );
+$has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( $show_phone && $phone ) || ( $show_email && $email ) || ( $show_hours && $hours ) || ( $show_tax_no && $nip ) || ( $show_crn && $crn ) || ! empty( $socials );
 
 // Mapa — pozycja i ciemny motyw
 $map_position = get_theme_mod( 'flavor_contact_map_position', 'below_all' );
@@ -174,9 +174,9 @@ $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
 
             <?php
             // Kolejność kart z Customizera
-            $cards_order = array_filter( array_map( 'trim', explode( ',', get_theme_mod( 'flavor_contact_cards_order', 'company,reach,hours' ) ) ) );
+            $cards_order = array_filter( array_map( 'trim', explode( ',', get_theme_mod( 'flavor_contact_cards_order', 'company,reach,hours,social' ) ) ) );
             // Upewnij się, że wszystkie karty są uwzględnione
-            foreach ( array( 'company', 'reach', 'hours' ) as $default_card ) {
+            foreach ( array( 'company', 'reach', 'hours', 'social' ) as $default_card ) {
                 if ( ! in_array( $default_card, $cards_order, true ) ) {
                     $cards_order[] = $default_card;
                 }
@@ -254,13 +254,10 @@ $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
                     <?php endforeach; ?>
                 </table>
             </div>
-                <?php endif;
-            endforeach; ?>
-
-            <?php if ( ! empty( $socials ) ) : ?>
+                <?php elseif ( $card_key === 'social' && ! empty( $socials ) ) : ?>
             <div class="flavor-contact-card">
                 <h3 class="flavor-contact-card-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                     <?php fc_e( 'contact_social_title' ); ?>
                 </h3>
                 <div class="flavor-social-links">
@@ -271,7 +268,8 @@ $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
                     <?php endforeach; ?>
                 </div>
             </div>
-            <?php endif; ?>
+                <?php endif;
+            endforeach; ?>
 
         </aside>
         <?php endif; ?>

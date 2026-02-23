@@ -622,14 +622,16 @@ function flavor_customize_controls_js() {
     wp_enqueue_script(
         'flavor-customizer-controls',
         get_template_directory_uri() . '/js/customizer-controls.js',
-        array( 'customize-controls', 'jquery' ),
+        array( 'customize-controls', 'jquery', 'jquery-ui-sortable' ),
         FLAVOR_VERSION,
         true
     );
 
     $checkout_id = defined( 'FC_VERSION' ) ? get_option( 'fc_page_zamowienie' ) : 0;
+    $contact_id  = get_option( 'fc_page_kontakt', 0 );
     wp_localize_script( 'flavor-customizer-controls', 'flavorCustomizer', array(
         'checkoutUrl' => $checkout_id ? get_permalink( $checkout_id ) : '',
+        'contactUrl'  => $contact_id ? get_permalink( $contact_id ) : '',
     ) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'flavor_customize_controls_js' );
