@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'FLAVOR_VERSION', '1.4.2' );
+define( 'FLAVOR_VERSION', '1.5.1' );
 
 /**
  * Fallback i18n helpers — used when Flavor Commerce plugin is not active.
@@ -33,6 +33,11 @@ require get_template_directory() . '/inc/customizer.php';
  * Strona ustawień wyglądu sklepu (sidebar, widgety)
  */
 require get_template_directory() . '/inc/appearance.php';
+
+/**
+ * Auto-tworzenie stron (O nas, Kontakt) + Customizer page selectors
+ */
+require get_template_directory() . '/inc/class-flavor-pages.php';
 
 /**
  * GitHub auto-updater for the theme.
@@ -198,6 +203,10 @@ function flavor_render_custom_menu() {
             $page_ids_to_prime[] = absint( get_option( 'fc_page_porownanie' ) );
         } elseif ( $type === 'fc_shop' ) {
             $page_ids_to_prime[] = absint( get_option( 'fc_page_sklep' ) );
+        } elseif ( $type === 'fc_about' ) {
+            $page_ids_to_prime[] = absint( get_option( 'fc_page_o-nas' ) );
+        } elseif ( $type === 'fc_contact' ) {
+            $page_ids_to_prime[] = absint( get_option( 'fc_page_kontakt' ) );
         } elseif ( $type === 'page' && ! empty( $item['id'] ) ) {
             $page_ids_to_prime[] = absint( $item['id'] );
         }
@@ -227,6 +236,24 @@ function flavor_render_custom_menu() {
             $is_current = ( trailingslashit( $url ) === $current_url );
             $class      = 'menu-item-fc-account' . ( $is_current ? ' current-menu-item' : '' );
             $html .= '<li class="' . $class . '"><a href="' . esc_url( $url ) . '" title="' . $title . '">' . $account_svg . '<span class="fc-menu-label">' . $title . '</span></a></li>';
+            continue;
+        }
+
+        if ( $type === 'fc_about' ) {
+            $page_id = get_option( 'fc_page_o-nas' );
+            $url     = $page_id ? get_permalink( $page_id ) : '#';
+            $is_current = ( trailingslashit( $url ) === $current_url );
+            $class      = $is_current ? ' class="current-menu-item"' : '';
+            $html .= '<li' . $class . '><a href="' . esc_url( $url ) . '">' . $title . '</a></li>';
+            continue;
+        }
+
+        if ( $type === 'fc_contact' ) {
+            $page_id = get_option( 'fc_page_kontakt' );
+            $url     = $page_id ? get_permalink( $page_id ) : '#';
+            $is_current = ( trailingslashit( $url ) === $current_url );
+            $class      = $is_current ? ' class="current-menu-item"' : '';
+            $html .= '<li' . $class . '><a href="' . esc_url( $url ) . '">' . $title . '</a></li>';
             continue;
         }
 
