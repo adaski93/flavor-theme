@@ -97,7 +97,7 @@ $page_title     = get_the_title();
             <h2 class="flavor-about-section-title"><?php echo esc_html( $team['title'] ); ?></h2>
         <?php endif; ?>
         <div class="flavor-about-team-slider-wrap">
-            <button type="button" class="flavor-about-team-nav flavor-about-team-prev" aria-label="Poprzedni">
+            <button type="button" class="flavor-about-slider-nav flavor-about-team-prev" aria-label="Poprzedni">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </button>
             <div class="flavor-about-team-slider">
@@ -121,7 +121,7 @@ $page_title     = get_the_title();
                 </div>
                 <?php endforeach; ?>
             </div>
-            <button type="button" class="flavor-about-team-nav flavor-about-team-next" aria-label="Następny">
+            <button type="button" class="flavor-about-slider-nav flavor-about-team-next" aria-label="Następny">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
         </div>
@@ -133,21 +133,29 @@ $page_title     = get_the_title();
         <?php if ( $testimonials['title'] ) : ?>
             <h2 class="flavor-about-section-title"><?php echo esc_html( $testimonials['title'] ); ?></h2>
         <?php endif; ?>
-        <div class="flavor-about-testimonials-grid">
-            <?php foreach ( $testimonials['items'] as $test ) : ?>
-            <blockquote class="flavor-about-testimonial">
-                <div class="flavor-about-testimonial-quote">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity="0.15"><path d="M11.3 2.5C6 5 3.3 8.3 3.3 13c0 3.3 2 5.5 4.5 5.5 2.2 0 3.7-1.5 3.7-3.5 0-2-1.3-3.3-3.2-3.3-.3 0-.8.1-1 .2.5-2.7 2.5-5.5 5.5-7.2L11.3 2.5zm10.2 0C16.2 5 13.5 8.3 13.5 13c0 3.3 2 5.5 4.5 5.5 2.2 0 3.7-1.5 3.7-3.5 0-2-1.3-3.3-3.2-3.3-.3 0-.8.1-1 .2.5-2.7 2.5-5.5 5.5-7.2L21.5 2.5z"/></svg>
-                    <p><?php echo esc_html( $test['quote'] ?? '' ); ?></p>
-                </div>
-                <footer class="flavor-about-testimonial-footer">
-                    <cite class="flavor-about-testimonial-author"><?php echo esc_html( $test['author'] ?? '' ); ?></cite>
-                    <?php if ( ! empty( $test['role'] ) ) : ?>
-                        <span class="flavor-about-testimonial-role"><?php echo esc_html( $test['role'] ); ?></span>
-                    <?php endif; ?>
-                </footer>
-            </blockquote>
-            <?php endforeach; ?>
+        <div class="flavor-about-testimonials-wrap">
+            <button type="button" class="flavor-about-slider-nav flavor-about-testimonials-prev" aria-label="Poprzedni">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="flavor-about-testimonials-slider">
+                <?php foreach ( $testimonials['items'] as $test ) : ?>
+                <blockquote class="flavor-about-testimonial">
+                    <div class="flavor-about-testimonial-quote">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity="0.15"><path d="M11.3 2.5C6 5 3.3 8.3 3.3 13c0 3.3 2 5.5 4.5 5.5 2.2 0 3.7-1.5 3.7-3.5 0-2-1.3-3.3-3.2-3.3-.3 0-.8.1-1 .2.5-2.7 2.5-5.5 5.5-7.2L11.3 2.5zm10.2 0C16.2 5 13.5 8.3 13.5 13c0 3.3 2 5.5 4.5 5.5 2.2 0 3.7-1.5 3.7-3.5 0-2-1.3-3.3-3.2-3.3-.3 0-.8.1-1 .2.5-2.7 2.5-5.5 5.5-7.2L21.5 2.5z"/></svg>
+                        <p><?php echo esc_html( $test['quote'] ?? '' ); ?></p>
+                    </div>
+                    <footer class="flavor-about-testimonial-footer">
+                        <cite class="flavor-about-testimonial-author"><?php echo esc_html( $test['author'] ?? '' ); ?></cite>
+                        <?php if ( ! empty( $test['role'] ) ) : ?>
+                            <span class="flavor-about-testimonial-role"><?php echo esc_html( $test['role'] ); ?></span>
+                        <?php endif; ?>
+                    </footer>
+                </blockquote>
+                <?php endforeach; ?>
+            </div>
+            <button type="button" class="flavor-about-slider-nav flavor-about-testimonials-next" aria-label="Następny">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
         </div>
     </section>
 
@@ -213,37 +221,41 @@ $page_title     = get_the_title();
     counters.forEach(function(c) { observer.observe(c); });
 })();
 
-/* ── Team slider navigation ── */
+/* ── Generic slider navigation ── */
 (function(){
-    var slider = document.querySelector('.flavor-about-team-slider');
-    var prev   = document.querySelector('.flavor-about-team-prev');
-    var next   = document.querySelector('.flavor-about-team-next');
-    if (!slider || !prev || !next) return;
+    function initSlider(sliderSel, prevSel, nextSel) {
+        var slider = document.querySelector(sliderSel);
+        var prev   = document.querySelector(prevSel);
+        var next   = document.querySelector(nextSel);
+        if (!slider || !prev || !next) return;
 
-    function getCardWidth() {
-        var card = slider.querySelector('.flavor-about-team-card');
-        if (!card) return 300;
-        var style = getComputedStyle(slider);
-        var gap   = parseFloat(style.gap) || parseFloat(style.columnGap) || 24;
-        return card.offsetWidth + gap;
+        function getStep() {
+            var card = slider.firstElementChild;
+            if (!card) return 300;
+            var style = getComputedStyle(slider);
+            var gap   = parseFloat(style.gap) || parseFloat(style.columnGap) || 24;
+            return card.offsetWidth + gap;
+        }
+
+        function updateNav() {
+            prev.disabled = slider.scrollLeft <= 1;
+            next.disabled = slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth - 1;
+        }
+
+        prev.addEventListener('click', function() {
+            slider.scrollBy({ left: -getStep(), behavior: 'smooth' });
+        });
+        next.addEventListener('click', function() {
+            slider.scrollBy({ left: getStep(), behavior: 'smooth' });
+        });
+
+        slider.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+        window.addEventListener('load', updateNav);
     }
 
-    function updateNav() {
-        prev.disabled = slider.scrollLeft <= 1;
-        next.disabled = slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth - 1;
-    }
-
-    prev.addEventListener('click', function() {
-        slider.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
-    });
-    next.addEventListener('click', function() {
-        slider.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-    });
-
-    slider.addEventListener('scroll', updateNav, { passive: true });
-    updateNav();
-    /* re-check after fonts / images loaded */
-    window.addEventListener('load', updateNav);
+    initSlider('.flavor-about-team-slider', '.flavor-about-team-prev', '.flavor-about-team-next');
+    initSlider('.flavor-about-testimonials-slider', '.flavor-about-testimonials-prev', '.flavor-about-testimonials-next');
 })();
 </script>
 

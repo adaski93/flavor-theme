@@ -1448,34 +1448,6 @@ article.flavor-about-page:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
-/* Nav buttons */
-.flavor-about-team-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface, #fff);
-  box-shadow: var(--shadow-sm);
-  color: var(--color-text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    box-shadow var(--transition),
-    opacity var(--transition);
-}
-.flavor-about-team-nav:hover {
-  box-shadow: var(--shadow-md);
-}
-.flavor-about-team-nav:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
 .flavor-about-team-prev {
   left: -20px;
 }
@@ -1515,18 +1487,32 @@ article.flavor-about-page:hover {
   margin: 0;
 }
 
-/* ── Testimonials ── */
+/* ── Testimonials (slider) ── */
 .flavor-about-testimonials {
   padding: 3.5rem 1.5rem;
   max-width: var(--container-max, 1200px);
   margin: 0 auto;
 }
-.flavor-about-testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+.flavor-about-testimonials-wrap {
+  position: relative;
+}
+.flavor-about-testimonials-slider {
+  display: flex;
   gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.5rem 0;
+}
+.flavor-about-testimonials-slider::-webkit-scrollbar {
+  display: none;
 }
 .flavor-about-testimonial {
+  flex: 0 0 calc(33.333% - 1rem);
+  min-width: 0;
+  scroll-snap-align: start;
   background: var(--color-surface, #fff);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -1540,6 +1526,40 @@ article.flavor-about-page:hover {
 .flavor-about-testimonial:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+}
+/* Shared slider nav (team + testimonials) */
+.flavor-about-slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface, #fff);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    box-shadow var(--transition),
+    opacity var(--transition);
+}
+.flavor-about-slider-nav:hover {
+  box-shadow: var(--shadow-md);
+}
+.flavor-about-slider-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.flavor-about-testimonials-prev {
+  left: -20px;
+}
+.flavor-about-testimonials-next {
+  right: -20px;
 }
 .flavor-about-testimonial-quote {
   position: relative;
@@ -1764,10 +1784,6 @@ article.flavor-about-page:hover {
     width: 100px;
     height: 100px;
   }
-  .flavor-about-team-nav {
-    width: 34px;
-    height: 34px;
-  }
   .flavor-about-team-prev {
     left: 4px;
   }
@@ -1775,15 +1791,12 @@ article.flavor-about-page:hover {
     right: 4px;
   }
 
-  /* Testimonials — kolumna, mniejsze */
+  /* Testimonials slider — 1 karta */
   .flavor-about-testimonials {
     padding: 2rem 1rem;
   }
-  .flavor-about-testimonials-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
   .flavor-about-testimonial {
+    flex: 0 0 85%;
     padding: 1.25rem;
   }
   .flavor-about-testimonial-quote svg {
@@ -1793,6 +1806,16 @@ article.flavor-about-page:hover {
   .flavor-about-testimonial-quote p {
     padding-left: 1.5rem;
     font-size: 0.9rem;
+  }
+  .flavor-about-slider-nav {
+    width: 34px;
+    height: 34px;
+  }
+  .flavor-about-testimonials-prev {
+    left: 4px;
+  }
+  .flavor-about-testimonials-next {
+    right: 4px;
   }
 
   /* Timeline — single column, kompaktowy */
