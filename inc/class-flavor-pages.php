@@ -246,6 +246,17 @@ class Flavor_Pages {
             'type'    => 'text',
         ) );
 
+        // Google Maps — ciemny motyw
+        $wp_customize->add_setting( 'flavor_contact_map_dark', array(
+            'default'           => false,
+            'sanitize_callback' => 'wp_validate_boolean',
+        ) );
+        $wp_customize->add_control( 'flavor_contact_map_dark', array(
+            'label'   => fc__( 'cust_contact_map_dark', 'admin' ),
+            'section' => 'flavor_contact_info',
+            'type'    => 'checkbox',
+        ) );
+
         // =============================================================
         //  Sekcja: Social Media
         // =============================================================
