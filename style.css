@@ -1308,7 +1308,7 @@ article.flavor-about-page:hover {
   padding-bottom: 1rem;
 }
 .flavor-about-section-title::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -1608,6 +1608,13 @@ article.flavor-about-page:hover {
   font-weight: 600;
   font-size: 0.92rem;
   color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.flavor-about-testimonial-flag {
+  font-size: 1.25rem;
+  line-height: 1;
 }
 .flavor-about-testimonial-role {
   font-size: 0.82rem;

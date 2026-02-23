@@ -17,6 +17,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Flavor_About {
 
     /**
+     * Available countries (ISO 3166-1 alpha-2 => name)
+     */
+    private static $countries = array(
+        ''   => '—',
+        'PL' => 'Polska',
+        'DE' => 'Deutschland',
+        'GB' => 'United Kingdom',
+        'US' => 'United States',
+        'FR' => 'France',
+        'IT' => 'Italia',
+        'ES' => 'España',
+        'CZ' => 'Česko',
+        'SK' => 'Slovensko',
+        'UA' => 'Україна',
+        'NL' => 'Nederland',
+        'BE' => 'Belgique',
+        'AT' => 'Österreich',
+        'CH' => 'Schweiz',
+        'SE' => 'Sverige',
+        'NO' => 'Norge',
+        'DK' => 'Danmark',
+        'FI' => 'Suomi',
+        'PT' => 'Portugal',
+        'IE' => 'Ireland',
+        'LT' => 'Lietuva',
+        'LV' => 'Latvija',
+        'EE' => 'Eesti',
+        'RO' => 'România',
+        'HU' => 'Magyarország',
+        'HR' => 'Hrvatska',
+        'BG' => 'България',
+        'GR' => 'Ελλάδα',
+        'RU' => 'Россия',
+        'TR' => 'Türkiye',
+        'JP' => '日本',
+        'CN' => '中国',
+        'KR' => '한국',
+        'IN' => 'India',
+        'AU' => 'Australia',
+        'CA' => 'Canada',
+        'BR' => 'Brasil',
+        'MX' => 'México',
+        'AR' => 'Argentina',
+    );
+
+    /**
+     * Convert ISO country code to flag emoji
+     */
+    public static function country_flag( $code ) {
+        $code = strtoupper( trim( $code ) );
+        if ( strlen( $code ) !== 2 ) {
+            return '';
+        }
+        // Regional indicator symbols: A = U+1F1E6
+        $first  = mb_chr( 0x1F1E6 + ord( $code[0] ) - ord( 'A' ) );
+        $second = mb_chr( 0x1F1E6 + ord( $code[1] ) - ord( 'A' ) );
+        return $first . $second;
+    }
+
+    /**
      * Available value icons (key => SVG)
      */
     private static $value_icons = array(
@@ -196,9 +256,10 @@ class Flavor_About {
                     'fields' => function() {
                         self::render_title_field( 'flavor_about_testimonials_title', 'cust_about_testimonials_title' );
                         self::render_repeater_inline( 'flavor_about_testimonials', array(
-                            array( 'key' => 'quote',  'type' => 'textarea', 'label' => fc__( 'cust_about_testimonials_quote', 'admin' ) ),
-                            array( 'key' => 'author', 'type' => 'text',     'label' => fc__( 'cust_about_testimonials_author', 'admin' ) ),
-                            array( 'key' => 'role',   'type' => 'text',     'label' => fc__( 'cust_about_testimonials_role', 'admin' ) ),
+                            array( 'key' => 'quote',   'type' => 'textarea',       'label' => fc__( 'cust_about_testimonials_quote', 'admin' ) ),
+                            array( 'key' => 'author',  'type' => 'text',            'label' => fc__( 'cust_about_testimonials_author', 'admin' ) ),
+                            array( 'key' => 'role',    'type' => 'text',            'label' => fc__( 'cust_about_testimonials_role', 'admin' ) ),
+                            array( 'key' => 'country', 'type' => 'country_select',  'label' => fc__( 'cust_about_testimonials_country', 'admin' ), 'width' => '120px' ),
                         ), fc__( 'cust_about_testimonials_add', 'admin' ) );
                     },
                 ),
@@ -365,6 +426,13 @@ class Flavor_About {
 
         // Icon options for icon_select type
         $icon_keys = array_keys( self::$value_icons );
+
+        // Country options for country_select type
+        $country_options = array();
+        foreach ( self::$countries as $code => $name ) {
+            $flag = $code ? self::country_flag( $code ) : '';
+            $country_options[] = array( 'code' => $code, 'label' => $flag ? $flag . ' ' . $name : $name );
+        }
         ?>
         <div class="fc-about-repeater" id="<?php echo esc_attr( $uid ); ?>">
             <div class="fc-about-repeater-items">
@@ -393,6 +461,13 @@ class Flavor_About {
                                     <option value="<?php echo esc_attr( $ik ); ?>" <?php selected( $item[ $f['key'] ] ?? 'star', $ik ); ?>><?php echo esc_html( $ik ); ?></option>
                                 <?php endforeach; ?>
                             </select>
+                        <?php elseif ( $f['type'] === 'country_select' ) : ?>
+                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" style="font-size:12px;padding:3px;width:100%">
+                                <?php foreach ( self::$countries as $ccode => $cname ) :
+                                    $cflag = $ccode ? self::country_flag( $ccode ) : ''; ?>
+                                    <option value="<?php echo esc_attr( $ccode ); ?>" <?php selected( $item[ $f['key'] ] ?? '', $ccode ); ?>><?php echo $cflag ? esc_html( $cflag . ' ' . $cname ) : esc_html( $cname ); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         <?php endif; ?>
                     </div>
                     <?php endforeach; ?>
@@ -412,6 +487,7 @@ class Flavor_About {
             var hidden    = wrap.querySelector('input[type="hidden"][data-customize-setting-link]');
             var FIELDS    = <?php echo wp_json_encode( $js_fields ); ?>;
             var ICONS     = <?php echo wp_json_encode( $icon_keys ); ?>;
+            var COUNTRIES = <?php echo wp_json_encode( $country_options ); ?>;
             var REMOVE    = <?php echo wp_json_encode( $remove_label ); ?>;
 
             function serialize() {
@@ -451,6 +527,12 @@ class Flavor_About {
                         html += '<select class="fc-rep-input" data-key="' + f.key + '" style="font-size:12px;padding:3px;width:100%">';
                         ICONS.forEach(function(ik) {
                             html += '<option value="' + ik + '"' + (val === ik ? ' selected' : '') + '>' + ik + '</option>';
+                        });
+                        html += '</select>';
+                    } else if (f.type === 'country_select') {
+                        html += '<select class="fc-rep-input" data-key="' + f.key + '" style="font-size:12px;padding:3px;width:100%">';
+                        COUNTRIES.forEach(function(c) {
+                            html += '<option value="' + c.code + '"' + (val === c.code ? ' selected' : '') + '>' + escHtml(c.label) + '</option>';
                         });
                         html += '</select>';
                     }

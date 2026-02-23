@@ -145,7 +145,12 @@ $page_title     = get_the_title();
                         <p><?php echo esc_html( $test['quote'] ?? '' ); ?></p>
                     </div>
                     <footer class="flavor-about-testimonial-footer">
-                        <cite class="flavor-about-testimonial-author"><?php echo esc_html( $test['author'] ?? '' ); ?></cite>
+                        <cite class="flavor-about-testimonial-author">
+                            <?php if ( ! empty( $test['country'] ) ) : ?>
+                                <span class="flavor-about-testimonial-flag"><?php echo esc_html( Flavor_About::country_flag( $test['country'] ) ); ?></span>
+                            <?php endif; ?>
+                            <?php echo esc_html( $test['author'] ?? '' ); ?>
+                        </cite>
                         <?php if ( ! empty( $test['role'] ) ) : ?>
                             <span class="flavor-about-testimonial-role"><?php echo esc_html( $test['role'] ); ?></span>
                         <?php endif; ?>
