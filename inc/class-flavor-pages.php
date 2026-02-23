@@ -250,6 +250,7 @@ class Flavor_Pages {
         $wp_customize->add_setting( 'flavor_contact_map_dark', array(
             'default'           => ( get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' ),
             'sanitize_callback' => 'wp_validate_boolean',
+            'transport'         => 'postMessage',
         ) );
         $wp_customize->add_control( 'flavor_contact_map_dark', array(
             'label'   => fc__( 'cust_contact_map_dark', 'admin' ),

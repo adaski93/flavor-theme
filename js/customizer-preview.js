@@ -78,6 +78,26 @@
         $(".site-logo-light").toggle(mode !== "dark");
         $(".site-logo-dark").toggle(mode === "dark");
       }
+
+      /* Auto-sync dark map when user hasn't explicitly overridden it */
+      var mapDarkSetting = wp.customize("flavor_contact_map_dark");
+      if (mapDarkSetting) {
+        mapDarkSetting.set(mode === "dark");
+      }
+    });
+  });
+
+  /* -----------------------------------------------------------
+   *  Dark map — live filter toggle
+   * --------------------------------------------------------- */
+  wp.customize("flavor_contact_map_dark", function (s) {
+    s.bind(function (v) {
+      var $iframe = $(".flavor-contact-map iframe");
+      if (!$iframe.length) return;
+      $iframe.css(
+        "filter",
+        v ? "invert(90%) hue-rotate(180deg)" : "none"
+      );
     });
   });
 
