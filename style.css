@@ -297,16 +297,6 @@ img {
   padding: 2.5rem 0;
 }
 
-.site-content .container {
-  display: grid;
-  gap: 2rem;
-}
-
-/* Nie wymuszaj grida gdy wewnątrz jest wtyczka sklepu */
-.site-content .container:has([class*="fc-"]) {
-  display: block;
-}
-
 /* ===== Posts / Articles ===== */
 article.post,
 article.page {
@@ -1237,10 +1227,6 @@ article.flavor-about-page:hover {
 /* Remove site-content padding when about page is present */
 .site-content:has(.flavor-about-page) {
   padding: 0;
-}
-.site-content > .container:has(.flavor-about-page) {
-  width: 100%;
-  max-width: 100%;
 }
 
 /* Full-width breakout from .container */
