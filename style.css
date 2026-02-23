@@ -1238,6 +1238,10 @@ article.flavor-about-page:hover {
 .site-content:has(.flavor-about-page) {
   padding: 0;
 }
+.site-content > .container:has(.flavor-about-page) {
+  width: 100%;
+  max-width: 100%;
+}
 
 /* Full-width breakout from .container */
 .flavor-about-full {
