@@ -1249,6 +1249,7 @@ article.flavor-about-page:hover {
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
+  transition: min-height 0.3s ease;
 }
 .flavor-about-hero--pattern {
   background-size: auto !important;

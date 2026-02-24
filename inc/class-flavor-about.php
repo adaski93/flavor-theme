@@ -174,6 +174,11 @@ class Flavor_About {
             'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
+        $wp_customize->add_setting( 'flavor_about_hero_height', array(
+            'default'           => '55vh',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
         $wp_customize->add_setting( 'flavor_about_team_title', array(
             'default'           => '',
             'transport'         => 'refresh',
@@ -349,6 +354,7 @@ class Flavor_About {
         $ov_color   = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
         $subtitle   = get_theme_mod( 'flavor_about_hero_subtitle', '' );
         $text_align = get_theme_mod( 'flavor_about_hero_text_align', 'center' );
+        $height     = get_theme_mod( 'flavor_about_hero_height', '55vh' );
         $uid        = 'fc-about-hero-' . wp_rand();
         ?>
         <!-- Background mode selector -->
@@ -457,6 +463,25 @@ class Flavor_About {
                 foreach ( $aligns as $val => $label ) :
                 ?>
                     <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $text_align, $val ); ?>><?php echo esc_html( $label ); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="fc-card-field" style="margin-top:8px">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_height', 'admin' ) ); ?>
+            </label>
+            <select data-customize-setting-link="flavor_about_hero_height" style="width:100%;box-sizing:border-box;font-size:12px">
+                <?php
+                $heights = array(
+                    '30vh'  => fc__( 'cust_about_hero_height_small', 'admin' ),
+                    '45vh'  => fc__( 'cust_about_hero_height_medium', 'admin' ),
+                    '55vh'  => fc__( 'cust_about_hero_height_large', 'admin' ),
+                    '75vh'  => fc__( 'cust_about_hero_height_xlarge', 'admin' ),
+                    '100vh' => fc__( 'cust_about_hero_height_full', 'admin' ),
+                );
+                foreach ( $heights as $val => $label ) :
+                ?>
+                    <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $height, $val ); ?>><?php echo esc_html( $label ); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -799,6 +824,7 @@ class Flavor_About {
             'position'      => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
             'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ) ?: fc__( 'about_hero_default_subtitle', 'frontend' ),
             'text_align'    => get_theme_mod( 'flavor_about_hero_text_align', 'center' ),
+            'height'        => get_theme_mod( 'flavor_about_hero_height', '55vh' ),
             'overlay'       => get_theme_mod( 'flavor_about_hero_overlay', true ),
             'overlay_color' => get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
         );

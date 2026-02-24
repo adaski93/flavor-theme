@@ -44,6 +44,9 @@ $page_title     = get_the_title();
             $section_style = "background-image:url('" . esc_url( $hero['image'] ) . "');background-position:" . esc_attr( $hero['position'] ?? 'center center' );
         }
 
+        // Append min-height
+        $section_style .= ';min-height:' . esc_attr( $hero['height'] ?? '55vh' );
+
         // Build CSS classes
         $section_classes = 'flavor-about-hero flavor-about-full';
         if ( ! $hero['overlay'] )  $section_classes .= ' flavor-about-hero--no-overlay';
