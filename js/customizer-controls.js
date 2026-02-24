@@ -219,7 +219,16 @@
         });
       });
     }
-
+    /* ── Sekcja Archiwum produktów → podgląd strony sklepu ── */
+    if (typeof flavorCustomizer !== "undefined" && flavorCustomizer.shopUrl) {
+      wp.customize.section("flavor_archive", function (section) {
+        section.expanded.bind(function (isExpanded) {
+          if (isExpanded) {
+            wp.customize.previewer.previewUrl.set(flavorCustomizer.shopUrl);
+          }
+        });
+      });
+    }
     /* ── Mapa: pokaż pole adresu tylko gdy „Własny adres" ── */
     wp.customize("flavor_contact_map_source", function (setting) {
       wp.customize.control("flavor_contact_map_custom", function (control) {
