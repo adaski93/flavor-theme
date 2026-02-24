@@ -136,70 +136,87 @@ class Flavor_About {
         // =============================================================
         $wp_customize->add_setting( 'flavor_about_hero_image', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'esc_url_raw',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_bg_mode', array(
             'default'           => 'custom',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_bg_variant', array(
             'default'           => 'light',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_image_position', array(
             'default'           => 'center center',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_overlay', array(
             'default'           => true,
+            'transport'         => 'refresh',
             'sanitize_callback' => function( $val ) { return (bool) $val; },
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_overlay_color', array(
             'default'           => 'rgba(0,0,0,0.45)',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_subtitle', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_hero_text_align', array(
             'default'           => 'center',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_team_title', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_team', array(
             'default'           => '[]',
+            'transport'         => 'refresh',
             'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
         ) );
         $wp_customize->add_setting( 'flavor_about_values_title', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_values', array(
             'default'           => '[]',
+            'transport'         => 'refresh',
             'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
         ) );
         $wp_customize->add_setting( 'flavor_about_stats', array(
             'default'           => '[]',
+            'transport'         => 'refresh',
             'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
         ) );
         $wp_customize->add_setting( 'flavor_about_testimonials_title', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_testimonials', array(
             'default'           => '[]',
+            'transport'         => 'refresh',
             'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
         ) );
         $wp_customize->add_setting( 'flavor_about_timeline_title', array(
             'default'           => '',
+            'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_setting( 'flavor_about_timeline', array(
             'default'           => '[]',
+            'transport'         => 'refresh',
             'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
         ) );
 
