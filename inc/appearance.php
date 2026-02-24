@@ -1067,6 +1067,19 @@ function flavor_appearance_customize_register( $wp_customize ) {
         'input_attrs' => array( 'min' => 120, 'max' => 400, 'step' => 10 ),
     ) );
 
+    // ── Setting: Przełącznik widoku siatka/lista ──
+    $wp_customize->add_setting( 'flavor_archive_view_toggle', array(
+        'default'           => true,
+        'sanitize_callback' => function ( $val ) { return (bool) $val; },
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'flavor_archive_view_toggle', array(
+        'label'   => fc__( 'cust_archive_view_toggle', 'admin' ),
+        'description' => fc__( 'cust_archive_view_toggle_desc', 'admin' ),
+        'section' => 'flavor_archive',
+        'type'    => 'checkbox',
+    ) );
+
     // ── Heading: Ustawienia pojedynczego produktu ──
     $wp_customize->add_setting( 'flavor_single_product_heading', array(
         'sanitize_callback' => '__return_empty_string',
