@@ -367,6 +367,105 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                 border-radius: 50%;
                 margin-bottom: 4px;
             }
+            /* ── Country custom dropdown ── */
+            .fc-country-dropdown {
+                position: relative;
+            }
+            .fc-country-trigger {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 5px 8px;
+                font-size: 12px;
+                background: #fff;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                cursor: pointer;
+                text-align: left;
+                transition: border-color .15s;
+            }
+            .fc-country-trigger:hover,
+            .fc-country-trigger:focus {
+                border-color: #2271b1;
+                outline: none;
+            }
+            .fc-country-selected {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                flex: 1;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .fc-country-selected img {
+                flex-shrink: 0;
+                width: 16px;
+                height: 12px;
+            }
+            .fc-country-arrow {
+                font-size: 10px;
+                color: #888;
+                flex-shrink: 0;
+                margin-left: 4px;
+            }
+            .fc-country-list {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                background: #fff;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                box-shadow: 0 3px 8px rgba(0,0,0,.12);
+                margin-top: 2px;
+                max-height: 200px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+            .fc-country-search {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 5px 8px;
+                font-size: 12px;
+                border: none;
+                border-bottom: 1px solid #eee;
+                outline: none;
+                flex-shrink: 0;
+            }
+            .fc-country-list ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                overflow-y: auto;
+                flex: 1;
+            }
+            .fc-country-list li {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 5px 8px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: background .1s;
+            }
+            .fc-country-list li:hover {
+                background: #f0f6fc;
+            }
+            .fc-country-list li.fc-country-active {
+                background: #e5f0ff;
+                font-weight: 600;
+            }
+            .fc-country-list li img {
+                width: 16px;
+                height: 12px;
+                flex-shrink: 0;
+            }
             /* ── Social sortable items ── */
             .fc-social-sortable {
                 list-style: none;

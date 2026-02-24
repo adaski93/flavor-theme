@@ -672,12 +672,28 @@ class Flavor_About {
                                 <?php endforeach; ?>
                             </select>
                         <?php elseif ( $f['type'] === 'country_select' ) : ?>
-                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>">
-                                <?php foreach ( self::$countries as $ccode => $cname ) :
-                                    $cflag = $ccode ? self::country_flag( $ccode ) : ''; ?>
-                                    <option value="<?php echo esc_attr( $ccode ); ?>" <?php selected( $item[ $f['key'] ] ?? '', $ccode ); ?>><?php echo $cflag ? esc_html( $cflag . ' ' . $cname ) : esc_html( $cname ); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <?php $cur_code = $item[ $f['key'] ] ?? '';
+                                  $cur_name = self::$countries[ $cur_code ] ?? '\u2014';
+                                  $cur_flag_img = $cur_code ? '<img src="https://flagcdn.com/16x12/' . strtolower( $cur_code ) . '.png" alt="" style="vertical-align:middle;margin-right:4px">' : ''; ?>
+                            <div class="fc-country-dropdown">
+                                <input type="hidden" class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" value="<?php echo esc_attr( $cur_code ); ?>">
+                                <button type="button" class="fc-country-trigger">
+                                    <span class="fc-country-selected"><?php echo $cur_flag_img . esc_html( $cur_name ); ?></span>
+                                    <span class="fc-country-arrow">&#9662;</span>
+                                </button>
+                                <div class="fc-country-list" style="display:none">
+                                    <input type="text" class="fc-country-search" placeholder="<?php echo esc_attr( fc__( 'cust_about_search', 'admin' ) ); ?>" autocomplete="off">
+                                    <ul>
+                                        <?php foreach ( self::$countries as $ccode => $cname ) :
+                                            $flag_url = $ccode ? 'https://flagcdn.com/16x12/' . strtolower( $ccode ) . '.png' : ''; ?>
+                                            <li data-code="<?php echo esc_attr( $ccode ); ?>" class="<?php echo $ccode === $cur_code ? 'fc-country-active' : ''; ?>">
+                                                <?php if ( $flag_url ) : ?><img src="<?php echo esc_url( $flag_url ); ?>" alt=""><?php endif; ?>
+                                                <?php echo esc_html( $cname ); ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
                         <?php endif; ?>
                     </div>
                     <?php endforeach; ?>
@@ -740,11 +756,28 @@ class Flavor_About {
                         });
                         html += '</select>';
                     } else if (f.type === 'country_select') {
-                        html += '<select class="fc-rep-input" data-key="' + f.key + '">';
+                        var curCode = val || '';
+                        var curLabel = '\u2014';
+                        var curFlagHtml = '';
+                        COUNTRIES.forEach(function(c) { if (c.code === curCode) { curLabel = c.label; } });
+                        if (curCode) curFlagHtml = '<img src="https://flagcdn.com/16x12/' + curCode.toLowerCase() + '.png" alt="" style="vertical-align:middle;margin-right:4px">';
+                        html += '<div class="fc-country-dropdown">';
+                        html += '<input type="hidden" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(curCode) + '">';
+                        html += '<button type="button" class="fc-country-trigger">';
+                        html += '<span class="fc-country-selected">' + curFlagHtml + escHtml(curLabel) + '</span>';
+                        html += '<span class="fc-country-arrow">&#9662;</span>';
+                        html += '</button>';
+                        html += '<div class="fc-country-list" style="display:none">';
+                        html += '<input type="text" class="fc-country-search" placeholder="Szukaj..." autocomplete="off">';
+                        html += '<ul>';
                         COUNTRIES.forEach(function(c) {
-                            html += '<option value="' + c.code + '"' + (val === c.code ? ' selected' : '') + '>' + escHtml(c.label) + '</option>';
+                            var furl = c.code ? 'https://flagcdn.com/16x12/' + c.code.toLowerCase() + '.png' : '';
+                            var act = c.code === curCode ? ' class="fc-country-active"' : '';
+                            html += '<li data-code="' + escAttr(c.code) + '"' + act + '>';
+                            if (furl) html += '<img src="' + furl + '" alt="">';
+                            html += escHtml(c.label) + '</li>';
                         });
-                        html += '</select>';
+                        html += '</ul></div></div>';
                     }
                     html += '</div>';
                 });
@@ -781,6 +814,43 @@ class Flavor_About {
                         frame.open();
                     });
                 });
+                // Country dropdown
+                item.querySelectorAll('.fc-country-dropdown').forEach(function(dd) {
+                    var trigger = dd.querySelector('.fc-country-trigger');
+                    var list    = dd.querySelector('.fc-country-list');
+                    var search  = dd.querySelector('.fc-country-search');
+                    var hidden  = dd.querySelector('.fc-rep-input');
+                    var selSpan = dd.querySelector('.fc-country-selected');
+
+                    trigger.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Close others
+                        document.querySelectorAll('.fc-country-list').forEach(function(l) { if (l !== list) l.style.display = 'none'; });
+                        list.style.display = list.style.display === 'none' ? '' : 'none';
+                        if (list.style.display !== 'none') { search.value = ''; search.focus(); filterList(''); }
+                    });
+
+                    function filterList(q) {
+                        q = q.toLowerCase();
+                        list.querySelectorAll('li').forEach(function(li) {
+                            li.style.display = li.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+                        });
+                    }
+                    search.addEventListener('input', function() { filterList(this.value); });
+
+                    list.querySelectorAll('li').forEach(function(li) {
+                        li.addEventListener('click', function() {
+                            var code = li.getAttribute('data-code');
+                            hidden.value = code;
+                            var flagHtml = code ? '<img src="https://flagcdn.com/16x12/' + code.toLowerCase() + '.png" alt="" style="vertical-align:middle;margin-right:4px">' : '';
+                            selSpan.innerHTML = flagHtml + escHtml(li.textContent.trim());
+                            list.querySelectorAll('li').forEach(function(l) { l.classList.remove('fc-country-active'); });
+                            li.classList.add('fc-country-active');
+                            list.style.display = 'none';
+                            serialize();
+                        });
+                    });
+                });
             }
 
             // Bind existing items
@@ -794,6 +864,13 @@ class Flavor_About {
                 });
                 container.appendChild(buildItem(defaults));
                 serialize();
+            });
+
+            // Close country dropdowns on outside click
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.fc-country-dropdown')) {
+                    wrap.querySelectorAll('.fc-country-list').forEach(function(l) { l.style.display = 'none'; });
+                }
             });
 
             function escAttr(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML.replace(/"/g, '&quot;'); }
