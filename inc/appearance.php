@@ -577,6 +577,10 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
         <?php endif; ?>
 
         <?php
+        $ctrl_uid = 'fc-cards-' . esc_attr( $this->id ) . '-' . wp_rand();
+        ?>
+        <div id="<?php echo $ctrl_uid; ?>">
+        <?php
         // ── Pinned cards (always on top, not sortable) ──
         foreach ( $this->cards as $key => $card ) :
             if ( empty( $card['pinned'] ) ) continue;
@@ -624,17 +628,39 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
             </li>
             <?php endforeach; ?>
         </ul>
+        </div>
         <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( $order ); ?>" />
         <script>
         (function($){
-            var $cards = $('.fc-sortable-cards');
+            var $wrap  = $('#<?php echo $ctrl_uid; ?>');
+            var $cards = $wrap.find('.fc-sortable-cards');
+            var $hidden = $wrap.next('input[type="hidden"]');
+
+            // Toggle card open/close on click
             $cards.on('click', '.fc-sortable-card-header', function(e) {
                 if ($(e.target).closest('.fc-sortable-handle').length) return;
                 $(this).closest('.fc-sortable-card').toggleClass('fc-card-open');
             });
             // Pinned cards — toggle open/close
-            $('.fc-card-pinned').on('click', '.fc-sortable-card-header', function() {
+            $wrap.find('.fc-card-pinned').on('click', '.fc-sortable-card-header', function() {
                 $(this).closest('.fc-card-pinned').toggleClass('fc-card-open');
+            });
+
+            // Drag & drop reorder
+            $cards.sortable({
+                handle: '.fc-sortable-handle',
+                placeholder: 'fc-sortable-placeholder',
+                axis: 'y',
+                update: function() {
+                    var order = $cards.find('.fc-sortable-card').map(function() {
+                        return $(this).data('key');
+                    }).get().join(',');
+                    $hidden.val(order).trigger('change');
+                    if (typeof wp !== 'undefined' && wp.customize) {
+                        var sid = $hidden.attr('data-customize-setting-link');
+                        if (sid) wp.customize(sid, function(s) { s.set(order); });
+                    }
+                }
             });
         })(jQuery);
         </script>
