@@ -142,6 +142,14 @@ class Flavor_About {
             'default'           => 'center center',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
+        $wp_customize->add_setting( 'flavor_about_hero_overlay', array(
+            'default'           => true,
+            'sanitize_callback' => function( $val ) { return (bool) $val; },
+        ) );
+        $wp_customize->add_setting( 'flavor_about_hero_overlay_color', array(
+            'default'           => 'rgba(0,0,0,0.45)',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
         $wp_customize->add_setting( 'flavor_about_hero_subtitle', array(
             'default'           => '',
             'sanitize_callback' => 'sanitize_text_field',
@@ -306,6 +314,8 @@ class Flavor_About {
     private static function render_hero_fields() {
         $image    = get_theme_mod( 'flavor_about_hero_image', '' );
         $position = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
+        $overlay  = get_theme_mod( 'flavor_about_hero_overlay', true );
+        $ov_color = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
         $subtitle = get_theme_mod( 'flavor_about_hero_subtitle', '' );
         $uid      = 'fc-about-hero-' . wp_rand();
         ?>
@@ -356,6 +366,18 @@ class Flavor_About {
                    value="<?php echo esc_attr( $subtitle ); ?>"
                    style="width:100%;box-sizing:border-box;font-size:12px">
         </div>
+        <div class="fc-card-field" style="margin-top:10px">
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;cursor:pointer">
+                <input type="checkbox" data-customize-setting-link="flavor_about_hero_overlay" <?php checked( $overlay ); ?>>
+                <?php echo esc_html( fc__( 'cust_about_hero_overlay', 'admin' ) ); ?>
+            </label>
+        </div>
+        <div class="fc-card-field fc-about-hero-ov-color-wrap" style="margin-top:6px;<?php echo $overlay ? '' : 'display:none'; ?>">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_overlay_color', 'admin' ) ); ?>
+            </label>
+            <input type="text" class="fc-about-hero-ov-color" data-customize-setting-link="flavor_about_hero_overlay_color" value="<?php echo esc_attr( $ov_color ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
+        </div>
         <script>
         (function(){
             var wrap = document.getElementById('<?php echo esc_js( $uid ); ?>');
@@ -386,6 +408,18 @@ class Flavor_About {
                 removeBtn.style.display = 'none';
                 hidden.dispatchEvent(new Event('change', { bubbles: true }));
             });
+
+            /* Overlay toggle → show/hide color field */
+            var section = wrap.closest('.fc-card-body') || wrap.parentNode;
+            var ovCheckbox  = section.querySelector('[data-customize-setting-link="flavor_about_hero_overlay"]');
+            var ovColorWrap = section.querySelector('.fc-about-hero-ov-color-wrap');
+            if (ovCheckbox && ovColorWrap) {
+                ovCheckbox.addEventListener('change', function() {
+                    ovColorWrap.style.display = this.checked ? '' : 'none';
+                });
+            }
+
+            /* Wpfield-style color input (simple text, user enters rgba) */
         })();
         </script>
         <?php
@@ -639,9 +673,11 @@ class Flavor_About {
      */
     public static function get_hero() {
         return array(
-            'image'    => get_theme_mod( 'flavor_about_hero_image', '' ),
-            'position' => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
-            'subtitle' => get_theme_mod( 'flavor_about_hero_subtitle', '' ),
+            'image'         => get_theme_mod( 'flavor_about_hero_image', '' ),
+            'position'      => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
+            'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ),
+            'overlay'       => get_theme_mod( 'flavor_about_hero_overlay', true ),
+            'overlay_color' => get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
         );
     }
 

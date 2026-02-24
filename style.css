@@ -1253,14 +1253,13 @@ article.flavor-about-page:hover {
 .flavor-about-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.flavor-about-hero--no-overlay .flavor-about-hero-overlay {
+  background: transparent !important;
 }
 .flavor-about-hero-inner {
   position: relative;
