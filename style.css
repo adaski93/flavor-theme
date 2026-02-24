@@ -1258,8 +1258,12 @@ article.flavor-about-page:hover {
   align-items: center;
   justify-content: center;
 }
-.flavor-about-hero-inner[style*="text-align:left"] { margin-right: auto; }
-.flavor-about-hero-inner[style*="text-align:right"] { margin-left: auto; }
+.flavor-about-hero-inner[style*="text-align:left"] {
+  margin-right: auto;
+}
+.flavor-about-hero-inner[style*="text-align:right"] {
+  margin-left: auto;
+}
 .flavor-about-hero--no-overlay .flavor-about-hero-overlay {
   background: transparent !important;
 }
@@ -1296,6 +1300,27 @@ article.flavor-about-page:hover {
 .flavor-about-hero--no-overlay .flavor-about-hero-subtitle {
   color: var(--color-accent-hover);
   text-shadow: none;
+}
+/* pattern mode: no overlay needed, text adapts */
+.flavor-about-hero--pattern .flavor-about-hero-overlay {
+  background: transparent !important;
+}
+.flavor-about-hero--pattern .flavor-about-hero-title {
+  color: var(--color-text);
+  text-shadow: none;
+}
+.flavor-about-hero--pattern .flavor-about-hero-subtitle {
+  color: var(--color-accent-hover);
+  text-shadow: none;
+}
+/* dark pattern variant */
+.flavor-about-hero--dark .flavor-about-hero-title {
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+.flavor-about-hero--dark .flavor-about-hero-subtitle {
+  color: var(--color-accent);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* ── Section Title (shared) ── */

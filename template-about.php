@@ -29,9 +29,29 @@ $page_title     = get_the_title();
 <?php foreach ( $sections_order as $section ) :
 
     // ── Hero Banner ──
-    if ( $section === 'hero' && $hero['image'] ) : ?>
-    <section class="flavor-about-hero flavor-about-full<?php echo ! $hero['overlay'] ? ' flavor-about-hero--no-overlay' : ''; ?>" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>');background-position:<?php echo esc_attr( $hero['position'] ?? 'center center' ); ?>">
-        <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
+    $hero_has_bg = ( $hero['bg_mode'] === 'custom' && $hero['image'] ) || $hero['bg_mode'] !== 'custom';
+    if ( $section === 'hero' && $hero_has_bg ) :
+        $is_pattern = $hero['bg_mode'] !== 'custom';
+        $is_dark    = $is_pattern && $hero['bg_variant'] === 'dark';
+
+        // Build section style
+        if ( $is_pattern ) {
+            $section_style = Flavor_About::get_hero_pattern_css(
+                str_replace( 'pattern-', '', $hero['bg_mode'] ),
+                $hero['bg_variant']
+            );
+        } else {
+            $section_style = "background-image:url('" . esc_url( $hero['image'] ) . "');background-position:" . esc_attr( $hero['position'] ?? 'center center' );
+        }
+
+        // Build CSS classes
+        $section_classes = 'flavor-about-hero flavor-about-full';
+        if ( ! $hero['overlay'] )  $section_classes .= ' flavor-about-hero--no-overlay';
+        if ( $is_pattern )         $section_classes .= ' flavor-about-hero--pattern';
+        if ( $is_dark )            $section_classes .= ' flavor-about-hero--dark';
+    ?>
+    <section class="<?php echo esc_attr( $section_classes ); ?>" style="<?php echo $section_style; ?>">
+        <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) && ! $is_pattern ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
             <div class="flavor-about-hero-inner" style="text-align:<?php echo esc_attr( $hero['text_align'] ); ?>">
                 <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>
                 <p class="flavor-about-hero-subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>

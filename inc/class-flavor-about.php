@@ -138,6 +138,14 @@ class Flavor_About {
             'default'           => '',
             'sanitize_callback' => 'esc_url_raw',
         ) );
+        $wp_customize->add_setting( 'flavor_about_hero_bg_mode', array(
+            'default'           => 'custom',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_hero_bg_variant', array(
+            'default'           => 'light',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
         $wp_customize->add_setting( 'flavor_about_hero_image_position', array(
             'default'           => 'center center',
             'sanitize_callback' => 'sanitize_text_field',
@@ -316,15 +324,51 @@ class Flavor_About {
      * ================================================================= */
 
     private static function render_hero_fields() {
+        $bg_mode    = get_theme_mod( 'flavor_about_hero_bg_mode', 'custom' );
+        $bg_variant = get_theme_mod( 'flavor_about_hero_bg_variant', 'light' );
         $image      = get_theme_mod( 'flavor_about_hero_image', '' );
         $position   = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
         $overlay    = get_theme_mod( 'flavor_about_hero_overlay', true );
         $ov_color   = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
         $subtitle   = get_theme_mod( 'flavor_about_hero_subtitle', '' );
         $text_align = get_theme_mod( 'flavor_about_hero_text_align', 'center' );
-        $uid      = 'fc-about-hero-' . wp_rand();
+        $uid        = 'fc-about-hero-' . wp_rand();
         ?>
-        <div class="fc-card-field fc-about-hero-field" id="<?php echo esc_attr( $uid ); ?>">
+        <!-- Background mode selector -->
+        <div class="fc-card-field">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_bg_mode', 'admin' ) ); ?>
+            </label>
+            <select class="fc-hero-bg-mode" data-customize-setting-link="flavor_about_hero_bg_mode" style="width:100%;box-sizing:border-box;font-size:12px">
+                <?php
+                $modes = array(
+                    'custom'            => fc__( 'cust_about_hero_bg_custom', 'admin' ),
+                    'pattern-hexagons'  => fc__( 'cust_about_hero_bg_hexagons', 'admin' ),
+                    'pattern-waves'     => fc__( 'cust_about_hero_bg_waves', 'admin' ),
+                    'pattern-circles'   => fc__( 'cust_about_hero_bg_circles', 'admin' ),
+                    'pattern-grid'      => fc__( 'cust_about_hero_bg_grid', 'admin' ),
+                    'pattern-diagonal'  => fc__( 'cust_about_hero_bg_diagonal', 'admin' ),
+                );
+                foreach ( $modes as $val => $label ) :
+                ?>
+                    <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $bg_mode, $val ); ?>><?php echo esc_html( $label ); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <!-- Pattern variant: light / dark -->
+        <div class="fc-card-field fc-hero-pattern-fields" style="margin-top:8px;<?php echo $bg_mode === 'custom' ? 'display:none' : ''; ?>">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_bg_variant', 'admin' ) ); ?>
+            </label>
+            <select data-customize-setting-link="flavor_about_hero_bg_variant" style="width:100%;box-sizing:border-box;font-size:12px">
+                <option value="light" <?php selected( $bg_variant, 'light' ); ?>><?php echo esc_html( fc__( 'cust_about_hero_bg_light', 'admin' ) ); ?></option>
+                <option value="dark" <?php selected( $bg_variant, 'dark' ); ?>><?php echo esc_html( fc__( 'cust_about_hero_bg_dark', 'admin' ) ); ?></option>
+            </select>
+        </div>
+
+        <!-- Custom image fields -->
+        <div class="fc-card-field fc-about-hero-field fc-hero-custom-fields" id="<?php echo esc_attr( $uid ); ?>" style="margin-top:8px;<?php echo $bg_mode !== 'custom' ? 'display:none' : ''; ?>">
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_image', 'admin' ) ); ?>
             </label>
@@ -339,7 +383,7 @@ class Flavor_About {
                 <?php echo esc_html( fc__( 'cust_about_hero_image_remove', 'admin' ) ); ?>
             </button>
         </div>
-        <div class="fc-card-field" style="margin-top:8px">
+        <div class="fc-card-field fc-hero-custom-fields" style="margin-top:8px;<?php echo $bg_mode !== 'custom' ? 'display:none' : ''; ?>">
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_image_position', 'admin' ) ); ?>
             </label>
@@ -441,7 +485,17 @@ class Flavor_About {
                 });
             }
 
-            /* Wpfield-style color input (simple text, user enters rgba) */
+            /* Background mode toggle → show/hide custom vs pattern fields */
+            var modeSelect     = section.querySelector('.fc-hero-bg-mode');
+            var customFields   = section.querySelectorAll('.fc-hero-custom-fields');
+            var patternFields  = section.querySelectorAll('.fc-hero-pattern-fields');
+            if (modeSelect) {
+                modeSelect.addEventListener('change', function() {
+                    var isCustom = this.value === 'custom';
+                    customFields.forEach(function(el)  { el.style.display = isCustom ? '' : 'none'; });
+                    patternFields.forEach(function(el) { el.style.display = isCustom ? 'none' : ''; });
+                });
+            }
         })();
         </script>
         <?php
@@ -696,12 +750,89 @@ class Flavor_About {
     public static function get_hero() {
         return array(
             'image'         => get_theme_mod( 'flavor_about_hero_image', '' ),
+            'bg_mode'       => get_theme_mod( 'flavor_about_hero_bg_mode', 'custom' ),
+            'bg_variant'    => get_theme_mod( 'flavor_about_hero_bg_variant', 'light' ),
             'position'      => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
             'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ) ?: fc__( 'about_hero_default_subtitle', 'frontend' ),
             'text_align'    => get_theme_mod( 'flavor_about_hero_text_align', 'center' ),
             'overlay'       => get_theme_mod( 'flavor_about_hero_overlay', true ),
             'overlay_color' => get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
         );
+    }
+
+    /**
+     * Generate inline SVG pattern for hero background.
+     *
+     * @param  string $pattern  Pattern name (hexagons|waves|circles|grid|diagonal).
+     * @param  string $variant  'light' or 'dark'.
+     * @return string           Inline CSS for background property.
+     */
+    public static function get_hero_pattern_css( $pattern, $variant = 'light' ) {
+        // Read accent color from Customizer (or fallback).
+        $accent = get_theme_mod( 'flavor_color_accent', '#4a90d9' );
+
+        // Convert hex to RGB for SVG.
+        list( $r, $g, $b ) = sscanf( $accent, '#%02x%02x%02x' );
+
+        if ( $variant === 'dark' ) {
+            $bg    = '#1a1a2e';
+            $fg1   = "rgba({$r},{$g},{$b},0.25)";
+            $fg2   = "rgba({$r},{$g},{$b},0.12)";
+            $fg3   = "rgba(255,255,255,0.06)";
+        } else {
+            $bg    = '#f8f9fc';
+            $fg1   = "rgba({$r},{$g},{$b},0.18)";
+            $fg2   = "rgba({$r},{$g},{$b},0.08)";
+            $fg3   = "rgba(0,0,0,0.04)";
+        }
+
+        switch ( $pattern ) {
+            case 'hexagons':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="100">'
+                     . '<path d="M28 66L0 50L0 16L28 0L56 16L56 50Z" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<path d="M28 100L0 84L0 50L28 34L56 50L56 84Z" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '</svg>';
+                break;
+
+            case 'waves':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40">'
+                     . '<path d="M0 20 Q15 0,30 20 Q45 40,60 20 Q75 0,90 20 Q105 40,120 20" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
+                     . '<path d="M0 30 Q15 10,30 30 Q45 50,60 30 Q75 10,90 30 Q105 50,120 30" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '</svg>';
+                break;
+
+            case 'circles':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">'
+                     . '<circle cx="40" cy="40" r="24" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="0"  cy="0"  r="16" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<circle cx="80" cy="80" r="16" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<circle cx="40" cy="40" r="4"  fill="' . $fg3 . '"/>'
+                     . '</svg>';
+                break;
+
+            case 'grid':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
+                     . '<rect width="40" height="40" fill="none"/>'
+                     . '<path d="M40 0H0V40" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<circle cx="20" cy="20" r="2" fill="' . $fg1 . '"/>'
+                     . '<circle cx="0"  cy="0"  r="1.5" fill="' . $fg2 . '"/>'
+                     . '</svg>';
+                break;
+
+            case 'diagonal':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
+                     . '<path d="M-10,10 l20,-20 M0,40 l40,-40 M30,50 l20,-20" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<path d="M-10,30 l20,-20 M20,50 l20,-20" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '</svg>';
+                break;
+
+            default:
+                return "background:{$bg}";
+        }
+
+        $encoded = 'data:image/svg+xml,' . rawurlencode( $svg );
+
+        return "background-color:{$bg};background-image:url(\"{$encoded}\");background-repeat:repeat;background-size:auto";
     }
 
     /**
