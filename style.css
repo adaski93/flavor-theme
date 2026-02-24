@@ -483,8 +483,7 @@ article.post:hover {
 .site-footer {
   background-color: var(--color-footer-bg);
   border-top: 1px solid var(--color-border);
-  padding: 2rem 0;
-  text-align: center;
+  padding: 0;
   color: var(--color-text-light);
   font-size: 0.9rem;
 }
@@ -498,11 +497,181 @@ article.post:hover {
   color: var(--color-accent-hover);
 }
 
-.footer-content {
+/* ── Footer widgets grid ── */
+.footer-widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 3rem 0 2rem;
+  text-align: left;
+}
+
+.footer-widget-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ── About widget ── */
+.footer-widget-about .footer-logo {
+  margin-bottom: 0.75rem;
+}
+.footer-widget-about .footer-logo img {
+  max-height: 40px;
+  width: auto;
+}
+.footer-widget-about p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Menu widget ── */
+.footer-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-menu-list li {
+  margin: 0 0 0.4rem;
+}
+.footer-menu-list li a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 400;
+}
+.footer-menu-list li a:hover {
+  color: var(--color-accent);
+}
+
+/* ── Contact widget ── */
+.footer-contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-contact-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
+  margin: 0 0 0.6rem;
+  line-height: 1.5;
+}
+.footer-contact-item svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--color-accent);
+}
+.footer-contact-item a {
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+.footer-contact-item a:hover {
+  color: var(--color-accent);
+}
+
+/* ── Social widget ── */
+.footer-social-icons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-text-light);
+  transition: background 0.2s, color 0.2s;
+}
+.footer-social-link:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+.footer-social-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Newsletter widget ── */
+.footer-newsletter-desc {
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+.footer-newsletter-input-wrap {
+  display: flex;
+  gap: 0;
+}
+.footer-newsletter-input-wrap input[type="email"] {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  font-size: 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.footer-newsletter-input-wrap input[type="email"]:focus {
+  border-color: var(--color-accent);
+}
+.footer-newsletter-input-wrap button {
+  padding: 0.55rem 1.2rem;
+  border: none;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.footer-newsletter-input-wrap button:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ── Footer bottom / copyright ── */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-copyright,
+.footer-credit {
+  margin: 0;
+}
+
+/* ── Footer responsive ── */
+@media (max-width: 768px) {
+  .footer-widgets {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3rem;
+  }
+}
+@media (max-width: 480px) {
+  .footer-widgets {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== Comments ===== */
@@ -886,7 +1055,6 @@ article.flavor-contact-page:hover {
 /* Remove site-content padding when contact page has hero */
 .site-content:has(.flavor-contact-page) {
   padding-top: 0;
-  padding-bottom: 0;
 }
 
 article.flavor-contact-page .flavor-about-hero {

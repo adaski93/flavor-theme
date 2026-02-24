@@ -45,6 +45,11 @@ require get_template_directory() . '/inc/class-flavor-pages.php';
 require get_template_directory() . '/inc/class-flavor-about.php';
 
 /**
+ * Stopka — Customizer + widgety
+ */
+require get_template_directory() . '/inc/class-flavor-footer.php';
+
+/**
  * GitHub auto-updater for the theme.
  */
 require get_template_directory() . '/inc/class-flavor-updater.php';
