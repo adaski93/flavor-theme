@@ -476,8 +476,6 @@ class Flavor_About {
                     '30vh'  => fc__( 'cust_about_hero_height_small', 'admin' ),
                     '45vh'  => fc__( 'cust_about_hero_height_medium', 'admin' ),
                     '55vh'  => fc__( 'cust_about_hero_height_large', 'admin' ),
-                    '75vh'  => fc__( 'cust_about_hero_height_xlarge', 'admin' ),
-                    '100vh' => fc__( 'cust_about_hero_height_full', 'admin' ),
                 );
                 foreach ( $heights as $val => $label ) :
                 ?>
