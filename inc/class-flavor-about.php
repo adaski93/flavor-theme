@@ -865,7 +865,7 @@ class Flavor_About {
 
         $encoded = 'data:image/svg+xml,' . rawurlencode( $svg );
 
-        return "background-color:{$bg};background-image:url(\"{$encoded}\");background-repeat:repeat;background-size:auto";
+        return "background-color:{$bg};background-image:url({$encoded});background-repeat:repeat;background-size:auto";
     }
 
     /**
