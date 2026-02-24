@@ -359,12 +359,12 @@ class Flavor_About {
             <select class="fc-hero-bg-mode" data-customize-setting-link="flavor_about_hero_bg_mode" style="width:100%;box-sizing:border-box;font-size:12px">
                 <?php
                 $modes = array(
-                    'custom'            => fc__( 'cust_about_hero_bg_custom', 'admin' ),
-                    'pattern-hexagons'  => fc__( 'cust_about_hero_bg_hexagons', 'admin' ),
-                    'pattern-waves'     => fc__( 'cust_about_hero_bg_waves', 'admin' ),
-                    'pattern-circles'   => fc__( 'cust_about_hero_bg_circles', 'admin' ),
-                    'pattern-grid'      => fc__( 'cust_about_hero_bg_grid', 'admin' ),
-                    'pattern-diagonal'  => fc__( 'cust_about_hero_bg_diagonal', 'admin' ),
+                    'custom'                => fc__( 'cust_about_hero_bg_custom', 'admin' ),
+                    'pattern-topographic'   => fc__( 'cust_about_hero_bg_topographic', 'admin' ),
+                    'pattern-circuit'       => fc__( 'cust_about_hero_bg_circuit', 'admin' ),
+                    'pattern-mosaic'        => fc__( 'cust_about_hero_bg_mosaic', 'admin' ),
+                    'pattern-constellation' => fc__( 'cust_about_hero_bg_constellation', 'admin' ),
+                    'pattern-deco'          => fc__( 'cust_about_hero_bg_deco', 'admin' ),
                 );
                 foreach ( $modes as $val => $label ) :
                 ?>
@@ -809,53 +809,121 @@ class Flavor_About {
 
         if ( $variant === 'dark' ) {
             $bg    = '#1a1a2e';
-            $fg1   = "rgba({$r},{$g},{$b},0.45)";
-            $fg2   = "rgba({$r},{$g},{$b},0.25)";
-            $fg3   = "rgba(255,255,255,0.10)";
+            $fg1   = "rgba({$r},{$g},{$b},0.50)";
+            $fg2   = "rgba({$r},{$g},{$b},0.30)";
+            $fg3   = "rgba(255,255,255,0.12)";
         } else {
             $bg    = '#f8f9fc';
-            $fg1   = "rgba({$r},{$g},{$b},0.35)";
-            $fg2   = "rgba({$r},{$g},{$b},0.18)";
-            $fg3   = "rgba(0,0,0,0.06)";
+            $fg1   = "rgba({$r},{$g},{$b},0.40)";
+            $fg2   = "rgba({$r},{$g},{$b},0.22)";
+            $fg3   = "rgba(0,0,0,0.08)";
         }
 
         switch ( $pattern ) {
-            case 'hexagons':
-                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="100">'
-                     . '<path d="M28 66L0 50L0 16L28 0L56 16L56 50Z" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
-                     . '<path d="M28 100L0 84L0 50L28 34L56 50L56 84Z" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+            // Topographic — flowing contour map lines with elevation dots
+            case 'topographic':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">'
+                     . '<path d="M0,30 C40,10 60,50 100,30 S160,10 200,30" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<path d="M0,60 C30,42 70,78 100,55 S170,32 200,60" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<path d="M0,85 C50,70 80,100 130,80 S180,65 200,85" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<path d="M0,110 C40,95 90,125 130,105 S180,88 200,110" fill="none" stroke="' . $fg2 . '" stroke-width="0.9"/>'
+                     . '<path d="M0,140 C35,122 65,158 100,135 S165,112 200,140" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<path d="M0,168 C50,155 80,182 120,162 S170,148 200,168" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<path d="M0,192 C30,182 70,200 110,188 S170,178 200,192" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<circle cx="100" cy="55" r="2" fill="' . $fg1 . '"/>'
+                     . '<circle cx="55" cy="135" r="1.5" fill="' . $fg2 . '"/>'
+                     . '<circle cx="160" cy="105" r="1.5" fill="' . $fg2 . '"/>'
                      . '</svg>';
                 break;
 
-            case 'waves':
-                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40">'
-                     . '<path d="M0 20 Q15 0,30 20 Q45 40,60 20 Q75 0,90 20 Q105 40,120 20" fill="none" stroke="' . $fg1 . '" stroke-width="2"/>'
-                     . '<path d="M0 30 Q15 10,30 30 Q45 50,60 30 Q75 10,90 30 Q105 50,120 30" fill="none" stroke="' . $fg2 . '" stroke-width="1.5"/>'
+            // Circuit board — traces, pads and SMD components
+            case 'circuit':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">'
+                     . '<path d="M0,20 H50 V60 H110 V20 H160" fill="none" stroke="' . $fg2 . '" stroke-width="1" stroke-linecap="round"/>'
+                     . '<path d="M0,100 H30 V140 H90 V100 H160" fill="none" stroke="' . $fg1 . '" stroke-width="1.2" stroke-linecap="round"/>'
+                     . '<path d="M80,0 V60" fill="none" stroke="' . $fg3 . '" stroke-width="0.8" stroke-linecap="round"/>'
+                     . '<path d="M80,100 V160" fill="none" stroke="' . $fg3 . '" stroke-width="0.8" stroke-linecap="round"/>'
+                     . '<path d="M130,55 V105" fill="none" stroke="' . $fg2 . '" stroke-width="0.8" stroke-linecap="round"/>'
+                     . '<circle cx="50" cy="20" r="5" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<circle cx="50" cy="20" r="2" fill="' . $fg1 . '"/>'
+                     . '<circle cx="110" cy="60" r="4" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="110" cy="60" r="1.5" fill="' . $fg1 . '"/>'
+                     . '<circle cx="90" cy="100" r="5" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<circle cx="90" cy="100" r="2" fill="' . $fg1 . '"/>'
+                     . '<circle cx="30" cy="140" r="4" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<circle cx="30" cy="140" r="1.5" fill="' . $fg2 . '"/>'
+                     . '<rect x="125" y="75" width="12" height="8" rx="1.5" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<rect x="55" y="50" width="8" height="12" rx="1.5" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
                      . '</svg>';
                 break;
 
-            case 'circles':
-                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">'
-                     . '<circle cx="40" cy="40" r="24" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
-                     . '<circle cx="0"  cy="0"  r="16" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
-                     . '<circle cx="80" cy="80" r="16" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
-                     . '<circle cx="40" cy="40" r="5"  fill="' . $fg1 . '"/>'
+            // Geometric mosaic — nested diamonds with cross axes and accent dots
+            case 'mosaic':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+                     . '<path d="M50,0 L100,50 L50,100 L0,50 Z" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<path d="M50,15 L85,50 L50,85 L15,50 Z" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<path d="M50,30 L70,50 L50,70 L30,50 Z" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="50" y1="0" x2="50" y2="100" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="0" y1="50" x2="100" y2="50" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<circle cx="50" cy="0" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="100" cy="50" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="50" cy="100" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="0" cy="50" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="50" cy="50" r="5" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="50" cy="50" r="2" fill="' . $fg2 . '"/>'
                      . '</svg>';
                 break;
 
-            case 'grid':
-                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
-                     . '<rect width="40" height="40" fill="none"/>'
-                     . '<path d="M40 0H0V40" fill="none" stroke="' . $fg3 . '" stroke-width="1"/>'
-                     . '<circle cx="20" cy="20" r="3" fill="' . $fg1 . '"/>'
-                     . '<circle cx="0"  cy="0"  r="2" fill="' . $fg2 . '"/>'
+            // Constellation — connected star dots with halos
+            case 'constellation':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">'
+                     . '<line x1="30" y1="40" x2="90" y2="25" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<line x1="90" y1="25" x2="150" y2="55" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<line x1="150" y1="55" x2="180" y2="30" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<line x1="30" y1="40" x2="65" y2="90" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="65" y1="90" x2="130" y2="110" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="130" y1="110" x2="150" y2="55" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<line x1="65" y1="90" x2="40" y2="140" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="130" y1="110" x2="170" y2="145" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="40" y1="140" x2="100" y2="175" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="170" y1="145" x2="100" y2="175" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="20" y1="185" x2="40" y2="140" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<circle cx="30" cy="40" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="90" cy="25" r="2" fill="' . $fg2 . '"/>'
+                     . '<circle cx="150" cy="55" r="3.5" fill="' . $fg1 . '"/>'
+                     . '<circle cx="65" cy="90" r="2.5" fill="' . $fg2 . '"/>'
+                     . '<circle cx="130" cy="110" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="40" cy="140" r="2" fill="' . $fg2 . '"/>'
+                     . '<circle cx="170" cy="145" r="2.5" fill="' . $fg2 . '"/>'
+                     . '<circle cx="100" cy="175" r="3.5" fill="' . $fg1 . '"/>'
+                     . '<circle cx="20" cy="185" r="1.5" fill="' . $fg2 . '"/>'
+                     . '<circle cx="180" cy="30" r="2" fill="' . $fg2 . '"/>'
+                     . '<circle cx="150" cy="55" r="8" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<circle cx="100" cy="175" r="8" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<circle cx="30" cy="40" r="6" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
                      . '</svg>';
                 break;
 
-            case 'diagonal':
-                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
-                     . '<path d="M-10,10 l20,-20 M0,40 l40,-40 M30,50 l20,-20" stroke="' . $fg1 . '" stroke-width="2"/>'
-                     . '<path d="M-10,30 l20,-20 M20,50 l20,-20" stroke="' . $fg2 . '" stroke-width="1"/>'
+            // Art Deco — fan arcs with half-drop offset for scallop effect
+            case 'deco':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120">'
+                     . '<line x1="50" y1="60" x2="50" y2="5" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="50" y1="60" x2="18" y2="10" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="50" y1="60" x2="82" y2="10" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M10,20 A50,50 0 0,1 90,20" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<path d="M20,35 A35,35 0 0,1 80,35" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<path d="M28,48 A25,25 0 0,1 72,48" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<circle cx="50" cy="60" r="2.5" fill="' . $fg1 . '"/>'
+                     . '<line x1="0" y1="120" x2="0" y2="65" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="0" y1="120" x2="32" y2="70" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M-40,80 A50,50 0 0,1 40,80" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<path d="M-30,95 A35,35 0 0,1 30,95" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<circle cx="0" cy="120" r="2.5" fill="' . $fg1 . '"/>'
+                     . '<line x1="100" y1="120" x2="100" y2="65" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="100" y1="120" x2="68" y2="70" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M60,80 A50,50 0 0,1 140,80" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<path d="M70,95 A35,35 0 0,1 130,95" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<circle cx="100" cy="120" r="2.5" fill="' . $fg1 . '"/>'
                      . '</svg>';
                 break;
 
