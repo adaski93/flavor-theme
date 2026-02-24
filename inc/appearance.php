@@ -260,9 +260,9 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
             .fc-about-repeater-item {
                 position: relative;
                 display: flex;
-                flex-wrap: wrap;
+                flex-direction: column;
                 gap: 6px;
-                align-items: flex-start;
+                align-items: stretch;
                 padding: 10px 30px 10px 10px;
                 margin: 0 0 6px;
                 background: #fff;
