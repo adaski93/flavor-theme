@@ -47,11 +47,11 @@ class Flavor_Heading_Control extends WP_Customize_Control {
 
     public function render_content() {
         $id = esc_attr( $this->id );
-        $arrow = $this->collapsed ? '&#9654;' : '&#9660;';
+        $chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
         ?>
         <h4 class="fc-cust-heading" id="fc-heading-<?php echo $id; ?>"
             style="margin:18px 0 6px;padding:10px 0 6px;border-bottom:1px solid #ddd;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#555;cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;">
-            <span class="fc-heading-arrow" style="font-size:10px;transition:transform .2s;"><?php echo $arrow; ?></span>
+            <span class="fc-heading-arrow" style="display:inline-flex;transition:transform .2s;<?php echo $this->collapsed ? '' : 'transform:rotate(90deg);'; ?>"><?php echo $chevron; ?></span>
             <?php echo esc_html( $this->label ); ?>
         </h4>
         <?php if ( $this->description ) : ?>
@@ -78,7 +78,7 @@ class Flavor_Heading_Control extends WP_Customize_Control {
 
             function toggle() {
                 collapsed = ! collapsed;
-                arrow.innerHTML = collapsed ? '&#9654;' : '&#9660;';
+                arrow.style.transform = collapsed ? '' : 'rotate(90deg)';
                 var sibs = getSiblings();
                 for ( var i = 0; i < sibs.length; i++ ) {
                     sibs[i].style.display = collapsed ? 'none' : '';
@@ -212,7 +212,8 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                 flex: 1;
             }
             .fc-sortable-arrow {
-                font-size: 10px;
+                display: inline-flex;
+                align-items: center;
                 color: #999;
                 transition: transform .2s;
                 flex-shrink: 0;
@@ -591,7 +592,7 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                     <span class="fc-sortable-icon"><?php echo $card['icon']; ?></span>
                 <?php endif; ?>
                 <span class="fc-sortable-label"><?php echo esc_html( $card['label'] ); ?></span>
-                <span class="fc-sortable-arrow">&#9654;</span>
+                <span class="fc-sortable-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             </div>
             <div class="fc-sortable-card-body">
                 <?php
@@ -616,7 +617,7 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                         <span class="fc-sortable-icon"><?php echo $card['icon']; ?></span>
                     <?php endif; ?>
                     <span class="fc-sortable-label"><?php echo esc_html( $card['label'] ); ?></span>
-                    <span class="fc-sortable-arrow">&#9654;</span>
+                    <span class="fc-sortable-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </div>
                 <div class="fc-sortable-card-body">
                     <?php
