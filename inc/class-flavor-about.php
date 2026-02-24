@@ -513,6 +513,22 @@ class Flavor_About {
                     patternFields.forEach(function(el) { el.style.display = isCustom ? 'none' : ''; });
                 });
             }
+
+            /* Explicit sync: push every hero field change into wp.customize & refresh preview */
+            if (typeof wp !== 'undefined' && wp.customize) {
+                section.querySelectorAll('[data-customize-setting-link]').forEach(function(el) {
+                    var settingId = el.getAttribute('data-customize-setting-link');
+                    el.addEventListener('change', function() {
+                        var val = (el.type === 'checkbox') ? el.checked : el.value;
+                        wp.customize(settingId, function(s) { s.set(val); });
+                    });
+                    if (el.tagName === 'INPUT' && el.type !== 'checkbox' && el.type !== 'hidden') {
+                        el.addEventListener('input', function() {
+                            wp.customize(settingId, function(s) { s.set(el.value); });
+                        });
+                    }
+                });
+            }
         })();
         </script>
         <?php
@@ -793,53 +809,53 @@ class Flavor_About {
 
         if ( $variant === 'dark' ) {
             $bg    = '#1a1a2e';
-            $fg1   = "rgba({$r},{$g},{$b},0.25)";
-            $fg2   = "rgba({$r},{$g},{$b},0.12)";
-            $fg3   = "rgba(255,255,255,0.06)";
+            $fg1   = "rgba({$r},{$g},{$b},0.45)";
+            $fg2   = "rgba({$r},{$g},{$b},0.25)";
+            $fg3   = "rgba(255,255,255,0.10)";
         } else {
             $bg    = '#f8f9fc';
-            $fg1   = "rgba({$r},{$g},{$b},0.18)";
-            $fg2   = "rgba({$r},{$g},{$b},0.08)";
-            $fg3   = "rgba(0,0,0,0.04)";
+            $fg1   = "rgba({$r},{$g},{$b},0.35)";
+            $fg2   = "rgba({$r},{$g},{$b},0.18)";
+            $fg3   = "rgba(0,0,0,0.06)";
         }
 
         switch ( $pattern ) {
             case 'hexagons':
                 $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="100">'
-                     . '<path d="M28 66L0 50L0 16L28 0L56 16L56 50Z" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
-                     . '<path d="M28 100L0 84L0 50L28 34L56 50L56 84Z" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<path d="M28 66L0 50L0 16L28 0L56 16L56 50Z" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
+                     . '<path d="M28 100L0 84L0 50L28 34L56 50L56 84Z" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
                      . '</svg>';
                 break;
 
             case 'waves':
                 $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40">'
-                     . '<path d="M0 20 Q15 0,30 20 Q45 40,60 20 Q75 0,90 20 Q105 40,120 20" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
-                     . '<path d="M0 30 Q15 10,30 30 Q45 50,60 30 Q75 10,90 30 Q105 50,120 30" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<path d="M0 20 Q15 0,30 20 Q45 40,60 20 Q75 0,90 20 Q105 40,120 20" fill="none" stroke="' . $fg1 . '" stroke-width="2"/>'
+                     . '<path d="M0 30 Q15 10,30 30 Q45 50,60 30 Q75 10,90 30 Q105 50,120 30" fill="none" stroke="' . $fg2 . '" stroke-width="1.5"/>'
                      . '</svg>';
                 break;
 
             case 'circles':
                 $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">'
-                     . '<circle cx="40" cy="40" r="24" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
-                     . '<circle cx="0"  cy="0"  r="16" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
-                     . '<circle cx="80" cy="80" r="16" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
-                     . '<circle cx="40" cy="40" r="4"  fill="' . $fg3 . '"/>'
+                     . '<circle cx="40" cy="40" r="24" fill="none" stroke="' . $fg1 . '" stroke-width="1.5"/>'
+                     . '<circle cx="0"  cy="0"  r="16" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<circle cx="80" cy="80" r="16" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<circle cx="40" cy="40" r="5"  fill="' . $fg1 . '"/>'
                      . '</svg>';
                 break;
 
             case 'grid':
                 $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
                      . '<rect width="40" height="40" fill="none"/>'
-                     . '<path d="M40 0H0V40" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
-                     . '<circle cx="20" cy="20" r="2" fill="' . $fg1 . '"/>'
-                     . '<circle cx="0"  cy="0"  r="1.5" fill="' . $fg2 . '"/>'
+                     . '<path d="M40 0H0V40" fill="none" stroke="' . $fg3 . '" stroke-width="1"/>'
+                     . '<circle cx="20" cy="20" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="0"  cy="0"  r="2" fill="' . $fg2 . '"/>'
                      . '</svg>';
                 break;
 
             case 'diagonal':
                 $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">'
-                     . '<path d="M-10,10 l20,-20 M0,40 l40,-40 M30,50 l20,-20" stroke="' . $fg1 . '" stroke-width="1"/>'
-                     . '<path d="M-10,30 l20,-20 M20,50 l20,-20" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<path d="M-10,10 l20,-20 M0,40 l40,-40 M30,50 l20,-20" stroke="' . $fg1 . '" stroke-width="2"/>'
+                     . '<path d="M-10,30 l20,-20 M20,50 l20,-20" stroke="' . $fg2 . '" stroke-width="1"/>'
                      . '</svg>';
                 break;
 
