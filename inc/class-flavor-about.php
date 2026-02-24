@@ -134,6 +134,11 @@ class Flavor_About {
         // =============================================================
         //  Settings — JSON data for each section
         // =============================================================
+        $wp_customize->add_setting( 'flavor_about_hero_enabled', array(
+            'default'           => true,
+            'transport'         => 'refresh',
+            'sanitize_callback' => function( $val ) { return (bool) $val; },
+        ) );
         $wp_customize->add_setting( 'flavor_about_hero_image', array(
             'default'           => '',
             'transport'         => 'refresh',
@@ -358,6 +363,7 @@ class Flavor_About {
      * ================================================================= */
 
     private static function render_hero_fields() {
+        $enabled    = get_theme_mod( 'flavor_about_hero_enabled', true );
         $bg_mode    = get_theme_mod( 'flavor_about_hero_bg_mode', 'custom' );
         $bg_variant = get_theme_mod( 'flavor_about_hero_bg_variant', 'light' );
         $image      = get_theme_mod( 'flavor_about_hero_image', '' );
@@ -369,6 +375,16 @@ class Flavor_About {
         $height     = get_theme_mod( 'flavor_about_hero_height', '55vh' );
         $uid        = 'fc-about-hero-' . wp_rand();
         ?>
+        <!-- Enable / disable hero -->
+        <div class="fc-card-field">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
+                <input type="checkbox" data-customize-setting-link="flavor_about_hero_enabled" <?php checked( $enabled ); ?>
+                       style="margin:0"
+                       onchange="var w=this.closest('.fc-sortable-card-body')||this.closest('.fc-card-pinned');var f=w.querySelectorAll('.fc-hero-toggle-fields');f.forEach(function(el){el.style.display=this.checked?'':'none'}.bind(this))">
+                <?php echo esc_html( fc__( 'cust_about_hero_enabled', 'admin' ) ); ?>
+            </label>
+        </div>
+        <div class="fc-hero-toggle-fields" style="<?php echo $enabled ? '' : 'display:none'; ?>">
         <!-- Background mode selector -->
         <div class="fc-card-field">
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
@@ -582,6 +598,7 @@ class Flavor_About {
             }
         })();
         </script>
+        </div><!-- /.fc-hero-toggle-fields -->
         <?php
     }
 
@@ -833,6 +850,7 @@ class Flavor_About {
      */
     public static function get_hero() {
         return array(
+            'enabled'       => get_theme_mod( 'flavor_about_hero_enabled', true ),
             'image'         => get_theme_mod( 'flavor_about_hero_image', '' ),
             'bg_mode'       => get_theme_mod( 'flavor_about_hero_bg_mode', 'custom' ),
             'bg_variant'    => get_theme_mod( 'flavor_about_hero_bg_variant', 'light' ),

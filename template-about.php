@@ -29,6 +29,7 @@ $page_title     = get_the_title();
 
 <?php
 // ── Hero / Nagłówek — zawsze na górze ──
+if ( $hero['enabled'] ) :
 $hero_has_bg = ( $hero['bg_mode'] === 'custom' && $hero['image'] ) || $hero['bg_mode'] !== 'custom';
 if ( $hero_has_bg ) :
     $is_pattern = $hero['bg_mode'] !== 'custom';
@@ -61,7 +62,8 @@ if ( $hero_has_bg ) :
             </div>
         </div>
     </section>
-<?php endif; ?>
+<?php endif; // hero_has_bg ?>
+<?php endif; // hero enabled ?>
 
 <?php foreach ( $sections_order as $section ) :
 
