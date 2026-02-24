@@ -372,6 +372,11 @@ class Flavor_About {
                     'pattern-constellation' => fc__( 'cust_about_hero_bg_constellation', 'admin' ),
                     'pattern-deco'          => fc__( 'cust_about_hero_bg_deco', 'admin' ),
                     'pattern-printing3d'    => fc__( 'cust_about_hero_bg_printing3d', 'admin' ),
+                    'pattern-printing3d-resin'    => fc__( 'cust_about_hero_bg_printing3d_resin', 'admin' ),
+                    'pattern-printing3d-slicer'   => fc__( 'cust_about_hero_bg_printing3d_slicer', 'admin' ),
+                    'pattern-printing3d-filament'  => fc__( 'cust_about_hero_bg_printing3d_filament', 'admin' ),
+                    'pattern-printing3d-scan'      => fc__( 'cust_about_hero_bg_printing3d_scan', 'admin' ),
+                    'pattern-printing3d-models'    => fc__( 'cust_about_hero_bg_printing3d_models', 'admin' ),
                     'pattern-automotive'    => fc__( 'cust_about_hero_bg_automotive', 'admin' ),
                     'pattern-medical'       => fc__( 'cust_about_hero_bg_medical', 'admin' ),
                     'pattern-gastro'        => fc__( 'cust_about_hero_bg_gastro', 'admin' ),
@@ -1011,6 +1016,303 @@ class Flavor_About {
                      . '<line x1="50" y1="55" x2="50" y2="57" stroke="' . $fg2 . '" stroke-width="1"/>'
                      . '<line x1="40" y1="45" x2="38" y2="45" stroke="' . $fg2 . '" stroke-width="1"/>'
                      . '<line x1="60" y1="45" x2="62" y2="45" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '</svg>';
+                break;
+
+            // 3D Printing — SLA / Resin — resin vat, build platform, UV projection, cured layers
+            case 'printing3d-resin':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280">'
+                     // Resin vat (transparent container)
+                     . '<rect x="60" y="140" width="120" height="80" rx="3" fill="none" stroke="' . $fg1 . '" stroke-width="1.3"/>'
+                     . '<rect x="65" y="150" width="110" height="65" rx="1" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     // Resin liquid surface
+                     . '<path d="M65,165 Q90,161 120,165 Q150,169 175,165" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     // Build platform lifting up
+                     . '<rect x="80" y="100" width="80" height="8" rx="2" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<line x1="120" y1="108" x2="120" y2="140" stroke="' . $fg1 . '" stroke-width="0.8" stroke-dasharray="3,2"/>'
+                     // Lift rod / z-axis
+                     . '<line x1="120" y1="30" x2="120" y2="100" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<rect x="115" y="25" width="10" height="10" rx="1" fill="none" stroke="' . $fg1 . '" stroke-width="0.9"/>'
+                     // Cured layers on platform (hanging down)
+                     . '<rect x="90" y="108" width="60" height="18" rx="1" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<line x1="90" y1="112" x2="150" y2="112" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="90" y1="116" x2="150" y2="116" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="90" y1="120" x2="150" y2="120" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     // UV light source below vat
+                     . '<rect x="75" y="230" width="90" height="15" rx="3" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<text x="95" y="241" font-family="monospace" font-size="7" fill="' . $fg2 . '">UV LCD</text>'
+                     // UV rays projecting upward
+                     . '<line x1="90" y1="230" x2="85" y2="220" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="120" y1="230" x2="120" y2="220" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<line x1="150" y1="230" x2="155" y2="220" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     // Dripping resin
+                     . '<path d="M95,126 Q96,132 95,136" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<circle cx="95" cy="138" r="1.5" fill="' . $fg3 . '"/>'
+                     . '<path d="M140,126 Q141,130 140,133" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<circle cx="140" cy="135" r="1.2" fill="' . $fg3 . '"/>'
+                     // Resin bottle (upper left)
+                     . '<rect x="15" y="40" width="20" height="40" rx="2" fill="none" stroke="' . $fg2 . '" stroke-width="0.9"/>'
+                     . '<rect x="19" y="34" width="12" height="8" rx="1" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="15" y1="55" x2="35" y2="55" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<text x="18" y="70" font-family="monospace" font-size="5" fill="' . $fg3 . '">500ml</text>'
+                     // Layer thickness indicator (right side)
+                     . '<line x1="200" y1="100" x2="200" y2="130" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="196" y1="100" x2="204" y2="100" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="196" y1="130" x2="204" y2="130" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<text x="208" y="118" font-family="monospace" font-size="6" fill="' . $fg3 . '">0.05mm</text>'
+                     // Wavelength label
+                     . '<text x="200" y="248" font-family="monospace" font-size="5" fill="' . $fg3 . '">405nm</text>'
+                     // FEP film indicator
+                     . '<line x1="60" y1="218" x2="180" y2="218" stroke="' . $fg2 . '" stroke-width="0.6" stroke-dasharray="2,2"/>'
+                     . '<text x="185" y="221" font-family="monospace" font-size="5" fill="' . $fg3 . '">FEP</text>'
+                     . '</svg>';
+                break;
+
+            // 3D Printing — Slicer view — model cross-section, supports, layers, infill
+            case 'printing3d-slicer':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280">'
+                     // 3D model wireframe outline (upper area)
+                     . '<path d="M80,30 L160,30 L180,50 L180,130 L100,130 L80,110Z" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<line x1="80" y1="30" x2="100" y2="50" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="160" y1="30" x2="180" y2="50" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="100" y1="50" x2="180" y2="50" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="100" y1="50" x2="100" y2="130" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     // Layer slicing lines
+                     . '<line x1="80" y1="50" x2="180" y2="50" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="82" y1="60" x2="180" y2="60" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="84" y1="70" x2="180" y2="70" stroke="' . $fg1 . '" stroke-width="0.5" stroke-dasharray="3,2"/>'
+                     . '<line x1="86" y1="80" x2="180" y2="80" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="88" y1="90" x2="180" y2="90" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="90" y1="100" x2="180" y2="100" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="92" y1="110" x2="180" y2="110" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="94" y1="120" x2="180" y2="120" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     // Highlighted slice (cross-section) pulled out
+                     . '<rect x="30" y="170" width="100" height="60" rx="2" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     // Infill pattern inside slice (grid)
+                     . '<line x1="35" y1="180" x2="125" y2="180" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="35" y1="190" x2="125" y2="190" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="35" y1="200" x2="125" y2="200" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="50" y1="173" x2="50" y2="227" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="70" y1="173" x2="70" y2="227" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="90" y1="173" x2="90" y2="227" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="110" y1="173" x2="110" y2="227" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     // Perimeter wall (thick)
+                     . '<rect x="33" y="173" width="94" height="54" rx="1" fill="none" stroke="' . $fg1 . '" stroke-width="0.9"/>'
+                     // Connection arrow from model to slice
+                     . '<path d="M140,90 Q160,150 130,170" fill="none" stroke="' . $fg2 . '" stroke-width="0.7" stroke-dasharray="4,3"/>'
+                     . '<polygon points="130,170 133,165 127,165" fill="' . $fg2 . '"/>'
+                     // Support structures (right side)
+                     . '<line x1="160" y1="170" x2="160" y2="230" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="175" y1="170" x2="175" y2="230" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="190" y1="175" x2="190" y2="230" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     // Zigzag support interface
+                     . '<path d="M155,170 L165,168 L170,172 L180,168 L185,172 L195,170" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     // Layer slider (right edge)
+                     . '<line x1="240" y1="30" x2="240" y2="230" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<rect x="234" y="65" width="12" height="8" rx="2" fill="none" stroke="' . $fg1 . '" stroke-width="0.9"/>'
+                     . '<line x1="234" y1="69" x2="246" y2="69" stroke="' . $fg1 . '" stroke-width="0.5"/>'
+                     // Layer numbers
+                     . '<text x="250" y="35" font-family="monospace" font-size="5" fill="' . $fg3 . '">200</text>'
+                     . '<text x="250" y="72" font-family="monospace" font-size="5" fill="' . $fg1 . '">142</text>'
+                     . '<text x="250" y="233" font-family="monospace" font-size="5" fill="' . $fg3 . '">0</text>'
+                     // Toolbar icons (top left)
+                     . '<rect x="10" y="10" width="14" height="14" rx="2" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<rect x="10" y="28" width="14" height="14" rx="2" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<rect x="10" y="46" width="14" height="14" rx="2" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     // Infill % label
+                     . '<text x="35" y="218" font-family="monospace" font-size="6" fill="' . $fg2 . '">20% infill</text>'
+                     // Speed label
+                     . '<text x="35" y="246" font-family="monospace" font-size="5" fill="' . $fg3 . '">60mm/s</text>'
+                     . '</svg>';
+                break;
+
+            // 3D Printing — Filament / FDM — spools, extruder motor, bowden tube, temp gauge
+            case 'printing3d-filament':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280">'
+                     // Large filament spool (main)
+                     . '<circle cx="80" cy="80" r="45" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<circle cx="80" cy="80" r="28" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<circle cx="80" cy="80" r="10" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="80" cy="80" r="3" fill="' . $fg2 . '"/>'
+                     // Filament wound around spool
+                     . '<ellipse cx="80" cy="80" rx="38" ry="35" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<ellipse cx="80" cy="80" rx="34" ry="32" fill="none" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     // Small spool (second color, upper right)
+                     . '<circle cx="210" cy="55" r="25" fill="none" stroke="' . $fg2 . '" stroke-width="0.9"/>'
+                     . '<circle cx="210" cy="55" r="15" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<circle cx="210" cy="55" r="5" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     // Filament path from spool
+                     . '<path d="M80,125 Q80,160 100,180 Q120,200 140,200" fill="none" stroke="' . $fg1 . '" stroke-width="1" stroke-dasharray="5,3"/>'
+                     // Bowden tube
+                     . '<path d="M140,200 Q170,200 190,210 Q210,220 220,240" fill="none" stroke="' . $fg2 . '" stroke-width="2.5" stroke-linecap="round"/>'
+                     . '<path d="M140,200 Q170,200 190,210 Q210,220 220,240" fill="none" stroke="' . $bg . '" stroke-width="1.2" stroke-linecap="round"/>'
+                     // Extruder stepper motor
+                     . '<rect x="120" y="182" width="26" height="26" rx="2" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<circle cx="133" cy="195" r="8" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<circle cx="133" cy="195" r="3" fill="' . $fg3 . '"/>'
+                     // Drive gear teeth
+                     . '<line x1="133" y1="186" x2="133" y2="183" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<line x1="133" y1="204" x2="133" y2="207" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<line x1="124" y1="195" x2="121" y2="195" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<line x1="142" y1="195" x2="145" y2="195" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     // Temperature gauge (lower left)
+                     . '<rect x="20" y="190" width="12" height="50" rx="6" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="26" cy="232" r="7" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="26" cy="232" r="3" fill="' . $fg1 . '"/>'
+                     . '<line x1="26" y1="232" x2="26" y2="200" stroke="' . $fg1 . '" stroke-width="1.5"/>'
+                     // Temperature scale marks
+                     . '<line x1="33" y1="195" x2="37" y2="195" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="33" y1="205" x2="37" y2="205" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<line x1="33" y1="215" x2="37" y2="215" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<text x="39" y="198" font-family="monospace" font-size="5" fill="' . $fg3 . '">220°</text>'
+                     . '<text x="39" y="218" font-family="monospace" font-size="5" fill="' . $fg3 . '">180°</text>'
+                     // Cooling fan (right middle)
+                     . '<circle cx="230" cy="160" r="22" fill="none" stroke="' . $fg2 . '" stroke-width="1"/>'
+                     . '<circle cx="230" cy="160" r="5" fill="none" stroke="' . $fg1 . '" stroke-width="0.8"/>'
+                     // Fan blades
+                     . '<path d="M230,155 Q220,145 225,138" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<path d="M235,160 Q245,150 248,155" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<path d="M230,165 Q220,175 225,182" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<path d="M225,160 Q215,170 212,165" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     // Filament diameter indicator
+                     . '<line x1="160" y1="40" x2="160" y2="60" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="155" y1="45" x2="165" y2="45" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="155" y1="55" x2="165" y2="55" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<text x="168" y="53" font-family="monospace" font-size="6" fill="' . $fg3 . '">1.75mm</text>'
+                     // Material label
+                     . '<text x="15" y="165" font-family="monospace" font-size="6" fill="' . $fg2 . '">PLA+</text>'
+                     . '<text x="15" y="175" font-family="monospace" font-size="5" fill="' . $fg3 . '">1kg</text>'
+                     . '</svg>';
+                break;
+
+            // 3D Printing — 3D Scanning — scanner, turntable, laser lines, point cloud
+            case 'printing3d-scan':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280">'
+                     // Turntable base
+                     . '<ellipse cx="140" cy="220" rx="60" ry="15" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<ellipse cx="140" cy="225" rx="60" ry="15" fill="none" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     // Object on turntable (bust/head shape)
+                     . '<path d="M120,180 Q120,150 130,140 Q140,130 150,140 Q160,150 160,180" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<line x1="120" y1="180" x2="120" y2="220" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     . '<line x1="160" y1="180" x2="160" y2="220" stroke="' . $fg2 . '" stroke-width="0.6"/>'
+                     // Rotation arrow on turntable
+                     . '<path d="M95,210 A50,12 0 0,1 175,205" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     . '<polygon points="175,205 172,200 170,207" fill="' . $fg3 . '"/>'
+                     // Scanner device (left side, on tripod)
+                     . '<rect x="20" y="100" width="30" height="50" rx="3" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     . '<circle cx="35" cy="115" r="8" fill="none" stroke="' . $fg2 . '" stroke-width="0.9"/>'
+                     . '<circle cx="35" cy="115" r="3" fill="' . $fg1 . '"/>'
+                     . '<circle cx="35" cy="138" r="5" fill="none" stroke="' . $fg3 . '" stroke-width="0.6"/>'
+                     // Tripod legs
+                     . '<line x1="25" y1="150" x2="10" y2="220" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="35" y1="150" x2="35" y2="225" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="45" y1="150" x2="55" y2="220" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     // Laser lines scanning object
+                     . '<line x1="43" y1="115" x2="120" y2="155" stroke="' . $fg1 . '" stroke-width="0.6" stroke-dasharray="4,2"/>'
+                     . '<line x1="43" y1="115" x2="120" y2="165" stroke="' . $fg1 . '" stroke-width="0.5" stroke-dasharray="4,2"/>'
+                     . '<line x1="43" y1="115" x2="120" y2="175" stroke="' . $fg1 . '" stroke-width="0.4" stroke-dasharray="4,2"/>'
+                     // Laser stripe on object
+                     . '<path d="M120,155 Q130,148 140,147 Q150,148 160,155" fill="none" stroke="' . $fg1 . '" stroke-width="0.8"/>'
+                     // Point cloud (upper right)
+                     . '<circle cx="200" cy="40" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="208" cy="38" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="215" cy="42" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="222" cy="36" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="203" cy="48" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="211" cy="50" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="218" cy="46" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="225" cy="50" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="205" cy="58" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="213" cy="56" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="220" cy="60" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="228" cy="55" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="207" cy="66" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="215" cy="64" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="223" cy="68" r="1" fill="' . $fg3 . '"/>'
+                     . '<circle cx="199" cy="70" r="1" fill="' . $fg2 . '"/>'
+                     . '<circle cx="230" cy="62" r="1" fill="' . $fg2 . '"/>'
+                     // Point cloud label
+                     . '<text x="196" y="85" font-family="monospace" font-size="5" fill="' . $fg3 . '">12,847 pts</text>'
+                     // Reference markers on turntable
+                     . '<circle cx="110" cy="218" r="2" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<circle cx="140" cy="207" r="2" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     . '<circle cx="170" cy="218" r="2" fill="none" stroke="' . $fg2 . '" stroke-width="0.5"/>'
+                     // Scan progress
+                     . '<text x="200" y="130" font-family="monospace" font-size="6" fill="' . $fg2 . '">Scan 3/8</text>'
+                     . '<rect x="200" y="134" width="50" height="4" rx="1" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     . '<rect x="200" y="134" width="19" height="4" rx="1" fill="' . $fg3 . '"/>'
+                     // Coordinate axes (bottom right)
+                     . '<line x1="230" y1="260" x2="260" y2="260" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="230" y1="260" x2="230" y2="235" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="230" y1="260" x2="218" y2="270" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<text x="262" y="263" font-family="monospace" font-size="5" fill="' . $fg3 . '">X</text>'
+                     . '<text x="228" y="233" font-family="monospace" font-size="5" fill="' . $fg3 . '">Y</text>'
+                     . '<text x="213" y="275" font-family="monospace" font-size="5" fill="' . $fg3 . '">Z</text>'
+                     . '</svg>';
+                break;
+
+            // 3D Printing — Printed models — benchy, calibration cube, gear, vase
+            case 'printing3d-models':
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280">'
+                     // Calibration cube (upper left) with XYZ labels
+                     . '<path d="M30,60 L70,60 L85,45 L45,45Z" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<path d="M70,60 L85,45 L85,85 L70,100Z" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<rect x="30" y="60" width="40" height="40" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<line x1="45" y1="45" x2="45" y2="85" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<text x="42" y="85" font-family="sans-serif" font-size="10" fill="' . $fg2 . '">X</text>'
+                     . '<text x="73" y="78" font-family="sans-serif" font-size="10" fill="' . $fg2 . '">Y</text>'
+                     . '<text x="52" y="52" font-family="sans-serif" font-size="10" fill="' . $fg3 . '">Z</text>'
+                     // Layer lines on cube
+                     . '<line x1="30" y1="70" x2="70" y2="70" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="30" y1="80" x2="70" y2="80" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     . '<line x1="30" y1="90" x2="70" y2="90" stroke="' . $fg3 . '" stroke-width="0.3"/>'
+                     // Benchy boat (center)
+                     . '<path d="M110,150 Q120,170 160,170 Q175,170 180,155" fill="none" stroke="' . $fg1 . '" stroke-width="1.2"/>'
+                     // Hull
+                     . '<path d="M110,150 L105,170 Q108,180 140,180 Q172,180 176,170 L180,155" fill="none" stroke="' . $fg1 . '" stroke-width="0.9"/>'
+                     // Cabin
+                     . '<rect x="140" y="135" width="25" height="18" rx="1" fill="none" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<rect x="145" y="140" width="8" height="8" rx="0.5" fill="none" stroke="' . $fg3 . '" stroke-width="0.5"/>'
+                     // Chimney
+                     . '<rect x="155" y="125" width="8" height="12" rx="1" fill="none" stroke="' . $fg1 . '" stroke-width="0.9"/>'
+                     // Water line
+                     . '<line x1="105" y1="175" x2="178" y2="175" stroke="' . $fg3 . '" stroke-width="0.3" stroke-dasharray="2,2"/>'
+                     // Gear / cog (upper right)
+                     . '<circle cx="220" cy="60" r="25" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     . '<circle cx="220" cy="60" r="16" fill="none" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<circle cx="220" cy="60" r="6" fill="none" stroke="' . $fg1 . '" stroke-width="0.8"/>'
+                     // Gear teeth
+                     . '<line x1="220" y1="33" x2="220" y2="27" stroke="' . $fg1 . '" stroke-width="3.5"/>'
+                     . '<line x1="220" y1="87" x2="220" y2="93" stroke="' . $fg1 . '" stroke-width="3.5"/>'
+                     . '<line x1="193" y1="60" x2="187" y2="60" stroke="' . $fg1 . '" stroke-width="3.5"/>'
+                     . '<line x1="247" y1="60" x2="253" y2="60" stroke="' . $fg1 . '" stroke-width="3.5"/>'
+                     . '<line x1="202" y1="42" x2="198" y2="38" stroke="' . $fg1 . '" stroke-width="3"/>'
+                     . '<line x1="238" y1="78" x2="242" y2="82" stroke="' . $fg1 . '" stroke-width="3"/>'
+                     . '<line x1="238" y1="42" x2="242" y2="38" stroke="' . $fg1 . '" stroke-width="3"/>'
+                     . '<line x1="202" y1="78" x2="198" y2="82" stroke="' . $fg1 . '" stroke-width="3"/>'
+                     // Vase / spiral mode (lower left)
+                     . '<path d="M30,260 Q25,230 30,210 Q35,195 50,190 Q65,195 70,210 Q75,230 70,260" fill="none" stroke="' . $fg1 . '" stroke-width="1"/>'
+                     // Spiral lines on vase
+                     . '<path d="M32,250 Q50,246 68,250" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M30,240 Q50,236 70,240" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M31,230 Q50,226 69,230" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M33,220 Q50,216 67,220" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M36,210 Q50,207 64,210" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     . '<path d="M42,200 Q50,198 58,200" fill="none" stroke="' . $fg3 . '" stroke-width="0.4"/>'
+                     // Figurine silhouette (lower right)
+                     . '<circle cx="210" cy="185" r="10" fill="none" stroke="' . $fg2 . '" stroke-width="0.9"/>'
+                     . '<line x1="210" y1="195" x2="210" y2="230" stroke="' . $fg2 . '" stroke-width="0.8"/>'
+                     . '<line x1="210" y1="205" x2="195" y2="215" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="210" y1="205" x2="225" y2="215" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="210" y1="230" x2="198" y2="255" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     . '<line x1="210" y1="230" x2="222" y2="255" stroke="' . $fg2 . '" stroke-width="0.7"/>'
+                     // Support material marks on figurine
+                     . '<line x1="195" y1="215" x2="193" y2="220" stroke="' . $fg3 . '" stroke-width="0.4" stroke-dasharray="1,1"/>'
+                     . '<line x1="225" y1="215" x2="227" y2="220" stroke="' . $fg3 . '" stroke-width="0.4" stroke-dasharray="1,1"/>'
+                     // Print time label
+                     . '<text x="120" y="205" font-family="monospace" font-size="5" fill="' . $fg3 . '">4h 22min</text>'
+                     // Dimensions
+                     . '<text x="35" y="275" font-family="monospace" font-size="5" fill="' . $fg3 . '">∅40mm</text>'
                      . '</svg>';
                 break;
 
