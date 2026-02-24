@@ -1250,6 +1250,10 @@ article.flavor-about-page:hover {
   background-repeat: no-repeat;
   color: #fff;
 }
+.flavor-about-hero--pattern {
+  background-size: auto !important;
+  background-repeat: repeat !important;
+}
 .flavor-about-hero-overlay {
   position: absolute;
   inset: 0;
