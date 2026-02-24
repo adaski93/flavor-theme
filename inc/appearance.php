@@ -1080,6 +1080,19 @@ function flavor_appearance_customize_register( $wp_customize ) {
         'type'    => 'checkbox',
     ) );
 
+    // ── Setting: Szybki podgląd (Quick View) ──
+    $wp_customize->add_setting( 'flavor_archive_quick_view', array(
+        'default'           => true,
+        'sanitize_callback' => function ( $val ) { return (bool) $val; },
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'flavor_archive_quick_view', array(
+        'label'       => fc__( 'cust_archive_quick_view', 'admin' ),
+        'description' => fc__( 'cust_archive_quick_view_desc', 'admin' ),
+        'section'     => 'flavor_archive',
+        'type'        => 'checkbox',
+    ) );
+
     // ── Heading: Ustawienia pojedynczego produktu ──
     $wp_customize->add_setting( 'flavor_single_product_heading', array(
         'sanitize_callback' => '__return_empty_string',

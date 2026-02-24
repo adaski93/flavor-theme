@@ -767,9 +767,7 @@ article.post:hover {
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .container {
-    width: calc(100% - 30px);
-    margin-left: 15px;
-    margin-right: 15px;
+    width: 100%;
   }
 
   .site-header .container {
@@ -1201,9 +1199,11 @@ article.flavor-contact-page:hover {
   }
   .flavor-contact-form-wrap {
     padding: 1.25rem;
+    margin: 0 15px;
   }
   .flavor-contact-card {
     padding: 1.25rem;
+    margin: 0 15px;
   }
 }
 
