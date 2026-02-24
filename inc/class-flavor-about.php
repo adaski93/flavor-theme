@@ -675,7 +675,7 @@ class Flavor_About {
         return array(
             'image'         => get_theme_mod( 'flavor_about_hero_image', '' ),
             'position'      => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
-            'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ),
+            'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ) ?: fc__( 'about_hero_default_subtitle', 'frontend' ),
             'overlay'       => get_theme_mod( 'flavor_about_hero_overlay', true ),
             'overlay_color' => get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
         );

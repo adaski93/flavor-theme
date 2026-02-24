@@ -34,9 +34,7 @@ $page_title     = get_the_title();
         <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
             <div class="flavor-about-hero-inner">
                 <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>
-                <?php if ( $hero['subtitle'] ) : ?>
-                    <p class="flavor-about-hero-subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
-                <?php endif; ?>
+                <p class="flavor-about-hero-subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
             </div>
         </div>
     </section>
