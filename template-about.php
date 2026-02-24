@@ -14,6 +14,7 @@ get_header();
 
 $sections_order = Flavor_About::get_sections_order();
 $hero           = Flavor_About::get_hero();
+$content_data   = Flavor_About::get_content();
 $team           = Flavor_About::get_team();
 $values         = Flavor_About::get_values();
 $stats          = Flavor_About::get_stats();
@@ -62,11 +63,30 @@ $page_title     = get_the_title();
         </div>
     </section>
 
-    <?php // ── Page Content (from WordPress editor) ──
-    elseif ( $section === 'content' && get_the_content() ) : ?>
+    <?php // ── Page Content (from Customizer) ──
+    elseif ( $section === 'content' && ! empty( $content_data['items'] ) ) : ?>
     <section class="flavor-about-content">
-        <div class="entry-content">
-            <?php the_content(); ?>
+        <?php if ( $content_data['title'] ) : ?>
+            <h2 class="flavor-about-section-title"><?php echo esc_html( $content_data['title'] ); ?></h2>
+        <?php endif; ?>
+        <div class="flavor-about-content-blocks">
+            <?php foreach ( $content_data['items'] as $block ) : ?>
+            <div class="flavor-about-content-block<?php echo ! empty( $block['image'] ) ? ' has-image' : ''; ?>">
+                <?php if ( ! empty( $block['image'] ) ) : ?>
+                <div class="flavor-about-content-block-image">
+                    <img src="<?php echo esc_url( $block['image'] ); ?>" alt="<?php echo esc_attr( $block['heading'] ?? '' ); ?>" loading="lazy">
+                </div>
+                <?php endif; ?>
+                <div class="flavor-about-content-block-text">
+                    <?php if ( ! empty( $block['heading'] ) ) : ?>
+                        <h3><?php echo esc_html( $block['heading'] ); ?></h3>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $block['text'] ) ) : ?>
+                        <?php echo wp_kses_post( wpautop( $block['text'] ) ); ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 

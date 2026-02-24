@@ -179,6 +179,16 @@ class Flavor_About {
             'transport'         => 'refresh',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
+        $wp_customize->add_setting( 'flavor_about_content_title', array(
+            'default'           => '',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_about_content_blocks', array(
+            'default'           => '[]',
+            'transport'         => 'refresh',
+            'sanitize_callback' => array( __CLASS__, 'sanitize_json_array' ),
+        ) );
         $wp_customize->add_setting( 'flavor_about_team_title', array(
             'default'           => '',
             'transport'         => 'refresh',
@@ -250,11 +260,12 @@ class Flavor_About {
                     'label'  => fc__( 'cust_about_content', 'admin' ),
                     'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>',
                     'fields' => function() {
-                        ?>
-                        <p class="fc-card-field" style="font-size:12px;color:#888;margin:0">
-                            <?php echo esc_html( fc__( 'cust_about_content_hint', 'admin' ) ); ?>
-                        </p>
-                        <?php
+                        self::render_title_field( 'flavor_about_content_title', 'cust_about_content_title' );
+                        self::render_repeater_inline( 'flavor_about_content_blocks', array(
+                            array( 'key' => 'heading', 'type' => 'text',     'label' => fc__( 'cust_about_content_heading', 'admin' ) ),
+                            array( 'key' => 'text',    'type' => 'textarea', 'label' => fc__( 'cust_about_content_text', 'admin' ) ),
+                            array( 'key' => 'image',   'type' => 'image',    'label' => fc__( 'cust_about_content_image', 'admin' ), 'btn' => fc__( 'cust_about_content_image_btn', 'admin' ) ),
+                        ), fc__( 'cust_about_content_add', 'admin' ) );
                     },
                 ),
                 'team' => array(
@@ -1884,6 +1895,19 @@ class Flavor_About {
         $items = json_decode( $json, true );
         return array(
             'title' => $title ? $title : fc__( 'about_timeline_title' ),
+            'items' => is_array( $items ) ? $items : array(),
+        );
+    }
+
+    /**
+     * Get page content blocks
+     */
+    public static function get_content() {
+        $title = get_theme_mod( 'flavor_about_content_title', '' );
+        $json  = get_theme_mod( 'flavor_about_content_blocks', '[]' );
+        $items = json_decode( $json, true );
+        return array(
+            'title' => $title ? $title : '',
             'items' => is_array( $items ) ? $items : array(),
         );
     }

@@ -1354,13 +1354,55 @@ article.flavor-about-page:hover {
 
 /* ── Page Content ── */
 .flavor-about-content {
-  max-width: 820px;
+  max-width: var(--container-max, 1200px);
   margin: 3rem auto;
   padding: 0 1.5rem;
   font-size: 1.05rem;
   line-height: 1.8;
   font-family: var(--font-main);
   color: var(--color-text);
+}
+.flavor-about-content .flavor-about-section-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.flavor-about-content-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.flavor-about-content-block {
+  max-width: 820px;
+  margin: 0 auto;
+}
+.flavor-about-content-block.has-image {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1000px;
+}
+.flavor-about-content-block.has-image:nth-child(even) {
+  direction: rtl;
+}
+.flavor-about-content-block.has-image:nth-child(even) > * {
+  direction: ltr;
+}
+.flavor-about-content-block-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.flavor-about-content-block-text h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin: 0 0 .8rem;
+  color: var(--color-text);
+}
+.flavor-about-content-block-text p {
+  margin: 0 0 1rem;
+  line-height: 1.8;
 }
 .flavor-about-content .entry-content > *:first-child {
   margin-top: 0;
@@ -1765,6 +1807,15 @@ article.flavor-about-page:hover {
     margin: 2rem auto;
     padding: 0 1rem;
     font-size: 1rem;
+  }
+  .flavor-about-content-block.has-image {
+    grid-template-columns: 1fr;
+  }
+  .flavor-about-content-block.has-image:nth-child(even) {
+    direction: ltr;
+  }
+  .flavor-about-content-blocks {
+    gap: 2rem;
   }
 
   /* Values — kolumna, mniejsze paddingi */
