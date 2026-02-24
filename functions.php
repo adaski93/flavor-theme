@@ -277,7 +277,7 @@ function flavor_render_custom_menu() {
         }
 
         if ( $type === 'fc_wishlist' ) {
-            if ( ! get_option( 'fc_enable_wishlist', '1' ) ) continue;
+            if ( ! get_theme_mod( 'flavor_archive_wishlist', true ) ) continue;
             $page_id = get_option( 'fc_page_wishlist' );
             $url     = $page_id ? get_permalink( $page_id ) : '#';
             $count   = 0;
@@ -292,7 +292,7 @@ function flavor_render_custom_menu() {
         }
 
         if ( $type === 'fc_compare' ) {
-            if ( ! get_option( 'fc_enable_compare', '1' ) ) continue;
+            if ( ! get_theme_mod( 'flavor_archive_compare', true ) ) continue;
             $page_id = get_option( 'fc_page_porownanie' );
             $url     = $page_id ? get_permalink( $page_id ) : site_url( '/porownanie/' );
             $count   = isset( $_SESSION['fc_compare'] ) ? count( $_SESSION['fc_compare'] ) : 0;
@@ -387,7 +387,7 @@ function flavor_render_header_icons() {
             $html .= '<a href="' . esc_url( $url ) . '" class="header-icon header-icon-account" title="' . esc_attr( $item['title'] ?? fc__( 'page_my_account' ) ) . '">' . $account_svg . '</a>';
         }
 
-        if ( $type === 'fc_wishlist' && get_option( 'fc_enable_wishlist', '1' ) ) {
+        if ( $type === 'fc_wishlist' && get_theme_mod( 'flavor_archive_wishlist', true ) ) {
             $page_id = get_option( 'fc_page_wishlist' );
             $url     = $page_id ? get_permalink( $page_id ) : '#';
             $count   = 0;
@@ -408,7 +408,7 @@ function flavor_render_header_icons() {
             $html .= '<a href="' . esc_url( $url ) . '" class="header-icon header-icon-cart"' . $action_attr . ' title="' . esc_attr( $item['title'] ?? fc__( 'page_cart' ) ) . '">' . $cart_svg . $badge . '</a>';
         }
 
-        if ( $type === 'fc_compare' && get_option( 'fc_enable_compare', '1' ) ) {
+        if ( $type === 'fc_compare' && get_theme_mod( 'flavor_archive_compare', true ) ) {
             $page_id = get_option( 'fc_page_porownanie' );
             $url     = $page_id ? get_permalink( $page_id ) : site_url( '/porownanie/' );
             $count   = isset( $_SESSION['fc_compare'] ) ? count( $_SESSION['fc_compare'] ) : 0;
