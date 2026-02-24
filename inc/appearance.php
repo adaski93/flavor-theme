@@ -253,6 +253,120 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
                 box-shadow: 0 3px 8px rgba(0,0,0,.15);
                 border-color: #0073aa;
             }
+            /* ── Repeater items & buttons ── */
+            .fc-about-repeater {
+                margin: 8px 0 0;
+            }
+            .fc-about-repeater-item {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                align-items: flex-start;
+                padding: 10px 30px 10px 10px;
+                margin: 0 0 6px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                transition: border-color .15s;
+            }
+            .fc-about-repeater-item:hover {
+                border-color: #0073aa;
+            }
+            .fc-about-repeater-field {
+                flex: 1;
+                min-width: 0;
+            }
+            .fc-about-repeater-field label {
+                font-size: 10px;
+                color: #888;
+                display: block;
+                margin-bottom: 2px;
+            }
+            .fc-about-repeater-field input[type="text"],
+            .fc-about-repeater-field textarea,
+            .fc-about-repeater-field select {
+                width: 100%;
+                box-sizing: border-box;
+                font-size: 12px;
+                padding: 4px 8px;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                background: #fff;
+                transition: border-color .15s;
+            }
+            .fc-about-repeater-field input[type="text"]:focus,
+            .fc-about-repeater-field textarea:focus,
+            .fc-about-repeater-field select:focus {
+                border-color: #2271b1;
+                outline: none;
+                box-shadow: 0 0 0 1px #2271b1;
+            }
+            .fc-about-repeater-field textarea {
+                resize: vertical;
+            }
+            .fc-about-repeater-remove {
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                background: none;
+                border: none;
+                color: #a00;
+                cursor: pointer;
+                font-size: 18px;
+                line-height: 1;
+                padding: 0 4px;
+                border-radius: 3px;
+                transition: color .15s, background .15s;
+            }
+            .fc-about-repeater-remove:hover {
+                color: #dc3232;
+                background: #fef1f1;
+            }
+            .fc-about-repeater-add {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 6px 14px;
+                font-size: 12px;
+                font-weight: 500;
+                background: #f0f0f1;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                cursor: pointer;
+                color: #2271b1;
+                transition: background .15s, border-color .15s, color .15s;
+                margin-top: 2px;
+            }
+            .fc-about-repeater-add:hover {
+                background: #e5e5e6;
+                border-color: #999;
+                color: #135e96;
+            }
+            .fc-rep-img-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 4px 10px;
+                font-size: 11px;
+                background: #f0f0f1;
+                border: 1px solid #c3c4c7;
+                border-radius: 3px;
+                cursor: pointer;
+                color: #2271b1;
+                transition: background .15s, border-color .15s;
+            }
+            .fc-rep-img-btn:hover {
+                background: #e5e5e6;
+                border-color: #999;
+            }
+            .fc-rep-img-preview {
+                max-width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 50%;
+                margin-bottom: 4px;
+            }
             /* ── Social sortable items ── */
             .fc-social-sortable {
                 list-style: none;

@@ -651,29 +651,28 @@ class Flavor_About {
                 <div class="fc-about-repeater-item">
                     <?php foreach ( $fields as $f ) : ?>
                     <div class="fc-about-repeater-field" style="<?php echo ! empty( $f['width'] ) ? 'max-width:' . esc_attr( $f['width'] ) : ''; ?>">
-                        <label style="font-size:10px;color:#888;display:block"><?php echo esc_html( $f['label'] ); ?></label>
+                        <label><?php echo esc_html( $f['label'] ); ?></label>
                         <?php if ( $f['type'] === 'text' ) : ?>
                             <input type="text" class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>"
-                                   value="<?php echo esc_attr( $item[ $f['key'] ] ?? '' ); ?>"
-                                   style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px">
+                                   value="<?php echo esc_attr( $item[ $f['key'] ] ?? '' ); ?>">
                         <?php elseif ( $f['type'] === 'textarea' ) : ?>
                             <textarea class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>"
-                                      rows="2" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px;resize:vertical"><?php echo esc_textarea( $item[ $f['key'] ] ?? '' ); ?></textarea>
+                                      rows="2"><?php echo esc_textarea( $item[ $f['key'] ] ?? '' ); ?></textarea>
                         <?php elseif ( $f['type'] === 'image' ) : ?>
                             <div class="fc-rep-image-wrap">
                                 <?php $img_url = $item[ $f['key'] ] ?? ''; ?>
-                                <img src="<?php echo esc_url( $img_url ); ?>" class="fc-rep-img-preview" style="max-width:60px;height:60px;object-fit:cover;border-radius:50%;display:<?php echo $img_url ? 'block' : 'none'; ?>;margin-bottom:4px">
+                                <img src="<?php echo esc_url( $img_url ); ?>" class="fc-rep-img-preview" style="display:<?php echo $img_url ? 'block' : 'none'; ?>">
                                 <input type="hidden" class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" value="<?php echo esc_attr( $img_url ); ?>">
-                                <button type="button" class="fc-rep-img-btn" style="font-size:11px;padding:2px 8px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1"><?php echo esc_html( $f['btn'] ?? fc__( 'cust_about_hero_image_btn', 'admin' ) ); ?></button>
+                                <button type="button" class="fc-rep-img-btn"><?php echo esc_html( $f['btn'] ?? fc__( 'cust_about_hero_image_btn', 'admin' ) ); ?></button>
                             </div>
                         <?php elseif ( $f['type'] === 'icon_select' ) : ?>
-                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" style="font-size:12px;padding:3px;width:100%">
+                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>">
                                 <?php foreach ( $icon_keys as $ik ) : ?>
                                     <option value="<?php echo esc_attr( $ik ); ?>" <?php selected( $item[ $f['key'] ] ?? 'star', $ik ); ?>><?php echo esc_html( $ik ); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         <?php elseif ( $f['type'] === 'country_select' ) : ?>
-                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>" style="font-size:12px;padding:3px;width:100%">
+                            <select class="fc-rep-input" data-key="<?php echo esc_attr( $f['key'] ); ?>">
                                 <?php foreach ( self::$countries as $ccode => $cname ) :
                                     $cflag = $ccode ? self::country_flag( $ccode ) : ''; ?>
                                     <option value="<?php echo esc_attr( $ccode ); ?>" <?php selected( $item[ $f['key'] ] ?? '', $ccode ); ?>><?php echo $cflag ? esc_html( $cflag . ' ' . $cname ) : esc_html( $cname ); ?></option>
@@ -723,25 +722,25 @@ class Flavor_About {
                     var val = data[f.key] || '';
                     var style = f.width ? 'max-width:' + f.width : '';
                     html += '<div class="fc-about-repeater-field" style="' + style + '">';
-                    html += '<label style="font-size:10px;color:#888;display:block">' + f.label + '</label>';
+                    html += '<label>' + f.label + '</label>';
                     if (f.type === 'text') {
-                        html += '<input type="text" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(val) + '" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px">';
+                        html += '<input type="text" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(val) + '">';
                     } else if (f.type === 'textarea') {
-                        html += '<textarea class="fc-rep-input" data-key="' + f.key + '" rows="2" style="width:100%;box-sizing:border-box;font-size:12px;padding:3px 6px;resize:vertical">' + escHtml(val) + '</textarea>';
+                        html += '<textarea class="fc-rep-input" data-key="' + f.key + '" rows="2">' + escHtml(val) + '</textarea>';
                     } else if (f.type === 'image') {
                         html += '<div class="fc-rep-image-wrap">';
-                        html += '<img src="' + escAttr(val) + '" class="fc-rep-img-preview" style="max-width:60px;height:60px;object-fit:cover;border-radius:50%;display:' + (val ? 'block' : 'none') + ';margin-bottom:4px">';
+                        html += '<img src="' + escAttr(val) + '" class="fc-rep-img-preview" style="display:' + (val ? 'block' : 'none') + '">';
                         html += '<input type="hidden" class="fc-rep-input" data-key="' + f.key + '" value="' + escAttr(val) + '">';
-                        html += '<button type="button" class="fc-rep-img-btn" style="font-size:11px;padding:2px 8px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1">' + (f.btn || '📷') + '</button>';
+                        html += '<button type="button" class="fc-rep-img-btn">' + (f.btn || '📷') + '</button>';
                         html += '</div>';
                     } else if (f.type === 'icon_select') {
-                        html += '<select class="fc-rep-input" data-key="' + f.key + '" style="font-size:12px;padding:3px;width:100%">';
+                        html += '<select class="fc-rep-input" data-key="' + f.key + '">';
                         ICONS.forEach(function(ik) {
                             html += '<option value="' + ik + '"' + (val === ik ? ' selected' : '') + '>' + ik + '</option>';
                         });
                         html += '</select>';
                     } else if (f.type === 'country_select') {
-                        html += '<select class="fc-rep-input" data-key="' + f.key + '" style="font-size:12px;padding:3px;width:100%">';
+                        html += '<select class="fc-rep-input" data-key="' + f.key + '">';
                         COUNTRIES.forEach(function(c) {
                             html += '<option value="' + c.code + '"' + (val === c.code ? ' selected' : '') + '>' + escHtml(c.label) + '</option>';
                         });
