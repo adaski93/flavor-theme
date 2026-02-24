@@ -1278,10 +1278,14 @@ article.flavor-about-page:hover {
   line-height: 1.15;
 }
 .flavor-about-hero-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.35rem);
-  opacity: 0.9;
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
   margin: 0;
   font-family: var(--font-main);
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* ── Section Title (shared) ── */
