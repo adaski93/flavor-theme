@@ -32,7 +32,7 @@ $page_title     = get_the_title();
     if ( $section === 'hero' && $hero['image'] ) : ?>
     <section class="flavor-about-hero flavor-about-full<?php echo ! $hero['overlay'] ? ' flavor-about-hero--no-overlay' : ''; ?>" style="background-image:url('<?php echo esc_url( $hero['image'] ); ?>');background-position:<?php echo esc_attr( $hero['position'] ?? 'center center' ); ?>">
         <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
-            <div class="flavor-about-hero-inner">
+            <div class="flavor-about-hero-inner" style="text-align:<?php echo esc_attr( $hero['text_align'] ); ?>">
                 <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>
                 <p class="flavor-about-hero-subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
             </div>

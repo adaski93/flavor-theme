@@ -154,6 +154,10 @@ class Flavor_About {
             'default'           => '',
             'sanitize_callback' => 'sanitize_text_field',
         ) );
+        $wp_customize->add_setting( 'flavor_about_hero_text_align', array(
+            'default'           => 'center',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
         $wp_customize->add_setting( 'flavor_about_team_title', array(
             'default'           => '',
             'sanitize_callback' => 'sanitize_text_field',
@@ -312,11 +316,12 @@ class Flavor_About {
      * ================================================================= */
 
     private static function render_hero_fields() {
-        $image    = get_theme_mod( 'flavor_about_hero_image', '' );
-        $position = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
-        $overlay  = get_theme_mod( 'flavor_about_hero_overlay', true );
-        $ov_color = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
-        $subtitle = get_theme_mod( 'flavor_about_hero_subtitle', '' );
+        $image      = get_theme_mod( 'flavor_about_hero_image', '' );
+        $position   = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
+        $overlay    = get_theme_mod( 'flavor_about_hero_overlay', true );
+        $ov_color   = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
+        $subtitle   = get_theme_mod( 'flavor_about_hero_subtitle', '' );
+        $text_align = get_theme_mod( 'flavor_about_hero_text_align', 'center' );
         $uid      = 'fc-about-hero-' . wp_rand();
         ?>
         <div class="fc-card-field fc-about-hero-field" id="<?php echo esc_attr( $uid ); ?>">
@@ -365,6 +370,23 @@ class Flavor_About {
                    data-customize-setting-link="flavor_about_hero_subtitle"
                    value="<?php echo esc_attr( $subtitle ); ?>"
                    style="width:100%;box-sizing:border-box;font-size:12px">
+        </div>
+        <div class="fc-card-field" style="margin-top:8px">
+            <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
+                <?php echo esc_html( fc__( 'cust_about_hero_text_align', 'admin' ) ); ?>
+            </label>
+            <select data-customize-setting-link="flavor_about_hero_text_align" style="width:100%;box-sizing:border-box;font-size:12px">
+                <?php
+                $aligns = array(
+                    'left'   => fc__( 'cust_about_hero_align_left', 'admin' ),
+                    'center' => fc__( 'cust_about_hero_align_center', 'admin' ),
+                    'right'  => fc__( 'cust_about_hero_align_right', 'admin' ),
+                );
+                foreach ( $aligns as $val => $label ) :
+                ?>
+                    <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $text_align, $val ); ?>><?php echo esc_html( $label ); ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="fc-card-field" style="margin-top:10px">
             <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;cursor:pointer">
@@ -676,6 +698,7 @@ class Flavor_About {
             'image'         => get_theme_mod( 'flavor_about_hero_image', '' ),
             'position'      => get_theme_mod( 'flavor_about_hero_image_position', 'center center' ),
             'subtitle'      => get_theme_mod( 'flavor_about_hero_subtitle', '' ) ?: fc__( 'about_hero_default_subtitle', 'frontend' ),
+            'text_align'    => get_theme_mod( 'flavor_about_hero_text_align', 'center' ),
             'overlay'       => get_theme_mod( 'flavor_about_hero_overlay', true ),
             'overlay_color' => get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
         );
