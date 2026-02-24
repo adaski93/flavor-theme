@@ -84,11 +84,53 @@ $has_info = ( $show_company && $company ) || ( $show_address && $address ) || ( 
 $map_position = get_theme_mod( 'flavor_contact_map_position', 'below_all' );
 $map_dark     = get_theme_mod( 'flavor_contact_map_dark', get_theme_mod( 'flavor_color_mode', 'light' ) === 'dark' );
 $map_filter   = $map_dark ? ' filter: invert(90%) hue-rotate(180deg);' : '';
+
+// Hero
+$hero = Flavor_Pages::get_contact_hero();
+$page_title = get_the_title();
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'flavor-contact-page' ); ?>>
+
+<?php
+// ── Hero / Nagłówek — zawsze na górze ──
+if ( $hero['enabled'] ) :
+$hero_has_bg = ( $hero['bg_mode'] === 'custom' && $hero['image'] ) || $hero['bg_mode'] !== 'custom';
+if ( $hero_has_bg ) :
+    $is_pattern = $hero['bg_mode'] !== 'custom';
+    $is_dark    = $is_pattern && $hero['bg_variant'] === 'dark';
+
+    // Build section style
+    if ( $is_pattern ) {
+        $section_style = Flavor_About::get_hero_pattern_css(
+            str_replace( 'pattern-', '', $hero['bg_mode'] ),
+            $hero['bg_variant']
+        );
+    } else {
+        $section_style = "background-image:url('" . esc_url( $hero['image'] ) . "');background-position:" . esc_attr( $hero['position'] ?? 'center center' );
+    }
+
+    // Append min-height
+    $section_style .= ';min-height:' . esc_attr( $hero['height'] ?? '55vh' );
+
+    // Build CSS classes
+    $section_classes = 'flavor-about-hero flavor-about-full';
+    if ( ! $hero['overlay'] )  $section_classes .= ' flavor-about-hero--no-overlay';
+    if ( $is_pattern )         $section_classes .= ' flavor-about-hero--pattern';
+    if ( $is_dark )            $section_classes .= ' flavor-about-hero--dark';
+?>
+    <section class="<?php echo esc_attr( $section_classes ); ?>" style="<?php echo esc_attr( $section_style ); ?>">
+        <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) && ! $is_pattern ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
+            <div class="flavor-about-hero-inner" style="text-align:<?php echo esc_attr( $hero['text_align'] ); ?>">
+                <h1 class="flavor-about-hero-title"><?php echo esc_html( $page_title ); ?></h1>
+                <p class="flavor-about-hero-subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
+            </div>
+        </div>
+    </section>
+<?php endif; // hero_has_bg ?>
+<?php endif; // hero enabled ?>
 
     <?php if ( get_the_content() ) : ?>
     <div class="entry-content" style="margin-bottom: 2rem;">

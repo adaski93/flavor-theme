@@ -125,6 +125,60 @@ class Flavor_Pages {
         ) );
 
         // =============================================================
+        //  Hero / Nagłówek strony kontaktowej
+        // =============================================================
+        $wp_customize->add_setting( 'flavor_contact_hero_enabled', array(
+            'default'           => true,
+            'transport'         => 'refresh',
+            'sanitize_callback' => function( $val ) { return (bool) $val; },
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_image', array(
+            'default'           => '',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'esc_url_raw',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_bg_mode', array(
+            'default'           => 'custom',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_bg_variant', array(
+            'default'           => 'light',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_image_position', array(
+            'default'           => 'center center',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_overlay', array(
+            'default'           => true,
+            'transport'         => 'refresh',
+            'sanitize_callback' => function( $val ) { return (bool) $val; },
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_overlay_color', array(
+            'default'           => 'rgba(0,0,0,0.45)',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_subtitle', array(
+            'default'           => '',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_text_align', array(
+            'default'           => 'center',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_setting( 'flavor_contact_hero_height', array(
+            'default'           => '55vh',
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+
+        // =============================================================
         //  Kolejność kart w sidebarze (drag & drop) + inline pola
         // =============================================================
         $wp_customize->add_setting( 'flavor_contact_cards_order', array(
@@ -137,6 +191,14 @@ class Flavor_Pages {
             'description' => fc__( 'cust_contact_cards_order_desc', 'admin' ),
             'section'     => 'flavor_contact_info',
             'cards'       => array(
+                'hero' => array(
+                    'label'  => fc__( 'cust_contact_hero', 'admin' ),
+                    'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+                    'pinned' => true,
+                    'fields' => function() {
+                        Flavor_About::render_hero_fields( 'flavor_contact_hero' );
+                    },
+                ),
                 'company' => array(
                     'label'  => fc__( 'contact_info_title' ),
                     'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>',
@@ -356,6 +418,25 @@ class Flavor_Pages {
                 'sanitize_callback' => 'esc_url_raw',
             ) );
         }
+    }
+
+    /* =================================================================
+     *  Getter — dane hero sekcji kontaktowej
+     * ================================================================= */
+
+    public static function get_contact_hero() {
+        return array(
+            'enabled'       => get_theme_mod( 'flavor_contact_hero_enabled', true ),
+            'image'         => get_theme_mod( 'flavor_contact_hero_image', '' ),
+            'bg_mode'       => get_theme_mod( 'flavor_contact_hero_bg_mode', 'custom' ),
+            'bg_variant'    => get_theme_mod( 'flavor_contact_hero_bg_variant', 'light' ),
+            'position'      => get_theme_mod( 'flavor_contact_hero_image_position', 'center center' ),
+            'subtitle'      => get_theme_mod( 'flavor_contact_hero_subtitle', '' ) ?: fc__( 'contact_hero_default_subtitle', 'frontend' ),
+            'text_align'    => get_theme_mod( 'flavor_contact_hero_text_align', 'center' ),
+            'height'        => get_theme_mod( 'flavor_contact_hero_height', '55vh' ),
+            'overlay'       => get_theme_mod( 'flavor_contact_hero_overlay', true ),
+            'overlay_color' => get_theme_mod( 'flavor_contact_hero_overlay_color', 'rgba(0,0,0,0.45)' ),
+        );
     }
 
     /* =================================================================

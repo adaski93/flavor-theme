@@ -362,23 +362,23 @@ class Flavor_About {
      *  Helper: render hero banner fields (image + subtitle)
      * ================================================================= */
 
-    private static function render_hero_fields() {
-        $enabled    = get_theme_mod( 'flavor_about_hero_enabled', true );
-        $bg_mode    = get_theme_mod( 'flavor_about_hero_bg_mode', 'custom' );
-        $bg_variant = get_theme_mod( 'flavor_about_hero_bg_variant', 'light' );
-        $image      = get_theme_mod( 'flavor_about_hero_image', '' );
-        $position   = get_theme_mod( 'flavor_about_hero_image_position', 'center center' );
-        $overlay    = get_theme_mod( 'flavor_about_hero_overlay', true );
-        $ov_color   = get_theme_mod( 'flavor_about_hero_overlay_color', 'rgba(0,0,0,0.45)' );
-        $subtitle   = get_theme_mod( 'flavor_about_hero_subtitle', '' );
-        $text_align = get_theme_mod( 'flavor_about_hero_text_align', 'center' );
-        $height     = get_theme_mod( 'flavor_about_hero_height', '55vh' );
-        $uid        = 'fc-about-hero-' . wp_rand();
+    public static function render_hero_fields( $prefix = 'flavor_about_hero' ) {
+        $enabled    = get_theme_mod( $prefix . '_enabled', true );
+        $bg_mode    = get_theme_mod( $prefix . '_bg_mode', 'custom' );
+        $bg_variant = get_theme_mod( $prefix . '_bg_variant', 'light' );
+        $image      = get_theme_mod( $prefix . '_image', '' );
+        $position   = get_theme_mod( $prefix . '_image_position', 'center center' );
+        $overlay    = get_theme_mod( $prefix . '_overlay', true );
+        $ov_color   = get_theme_mod( $prefix . '_overlay_color', 'rgba(0,0,0,0.45)' );
+        $subtitle   = get_theme_mod( $prefix . '_subtitle', '' );
+        $text_align = get_theme_mod( $prefix . '_text_align', 'center' );
+        $height     = get_theme_mod( $prefix . '_height', '55vh' );
+        $uid        = 'fc-hero-' . sanitize_key( $prefix ) . '-' . wp_rand();
         ?>
         <!-- Enable / disable hero -->
         <div class="fc-card-field">
             <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
-                <input type="checkbox" data-customize-setting-link="flavor_about_hero_enabled" <?php checked( $enabled ); ?>
+                <input type="checkbox" data-customize-setting-link="<?php echo esc_attr( $prefix . '_enabled' ); ?>" <?php checked( $enabled ); ?>
                        style="margin:0"
                        onchange="var w=this.closest('.fc-sortable-card-body')||this.closest('.fc-card-pinned');var f=w.querySelectorAll('.fc-hero-toggle-fields');f.forEach(function(el){el.style.display=this.checked?'':'none'}.bind(this))">
                 <?php echo esc_html( fc__( 'cust_about_hero_enabled', 'admin' ) ); ?>
@@ -390,7 +390,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_bg_mode', 'admin' ) ); ?>
             </label>
-            <select class="fc-hero-bg-mode" data-customize-setting-link="flavor_about_hero_bg_mode" style="width:100%;box-sizing:border-box;font-size:12px">
+            <select class="fc-hero-bg-mode" data-customize-setting-link="<?php echo esc_attr( $prefix . '_bg_mode' ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
                 <?php
                 $modes = array(
                     'custom'                => fc__( 'cust_about_hero_bg_custom', 'admin' ),
@@ -428,7 +428,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_bg_variant', 'admin' ) ); ?>
             </label>
-            <select data-customize-setting-link="flavor_about_hero_bg_variant" style="width:100%;box-sizing:border-box;font-size:12px">
+            <select data-customize-setting-link="<?php echo esc_attr( $prefix . '_bg_variant' ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
                 <option value="light" <?php selected( $bg_variant, 'light' ); ?>><?php echo esc_html( fc__( 'cust_about_hero_bg_light', 'admin' ) ); ?></option>
                 <option value="dark" <?php selected( $bg_variant, 'dark' ); ?>><?php echo esc_html( fc__( 'cust_about_hero_bg_dark', 'admin' ) ); ?></option>
             </select>
@@ -442,7 +442,7 @@ class Flavor_About {
             <div class="fc-about-hero-preview" style="margin-bottom:6px;<?php echo $image ? '' : 'display:none'; ?>">
                 <img src="<?php echo esc_url( $image ); ?>" style="max-width:100%;height:auto;border-radius:4px;display:block">
             </div>
-            <input type="hidden" data-customize-setting-link="flavor_about_hero_image" value="<?php echo esc_attr( $image ); ?>">
+            <input type="hidden" data-customize-setting-link="<?php echo esc_attr( $prefix . '_image' ); ?>" value="<?php echo esc_attr( $image ); ?>">
             <button type="button" class="fc-about-hero-choose" style="font-size:12px;padding:4px 10px;cursor:pointer;background:#f0f0f1;border:1px solid #c3c4c7;border-radius:3px;color:#2271b1">
                 <?php echo esc_html( fc__( 'cust_about_hero_image_btn', 'admin' ) ); ?>
             </button>
@@ -454,7 +454,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_image_position', 'admin' ) ); ?>
             </label>
-            <select data-customize-setting-link="flavor_about_hero_image_position" style="width:100%;box-sizing:border-box;font-size:12px">
+            <select data-customize-setting-link="<?php echo esc_attr( $prefix . '_image_position' ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
                 <?php
                 $positions = array(
                     'center top'    => fc__( 'cust_about_hero_pos_top', 'admin' ),
@@ -478,7 +478,7 @@ class Flavor_About {
                 <?php echo esc_html( fc__( 'cust_about_hero_subtitle', 'admin' ) ); ?>
             </label>
             <input type="text"
-                   data-customize-setting-link="flavor_about_hero_subtitle"
+                   data-customize-setting-link="<?php echo esc_attr( $prefix . '_subtitle' ); ?>"
                    value="<?php echo esc_attr( $subtitle ); ?>"
                    style="width:100%;box-sizing:border-box;font-size:12px">
         </div>
@@ -486,7 +486,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_text_align', 'admin' ) ); ?>
             </label>
-            <select data-customize-setting-link="flavor_about_hero_text_align" style="width:100%;box-sizing:border-box;font-size:12px">
+            <select data-customize-setting-link="<?php echo esc_attr( $prefix . '_text_align' ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
                 <?php
                 $aligns = array(
                     'left'   => fc__( 'cust_about_hero_align_left', 'admin' ),
@@ -503,7 +503,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_height', 'admin' ) ); ?>
             </label>
-            <select data-customize-setting-link="flavor_about_hero_height" style="width:100%;box-sizing:border-box;font-size:12px">
+            <select data-customize-setting-link="<?php echo esc_attr( $prefix . '_height' ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
                 <?php
                 $heights = array(
                     '30vh'  => fc__( 'cust_about_hero_height_small', 'admin' ),
@@ -518,7 +518,7 @@ class Flavor_About {
         </div>
         <div class="fc-card-field" style="margin-top:10px">
             <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;cursor:pointer">
-                <input type="checkbox" data-customize-setting-link="flavor_about_hero_overlay" <?php checked( $overlay ); ?>>
+                <input type="checkbox" data-customize-setting-link="<?php echo esc_attr( $prefix . '_overlay' ); ?>" <?php checked( $overlay ); ?>>
                 <?php echo esc_html( fc__( 'cust_about_hero_overlay', 'admin' ) ); ?>
             </label>
         </div>
@@ -526,7 +526,7 @@ class Flavor_About {
             <label style="display:block;font-size:11px;font-weight:600;margin-bottom:3px">
                 <?php echo esc_html( fc__( 'cust_about_hero_overlay_color', 'admin' ) ); ?>
             </label>
-            <input type="text" class="fc-about-hero-ov-color" data-customize-setting-link="flavor_about_hero_overlay_color" value="<?php echo esc_attr( $ov_color ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
+            <input type="text" class="fc-about-hero-ov-color" data-customize-setting-link="<?php echo esc_attr( $prefix . '_overlay_color' ); ?>" value="<?php echo esc_attr( $ov_color ); ?>" style="width:100%;box-sizing:border-box;font-size:12px">
         </div>
         <script>
         (function(){
@@ -561,7 +561,7 @@ class Flavor_About {
 
             /* Overlay toggle → show/hide color field */
             var section = wrap.closest('.fc-card-body') || wrap.parentNode;
-            var ovCheckbox  = section.querySelector('[data-customize-setting-link="flavor_about_hero_overlay"]');
+            var ovCheckbox  = section.querySelector('[data-customize-setting-link="<?php echo esc_js( $prefix . '_overlay' ); ?>"]');
             var ovColorWrap = section.querySelector('.fc-about-hero-ov-color-wrap');
             if (ovCheckbox && ovColorWrap) {
                 ovCheckbox.addEventListener('change', function() {
