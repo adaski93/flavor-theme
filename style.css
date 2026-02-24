@@ -1288,6 +1288,15 @@ article.flavor-about-page:hover {
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
   font-weight: 500;
 }
+/* no-overlay: dark text for light backgrounds */
+.flavor-about-hero--no-overlay .flavor-about-hero-title {
+  color: var(--color-text);
+  text-shadow: none;
+}
+.flavor-about-hero--no-overlay .flavor-about-hero-subtitle {
+  color: var(--color-accent-hover);
+  text-shadow: none;
+}
 
 /* ── Section Title (shared) ── */
 .flavor-about-section-title {
