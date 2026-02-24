@@ -239,7 +239,7 @@ class Flavor_About {
         //  Kolejność sekcji (drag & drop) + inline pola
         // =============================================================
         $wp_customize->add_setting( 'flavor_about_sections_order', array(
-            'default'           => 'hero,content,values,stats,team,testimonials,timeline',
+            'default'           => 'content,values,stats,team,testimonials,timeline',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'refresh',
         ) );
@@ -252,6 +252,7 @@ class Flavor_About {
                 'hero' => array(
                     'label'  => fc__( 'cust_about_hero', 'admin' ),
                     'icon'   => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+                    'pinned' => true,
                     'fields' => function() {
                         self::render_hero_fields();
                     },
@@ -818,7 +819,7 @@ class Flavor_About {
         $default = 'hero,content,values,stats,team,testimonials,timeline';
         $order   = get_theme_mod( 'flavor_about_sections_order', $default );
         $parts   = array_filter( array_map( 'trim', explode( ',', $order ) ) );
-        $all     = array( 'hero', 'content', 'values', 'stats', 'team', 'testimonials', 'timeline' );
+        $all     = array( 'content', 'values', 'stats', 'team', 'testimonials', 'timeline' );
         foreach ( $all as $s ) {
             if ( ! in_array( $s, $parts, true ) ) {
                 $parts[] = $s;

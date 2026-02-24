@@ -27,33 +27,32 @@ $page_title     = get_the_title();
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'flavor-about-page' ); ?>>
 
-<?php foreach ( $sections_order as $section ) :
+<?php
+// ── Hero / Nagłówek — zawsze na górze ──
+$hero_has_bg = ( $hero['bg_mode'] === 'custom' && $hero['image'] ) || $hero['bg_mode'] !== 'custom';
+if ( $hero_has_bg ) :
+    $is_pattern = $hero['bg_mode'] !== 'custom';
+    $is_dark    = $is_pattern && $hero['bg_variant'] === 'dark';
 
-    // ── Hero Banner ──
-    $hero_has_bg = ( $hero['bg_mode'] === 'custom' && $hero['image'] ) || $hero['bg_mode'] !== 'custom';
-    if ( $section === 'hero' && $hero_has_bg ) :
-        $is_pattern = $hero['bg_mode'] !== 'custom';
-        $is_dark    = $is_pattern && $hero['bg_variant'] === 'dark';
+    // Build section style
+    if ( $is_pattern ) {
+        $section_style = Flavor_About::get_hero_pattern_css(
+            str_replace( 'pattern-', '', $hero['bg_mode'] ),
+            $hero['bg_variant']
+        );
+    } else {
+        $section_style = "background-image:url('" . esc_url( $hero['image'] ) . "');background-position:" . esc_attr( $hero['position'] ?? 'center center' );
+    }
 
-        // Build section style
-        if ( $is_pattern ) {
-            $section_style = Flavor_About::get_hero_pattern_css(
-                str_replace( 'pattern-', '', $hero['bg_mode'] ),
-                $hero['bg_variant']
-            );
-        } else {
-            $section_style = "background-image:url('" . esc_url( $hero['image'] ) . "');background-position:" . esc_attr( $hero['position'] ?? 'center center' );
-        }
+    // Append min-height
+    $section_style .= ';min-height:' . esc_attr( $hero['height'] ?? '55vh' );
 
-        // Append min-height
-        $section_style .= ';min-height:' . esc_attr( $hero['height'] ?? '55vh' );
-
-        // Build CSS classes
-        $section_classes = 'flavor-about-hero flavor-about-full';
-        if ( ! $hero['overlay'] )  $section_classes .= ' flavor-about-hero--no-overlay';
-        if ( $is_pattern )         $section_classes .= ' flavor-about-hero--pattern';
-        if ( $is_dark )            $section_classes .= ' flavor-about-hero--dark';
-    ?>
+    // Build CSS classes
+    $section_classes = 'flavor-about-hero flavor-about-full';
+    if ( ! $hero['overlay'] )  $section_classes .= ' flavor-about-hero--no-overlay';
+    if ( $is_pattern )         $section_classes .= ' flavor-about-hero--pattern';
+    if ( $is_dark )            $section_classes .= ' flavor-about-hero--dark';
+?>
     <section class="<?php echo esc_attr( $section_classes ); ?>" style="<?php echo esc_attr( $section_style ); ?>">
         <div class="flavor-about-hero-overlay"<?php if ( $hero['overlay'] && ! empty( $hero['overlay_color'] ) && ! $is_pattern ) : ?> style="background:<?php echo esc_attr( $hero['overlay_color'] ); ?>"<?php endif; ?>>
             <div class="flavor-about-hero-inner" style="text-align:<?php echo esc_attr( $hero['text_align'] ); ?>">
@@ -62,9 +61,12 @@ $page_title     = get_the_title();
             </div>
         </div>
     </section>
+<?php endif; ?>
 
-    <?php // ── Page Content (from Customizer) ──
-    elseif ( $section === 'content' && ! empty( $content_data['items'] ) ) : ?>
+<?php foreach ( $sections_order as $section ) :
+
+    // ── Page Content (from Customizer) ──
+    if ( $section === 'content' && ! empty( $content_data['items'] ) ) : ?>
     <section class="flavor-about-content">
         <?php if ( $content_data['title'] ) : ?>
             <h2 class="flavor-about-section-title"><?php echo esc_html( $content_data['title'] ); ?></h2>

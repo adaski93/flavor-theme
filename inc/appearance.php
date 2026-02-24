@@ -131,6 +131,37 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
             $css_rendered = true;
             ?>
             <style>
+            /* ── Pinned card (not sortable, always on top) ── */
+            .fc-card-pinned {
+                margin: 8px 0 6px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                user-select: none;
+                transition: box-shadow .15s, border-color .15s;
+            }
+            .fc-card-pinned:hover {
+                border-color: #0073aa;
+                box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            }
+            .fc-card-pinned .fc-sortable-card-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 12px;
+                cursor: pointer;
+            }
+            .fc-card-pinned .fc-sortable-card-body {
+                display: none;
+                padding: 0 12px 12px;
+                border-top: 1px solid #eee;
+            }
+            .fc-card-pinned.fc-card-open .fc-sortable-card-body {
+                display: block;
+            }
+            .fc-card-pinned.fc-card-open .fc-sortable-arrow {
+                transform: rotate(90deg);
+            }
             .fc-sortable-cards {
                 list-style: none;
                 margin: 8px 0 0;
@@ -332,10 +363,34 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
             <span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
         <?php endif; ?>
 
+        <?php
+        // ── Pinned cards (always on top, not sortable) ──
+        foreach ( $this->cards as $key => $card ) :
+            if ( empty( $card['pinned'] ) ) continue;
+        ?>
+        <div class="fc-sortable-card fc-card-pinned" data-key="<?php echo esc_attr( $key ); ?>">
+            <div class="fc-sortable-card-header">
+                <?php if ( ! empty( $card['icon'] ) ) : ?>
+                    <span class="fc-sortable-icon"><?php echo $card['icon']; ?></span>
+                <?php endif; ?>
+                <span class="fc-sortable-label"><?php echo esc_html( $card['label'] ); ?></span>
+                <span class="fc-sortable-arrow">&#9654;</span>
+            </div>
+            <div class="fc-sortable-card-body">
+                <?php
+                if ( ! empty( $card['fields'] ) && is_callable( $card['fields'] ) ) {
+                    call_user_func( $card['fields'] );
+                }
+                ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+
         <ul class="fc-sortable-cards" data-setting="<?php echo esc_attr( $this->id ); ?>">
             <?php foreach ( $order_keys as $key ) :
                 if ( ! isset( $this->cards[ $key ] ) ) continue;
                 $card = $this->cards[ $key ];
+                if ( ! empty( $card['pinned'] ) ) continue;
             ?>
             <li class="fc-sortable-card" data-key="<?php echo esc_attr( $key ); ?>">
                 <div class="fc-sortable-card-header">
@@ -363,6 +418,10 @@ class Flavor_Sortable_Cards_Control extends WP_Customize_Control {
             $cards.on('click', '.fc-sortable-card-header', function(e) {
                 if ($(e.target).closest('.fc-sortable-handle').length) return;
                 $(this).closest('.fc-sortable-card').toggleClass('fc-card-open');
+            });
+            // Pinned cards — toggle open/close
+            $('.fc-card-pinned').on('click', '.fc-sortable-card-header', function() {
+                $(this).closest('.fc-card-pinned').toggleClass('fc-card-open');
             });
         })(jQuery);
         </script>
