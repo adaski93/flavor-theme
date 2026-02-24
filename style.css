@@ -885,7 +885,12 @@ article.flavor-contact-page:hover {
 
 /* Remove site-content padding when contact page has hero */
 .site-content:has(.flavor-contact-page) {
-  padding: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+article.flavor-contact-page .flavor-about-hero {
+  margin-top: 0;
 }
 
 .flavor-contact-layout {
